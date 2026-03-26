@@ -1,0 +1,1 @@
+['Catalog_Contents.catalog_entry_id', 'Catalog_Contents.catalog_entry_name', 'Catalog_Contents_Additional_Attributes.attribute_value', 'Catalog_Contents_Additional_Attributes.attribute_id', 'Attribute_Definitions.attribute_name']

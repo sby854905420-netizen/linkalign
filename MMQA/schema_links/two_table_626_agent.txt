@@ -1,0 +1,1 @@
+['wrestler.Name', 'wrestler.Days_held', 'Elimination.Team', 'wrestler.Wrestler_ID', 'Elimination.Wrestler_ID']

@@ -1,0 +1,1 @@
+['Customer.CustomerId', 'Customer.FirstName', 'Customer.LastName', 'Customer.Country', 'Invoice.CustomerId', 'Invoice.Total']

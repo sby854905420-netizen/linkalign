@@ -1,0 +1,1 @@
+['review.rating', 'review.rank', 'review.u_id', 'useracct.name', 'useracct.u_id']

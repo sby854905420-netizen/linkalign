@@ -1,0 +1,18 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+cinema,film,Title,TEXT,Title of the film.,The Case of the Mystery Weekend,0
+cinema,film,Film_ID,INT,Unique identifier for each film.,1,0
+cinema,film,Number_in_season,INT,Number of the film within a season.,1,0
+cinema,cinema,Cinema_ID,INT,Unique identifier for each cinema.,1,0
+cinema,schedule,Cinema_ID,INT,"Foreign key referencing the Cinema table, indicating the cinema where the film is scheduled.",1,0
+cinema,schedule,Show_times_per_day,INT,Number of show times for the film on the given date.,5,0
+cinema,cinema,Openning_year,INT,Year the cinema opened.,2010,0
+cinema,cinema,Name,TEXT,Name of the cinema.,Codling,0
+cinema,schedule,Film_ID,INT,"Foreign key referencing the Film table, indicating the film being scheduled.",1,0
+cinema,film,Original_air_date,TEXT,Original air date of the film.,"September 21â25, 1992",0
+cinema,schedule,Date,TEXT,Date on which the film is scheduled.,21 May,0
+cinema,film,Directed_by,TEXT,Name of the film's director.,Bill Schreiner,0
+cinema,film,Rank_in_series,INT,Rank of the film within a series.,26,0
+cinema,cinema,Location,TEXT,Geographical location of the cinema.,County Wicklow,0
+cinema,film,Production_code,TEXT,Code identifying the film's production.,50021â50025,0
+cinema,cinema,Capacity,INT,Number of seats or maximum capacity of the cinema.,1100,0
+cinema,schedule,Price,float,Price of a ticket for the film showing.,12.99,0

@@ -1,0 +1,1 @@
+['Claim_Headers.Claim_Header_ID', 'Claims_Processing.Claim_ID', 'Claims_Processing.Claim_Outcome_Code', 'Claims_Processing_Stages.Claim_Status_Name', 'Claims_Processing.Claim_Stage_ID']

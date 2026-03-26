@@ -1,0 +1,31 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+insurance_and_eClaims,Claims_Documents,Created_by_Staff_ID,INTEGER,"Foreign key referencing the Staff table, indicating the staff member who created the document.",718,0
+insurance_and_eClaims,Policies,Policy_ID,INTEGER,Unique identifier for the policy.,125,0
+insurance_and_eClaims,Policies,Customer_ID,INTEGER,"Foreign key referencing the Customers table, indicating the customer who owns the policy.",808,0
+insurance_and_eClaims,Claim_Headers,Amount_Claimed,"DECIMAL(20,4)",The total amount claimed in the claim.,349.15,0
+insurance_and_eClaims,Claims_Documents,Claim_ID,INTEGER,"Foreign key referencing the Claim_Headers table, identifying the claim the document belongs to.",24,0
+insurance_and_eClaims,Claims_Processing,Claim_Stage_ID,INTEGER,"Foreign key referencing the Claims_Processing_Stages table, indicating the current stage of claim processing.",1,0
+insurance_and_eClaims,Claim_Headers,Amount_Piad,"DECIMAL(20,4)",The amount paid for the claim.,582.03,0
+insurance_and_eClaims,Claims_Documents,Created_Date,INTEGER,Integer representing the date the document was created.,8,0
+insurance_and_eClaims,Claim_Headers,Claim_Status_Code,CHAR(15),"Code representing the status of the claim (e.g., Disputed, In Progress, Settled).",Settled,0
+insurance_and_eClaims,Claim_Headers,Claim_Type_Code,CHAR(15),"Code representing the type of claim (e.g., Child Birth, Overtime Meal Subsidy).",Handphone Subsidy,0
+insurance_and_eClaims,Claim_Headers,Date_of_Settlement,DATETIME,Timestamp indicating when the claim was settled.,2018-02-23 03:46:38,0
+insurance_and_eClaims,Claim_Headers,Claim_Header_ID,INTEGER,Unique identifier for the claim header.,15,0
+insurance_and_eClaims,Claims_Processing_Stages,Claim_Status_Description,VARCHAR(255),Description of the claim status.,Open a new claim,0
+insurance_and_eClaims,Staff,Staff_ID,INTEGER,Unique identifier for the staff member.,406,0
+insurance_and_eClaims,Claims_Processing_Stages,Next_Claim_Stage_ID,INTEGER,Identifier of the next stage in the claim processing workflow.,1,0
+insurance_and_eClaims,Claims_Processing,Staff_ID,INTEGER,"Foreign key referencing the Staff table, indicating the staff member handling the claim processing.",771,0
+insurance_and_eClaims,Policies,Policy_Type_Code,CHAR(15),"Code representing the type of policy (e.g., Normal, Jurisdiction, Uniformed).",Deputy,0
+insurance_and_eClaims,Claims_Processing,Claim_ID,INTEGER,"Foreign key referencing the Claim_Headers table, identifying the claim being processed.",28,0
+insurance_and_eClaims,Claims_Documents,Document_Type_Code,CHAR(15),"Code representing the type of document associated with the claim (e.g., Photo, Document, Medical).",Document,0
+insurance_and_eClaims,Claims_Processing,Claim_Processing_ID,INTEGER,Unique identifier for the claim processing record.,118,0
+insurance_and_eClaims,Customers,Customer_ID,INTEGER,Unique identifier for the customer.,252,0
+insurance_and_eClaims,Customers,Customer_Details,VARCHAR(255),"Details about the customer, such as name.",America Jaskolski,0
+insurance_and_eClaims,Claims_Processing,Claim_Outcome_Code,CHAR(15),"Code representing the outcome of the claim processing (e.g., Disputed, In progress).",In progress,0
+insurance_and_eClaims,Policies,End_Date,DATETIME,Timestamp indicating when the policy ends.,2018-03-18 09:17:26,0
+insurance_and_eClaims,Staff,Staff_Details,VARCHAR(255),"Details about the staff member, such as name.",Clifton,0
+insurance_and_eClaims,Policies,Start_Date,DATETIME,Timestamp indicating when the policy started.,2018-02-10 08:56:30,0
+insurance_and_eClaims,Claims_Processing_Stages,Claim_Status_Name,VARCHAR(255),"Name of the claim status (e.g., Close, Open).",Open,0
+insurance_and_eClaims,Claim_Headers,Policy_ID,INTEGER,"Foreign key referencing the Policy table, indicating the policy associated with the claim.",518,0
+insurance_and_eClaims,Claims_Processing_Stages,Claim_Stage_ID,INTEGER,Unique identifier for the claim processing stage.,1,0
+insurance_and_eClaims,Claim_Headers,Date_of_Claim,DATETIME,Timestamp indicating when the claim was submitted.,2016-05-31 06:07:11,0

@@ -1,0 +1,1 @@
+['trust.trust', 'trust.target_u_id', 'trust.source_u_id', 'useracct.u_id', 'useracct.name']

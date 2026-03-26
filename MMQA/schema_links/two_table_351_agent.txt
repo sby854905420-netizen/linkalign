@@ -1,0 +1,1 @@
+['match_season.Player', 'match_season.Season', 'match_season.Country', 'country.Capital']

@@ -1,0 +1,1 @@
+['body_builder.Total', 'people.Name', 'people.Birth_Place']

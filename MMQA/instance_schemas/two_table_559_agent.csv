@@ -1,0 +1,13 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+epinions_1,review,a_id,INTEGER,Unique identifier for a review.,1,0
+epinions_1,trust,trust,INTEGER,Level of trust between two users.,10,0
+epinions_1,review,i_id,INTEGER,Identifier of the item being reviewed. Foreign key referencing item.i_id.,1,0
+epinions_1,review,rating,INTEGER,Rating given in the review.,10,0
+epinions_1,review,rank,INTEGER,Rank of the review.,1,0
+epinions_1,item,title,varchar(20),Title or name of the item.,pear,0
+epinions_1,trust,target_u_id,INTEGER,Identifier of the user being trusted. Foreign key referencing useracct.u_id.,2,0
+epinions_1,useracct,name,varchar(128),Name of the user.,Helen,0
+epinions_1,item,i_id,INTEGER,Unique identifier for an item.,0,0
+epinions_1,review,u_id,INTEGER,Identifier of the user who wrote the review. Foreign key referencing useracct.u_id.,1,0
+epinions_1,trust,source_u_id,INTEGER,Identifier of the user who trusts another user. Foreign key referencing useracct.u_id.,1,0
+epinions_1,useracct,u_id,INTEGER,Unique identifier for a user account.,1,0

@@ -1,0 +1,1 @@
+['Apartment_Buildings.building_full_name', 'Apartment_Buildings.building_manager', 'Apartments.bathroom_count', 'Apartments.apt_type_code', 'Apartments.building_id']

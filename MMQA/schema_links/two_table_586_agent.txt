@@ -1,0 +1,1 @@
+['gymnast.Vault_Points', 'people.Hometown', 'people.Name', 'gymnast.Gymnast_ID', 'people.People_ID']

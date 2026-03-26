@@ -1,0 +1,1 @@
+['Player.player_api_id', 'Player.player_name', 'Team.team_api_id', 'Team.team_long_name']

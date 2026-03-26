@@ -1,0 +1,1 @@
+['aircraft.Aircraft_ID', 'aircraft.Flying_Distance', 'pilot.Pilot_ID', 'pilot_record.Aircraft_ID', 'pilot_record.Pilot_ID']

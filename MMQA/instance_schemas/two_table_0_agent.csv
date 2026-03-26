@@ -1,0 +1,14 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+department_management,department,Creation,TEXT,Year the department was created.,1789,0
+department_management,department,Department_ID,INT,Unique identifier for each department; primary key.,1,0
+department_management,department,Name,TEXT,Name of the department.,State,0
+department_management,department,Budget_in_Billions,REAL,Department's budget in billions of dollars.,9.96,0
+department_management,management,temporary_acting,TEXT,Indicates whether the head is temporarily acting in the position.,Yes,0
+department_management,head,born_state,TEXT,State where the department head was born.,Alabama,0
+department_management,management,head_ID,INT,Identifier of the department head; foreign key referencing head.head_ID; part of the composite primary key.,5,0
+department_management,department,Num_Employees,REAL,Number of employees in the department.,30266.0,0
+department_management,head,age,REAL,Age of the department head.,67.0,0
+department_management,department,Ranking,INT,Ranking of the department.,1,0
+department_management,management,department_ID,INT,Identifier of the department; foreign key referencing department.Department_ID; part of the composite primary key.,2,0
+department_management,head,name,TEXT,Name of the department head.,Tiger Woods,0
+department_management,head,head_ID,INT,Unique identifier for each head; primary key.,1,0

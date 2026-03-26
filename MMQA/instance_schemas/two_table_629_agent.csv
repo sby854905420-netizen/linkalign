@@ -1,0 +1,20 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+school_finance,budget,Budgeted,INT,Amount of money budgeted for the school in the given year.,4979,0
+school_finance,budget,total_budget_percent_invested,REAL,Percentage of the total budget that was invested.,2.0,0
+school_finance,School,School_id,TEXT,Unique identifier for each school.,1,0
+school_finance,endowment,School_id,INT,"Foreign key referencing the School table, identifying the school associated with the endowment.",1,0
+school_finance,School,IHSAA_Class,TEXT,Classification of the school by the Indiana High School Athletic Association.,AA,0
+school_finance,budget,total_budget_percent_budgeted,REAL,Percentage of the total budget that was budgeted.,2.0,0
+school_finance,budget,Invested,INT,Amount of money invested by the school in the given year.,2134,0
+school_finance,budget,School_id,INT,"Foreign key referencing the School table, identifying the school associated with the budget.",2,0
+school_finance,budget,Budget_invested_percent,TEXT,Percentage representing the relationship between the budgeted and invested amounts.,42.9,0
+school_finance,endowment,amount,REAL,Amount of money donated to the endowment.,9.51,0
+school_finance,School,IHSAA_Football_Class,TEXT,Classification of the school's football team by the Indiana High School Athletic Association.,AA,0
+school_finance,School,Enrollment,INT,Number of students enrolled in the school.,495,0
+school_finance,School,Location,TEXT,City where the school is located.,Bremen,0
+school_finance,School,Mascot,TEXT,Mascot of the school.,Lions,0
+school_finance,School,School_name,TEXT,Name of the school.,Bremen,0
+school_finance,budget,Year,INT,Year for which the budget data is recorded.,1999,0
+school_finance,endowment,endowment_id,INT,Unique identifier for each endowment record.,1,0
+school_finance,endowment,donator_name,TEXT,Name of the donator who contributed to the endowment.,Monte Plata,0
+school_finance,School,County,TEXT,County in which the school is located.,50 Marshall,0

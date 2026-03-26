@@ -1,0 +1,34 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+e_learning,Students,student_id,INTEGER,Unique identifier for a student.,1,0
+e_learning,Course_Authors_and_Tutors,family_name,VARCHAR(80),Last name of the author or tutor.,Grant,0
+e_learning,Student_Course_Enrolment,date_of_completion,DATETIME,Date and time when the student completed the course.,2018-02-26 07:48:52,0
+e_learning,Courses,author_id,INTEGER,Foreign key referencing the author or tutor who created the course.,8,0
+e_learning,Students,password,VARCHAR(10),Student password.,db8765bb6f,0
+e_learning,Students,login_name,VARCHAR(40),Student login name.,annamae.hoppe,0
+e_learning,Students,middle_name,VARCHAR(40),Student's middle name.,Aubrey,0
+e_learning,Course_Authors_and_Tutors,login_name,VARCHAR(40),User login name for the author or tutor.,jmckenzie,0
+e_learning,Courses,course_id,INTEGER,Unique identifier for a course.,1,0
+e_learning,Course_Authors_and_Tutors,password,VARCHAR(40),Password for the author or tutor account.,c40fa148bdd0d2d45cd6e9ec1e685750fe07f81b,0
+e_learning,Student_Course_Enrolment,student_id,INTEGER,Foreign key referencing the enrolled student.,11,0
+e_learning,Subjects,subject_name,VARCHAR(120),Name of the subject.,Computer Science,0
+e_learning,Student_Course_Enrolment,course_id,INTEGER,Foreign key referencing the enrolled course.,2,0
+e_learning,Course_Authors_and_Tutors,gender_mf,VARCHAR(1),"Gender of the author or tutor, where 0 likely represents female and 1 represents male.",0,0
+e_learning,Students,date_of_latest_logon,DATETIME,Date and time of the student's latest login.,2017-10-17 22:52:26,0
+e_learning,Courses,course_description,VARCHAR(255),Description of the course.,database,0
+e_learning,Subjects,subject_id,INTEGER,Unique identifier for a subject.,1,0
+e_learning,Students,family_name,VARCHAR(40),Student's last name.,Ward,0
+e_learning,Course_Authors_and_Tutors,author_id,INTEGER,Unique identifier for an author or tutor.,1,0
+e_learning,Student_Tests_Taken,date_test_taken,DATETIME,Date and time when the test was taken.,2018-03-25 03:27:16,0
+e_learning,Student_Course_Enrolment,date_of_enrolment,DATETIME,Date and time when the student enrolled in the course.,2017-10-09 07:09:02,0
+e_learning,Courses,course_name,VARCHAR(120),Name of the course.,database,0
+e_learning,Course_Authors_and_Tutors,author_tutor_ATB,VARCHAR(3),Code indicating the type of author or tutor.,331,0
+e_learning,Student_Tests_Taken,test_result,VARCHAR(255),"Result of the test (e.g., Pass, Fail).",Fail,0
+e_learning,Students,date_of_registration,DATETIME,Date and time when the student registered.,2015-07-22 13:32:35,0
+e_learning,Course_Authors_and_Tutors,middle_name,VARCHAR(80),Middle name of the author or tutor.,Ruthie,0
+e_learning,Course_Authors_and_Tutors,address_line_1,VARCHAR(80),First line of the author or tutor's address.,"756 Monahan Mews
+Spinkashire, NJ 64230-5098",0
+e_learning,Courses,subject_id,INTEGER,Foreign key referencing the subject of the course.,1,0
+e_learning,Student_Tests_Taken,registration_id,INTEGER,Foreign key referencing the student's course registration for the test.,12,0
+e_learning,Student_Course_Enrolment,registration_id,INTEGER,Unique identifier for a student's course registration.,1,0
+e_learning,Students,personal_name,VARCHAR(40),Student's first name.,Wilson,0
+e_learning,Course_Authors_and_Tutors,personal_name,VARCHAR(80),First name of the author or tutor.,Cathrine,0

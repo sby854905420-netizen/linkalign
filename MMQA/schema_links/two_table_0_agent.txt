@@ -1,0 +1,1 @@
+['department.Department_ID', 'department.Name', 'department.Num_Employees', 'head.name', 'head.head_ID', 'management.temporary_acting', 'management.head_ID', 'management.department_ID']

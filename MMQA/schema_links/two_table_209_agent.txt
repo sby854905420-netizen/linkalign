@@ -1,0 +1,1 @@
+['Customers.card_id', 'Customers.customer_id', 'Customers.customer_first_name', 'Customers.customer_last_name', 'Customers_Cards.card_number', 'Customers_Cards.date_valid_to']

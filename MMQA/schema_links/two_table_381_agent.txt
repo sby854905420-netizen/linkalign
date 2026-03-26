@@ -1,0 +1,1 @@
+['body_builder.Clean_Jerk', 'people.Weight', 'body_builder.People_ID', 'people.People_ID']

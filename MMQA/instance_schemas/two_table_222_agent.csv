@@ -1,0 +1,95 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+formula_1,constructorStandings,constructorId,INTEGER,Foreign key referencing the constructor.,1,0
+formula_1,drivers,dob,TEXT,Driver's date of birth.,07/01/1985,0
+formula_1,drivers,number,TEXT,Driver's racing number.,44,0
+formula_1,qualifying,driverId,INTEGER,Foreign key referencing the driver.,,0
+formula_1,status,status,TEXT,Description of the status.,,0
+formula_1,races,time,TEXT,Time the race started.,06:00:00,0
+formula_1,driverStandings,wins,INTEGER,Number of wins achieved by the driver.,1,0
+formula_1,results,resultId,INTEGER,Unique identifier for a race result.,1,0
+formula_1,circuits,circuitRef,TEXT,Short reference code for the circuit.,albert_park,0
+formula_1,lapTimes,milliseconds,INTEGER,Lap time in milliseconds.,,0
+formula_1,constructorResults,constructorId,INTEGER,Foreign key referencing the constructor.,,0
+formula_1,results,statusId,INTEGER,Foreign key referencing the status of the driver's result.,1,0
+formula_1,results,driverId,INTEGER,Foreign key referencing the driver.,1,0
+formula_1,status,statusId,INTEGER,Unique identifier for a status.,,0
+formula_1,seasons,year,INTEGER,Year of the racing season.,,0
+formula_1,constructorResults,status,TEXT,Status of the constructor's result in the race.,,0
+formula_1,constructorStandings,positionText,TEXT,Textual representation of the constructor's position.,1,0
+formula_1,results,raceId,INTEGER,Foreign key referencing the race.,18,0
+formula_1,pitStops,stop,INTEGER,Pit stop number.,,0
+formula_1,results,grid,INTEGER,Driver's starting grid position.,1,0
+formula_1,results,laps,TEXT,Number of laps completed by the driver.,58,0
+formula_1,constructorResults,points,REAL,Points earned by the constructor in the race.,,0
+formula_1,drivers,driverId,INTEGER,Unique identifier for a driver.,1,0
+formula_1,driverStandings,driverStandingsId,INTEGER,Unique identifier for a driver's standings.,1,0
+formula_1,constructors,nationality,TEXT,Nationality of the constructor.,British,0
+formula_1,qualifying,q2,TEXT,Driver's time in the second qualifying session.,,0
+formula_1,qualifying,constructorId,INTEGER,Foreign key referencing the constructor.,,0
+formula_1,driverStandings,driverId,INTEGER,Foreign key referencing the driver.,1,0
+formula_1,lapTimes,time,TEXT,Lap time.,,0
+formula_1,drivers,driverRef,TEXT,Short reference code for the driver.,hamilton,0
+formula_1,constructors,url,TEXT,URL providing more information about the constructor.,http://en.wikipedia.org/wiki/McLaren,0
+formula_1,results,fastestLapSpeed,TEXT,Driver's fastest lap speed.,218.3,0
+formula_1,results,positionOrder,INTEGER,Order of the driver's finishing position.,1,0
+formula_1,drivers,code,TEXT,Driver's code.,HAM,0
+formula_1,drivers,forename,TEXT,Driver's first name.,Lewis,0
+formula_1,results,fastestLap,TEXT,Lap number of the driver's fastest lap.,39,0
+formula_1,lapTimes,driverId,INTEGER,Foreign key referencing the driver.,,0
+formula_1,races,date,TEXT,Date the race was held.,2009-03-29,0
+formula_1,lapTimes,lap,INTEGER,Lap number.,,0
+formula_1,pitStops,time,TEXT,Time of the pit stop.,,0
+formula_1,driverStandings,raceId,INTEGER,Foreign key referencing the race for which the standings apply.,18,0
+formula_1,races,url,TEXT,URL providing more information about the race.,http://en.wikipedia.org/wiki/2009_Australian_Grand_Prix,0
+formula_1,pitStops,milliseconds,INTEGER,Pit stop duration in milliseconds.,,0
+formula_1,constructorStandings,wins,INTEGER,Number of wins achieved by the constructor.,1,0
+formula_1,constructors,constructorRef,TEXT,Short reference code for the constructor.,mclaren,0
+formula_1,circuits,url,TEXT,URL providing more information about the circuit.,http://en.wikipedia.org/wiki/Melbourne_Grand_Prix_Circuit,0
+formula_1,results,milliseconds,TEXT,Driver's race time in milliseconds.,5690616,0
+formula_1,driverStandings,positionText,TEXT,Textual representation of the driver's position.,1,0
+formula_1,races,raceId,INTEGER,Unique identifier for a race.,1,0
+formula_1,qualifying,q1,TEXT,Driver's time in the first qualifying session.,,0
+formula_1,constructorResults,raceId,INTEGER,Foreign key referencing the race for which the results apply.,,0
+formula_1,circuits,lat,REAL,Latitude coordinate of the circuit.,-37.8497,0
+formula_1,lapTimes,position,INTEGER,Driver's position during the lap.,,0
+formula_1,seasons,url,TEXT,URL providing more information about the season.,,0
+formula_1,circuits,lng,REAL,Longitude coordinate of the circuit.,144.968,0
+formula_1,constructorStandings,position,INTEGER,Constructor's position in the standings.,1,0
+formula_1,results,positionText,TEXT,Textual representation of the driver's finishing position.,1,0
+formula_1,results,rank,TEXT,Driver's rank.,2,0
+formula_1,pitStops,duration,TEXT,Duration of the pit stop.,,0
+formula_1,drivers,url,TEXT,URL providing more information about the driver.,http://en.wikipedia.org/wiki/Lewis_Hamilton,0
+formula_1,pitStops,raceId,INTEGER,Foreign key referencing the race.,,0
+formula_1,races,round,INTEGER,Round number of the race in the season.,1,0
+formula_1,circuits,alt,TEXT,Altitude of the circuit.,10,0
+formula_1,pitStops,driverId,INTEGER,Foreign key referencing the driver.,,0
+formula_1,circuits,name,TEXT,Name of the racing circuit.,Albert Park Grand Prix Circuit,0
+formula_1,results,number,INTEGER,Driver's race number.,22,0
+formula_1,drivers,nationality,TEXT,Driver's nationality.,British,0
+formula_1,races,circuitId,INTEGER,Foreign key referencing the circuit where the race was held.,1,0
+formula_1,circuits,location,TEXT,City or area where the circuit is located.,Melbourne,0
+formula_1,qualifying,raceId,INTEGER,Foreign key referencing the race.,,0
+formula_1,results,time,TEXT,Driver's race time.,34:50.6,0
+formula_1,driverStandings,position,INTEGER,Driver's position in the standings.,1,0
+formula_1,constructorStandings,points,REAL,Total points accumulated by the constructor.,14.0,0
+formula_1,results,fastestLapTime,TEXT,Driver's fastest lap time.,01:27.5,0
+formula_1,results,position,TEXT,Driver's finishing position.,1,0
+formula_1,results,points,REAL,Points earned by the driver in the race.,10.0,0
+formula_1,qualifying,qualifyId,INTEGER,Unique identifier for a qualifying session.,,0
+formula_1,qualifying,q3,TEXT,Driver's time in the third qualifying session.,,0
+formula_1,races,year,INTEGER,Year the race was held.,2009,0
+formula_1,results,constructorId,INTEGER,Foreign key referencing the constructor.,1,0
+formula_1,driverStandings,points,REAL,Total points accumulated by the driver.,10.0,0
+formula_1,constructorStandings,constructorStandingsId,INTEGER,Unique identifier for a constructor's standings.,1,0
+formula_1,circuits,country,TEXT,Country where the circuit is located.,Australia,0
+formula_1,constructors,constructorId,INTEGER,Unique identifier for a constructor.,1,0
+formula_1,races,name,TEXT,Name of the race.,Australian Grand Prix,0
+formula_1,qualifying,number,INTEGER,Driver's qualifying number.,,0
+formula_1,constructorResults,constructorResultsId,INTEGER,Unique identifier for a constructor's results in a race.,,0
+formula_1,lapTimes,raceId,INTEGER,Foreign key referencing the race.,,0
+formula_1,pitStops,lap,INTEGER,Lap number when the pit stop occurred.,,0
+formula_1,drivers,surname,TEXT,Driver's last name.,Hamilton,0
+formula_1,circuits,circuitId,INTEGER,Unique identifier for a racing circuit.,1,0
+formula_1,qualifying,position,INTEGER,Driver's qualifying position.,,0
+formula_1,constructors,name,TEXT,Name of the constructor.,McLaren,0
+formula_1,constructorStandings,raceId,INTEGER,Foreign key referencing the race for which the standings apply.,18,0

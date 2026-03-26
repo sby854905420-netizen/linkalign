@@ -1,0 +1,65 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+chinook_1,Employee,Email,varchar(60),Email address of the employee.,andrew@chinookcorp.com,0
+chinook_1,Track,MediaTypeId,INTEGER,"Foreign key referencing the MediaType table, indicating the media type of the track.",1,0
+chinook_1,Customer,FirstName,varchar(40),First name of the customer.,LuÃ­s,0
+chinook_1,Customer,Fax,varchar(24),Fax number of the customer.,+55 (12) 3923-5566,0
+chinook_1,Customer,PostalCode,varchar(10),Postal code of the customer's address.,12227-000,0
+chinook_1,Invoice,InvoiceDate,datetime,Date of the invoice.,2009-01-01 00:00:00,0
+chinook_1,Invoice,BillingState,varchar(40),Billing state or province.,,0
+chinook_1,Customer,CustomerId,INTEGER,Unique identifier for a customer.,1,0
+chinook_1,Artist,Name,varchar(120),Name of the artist.,AC/DC,0
+chinook_1,InvoiceLine,TrackId,INTEGER,"Foreign key referencing the Track table, indicating the track included in this line item.",,0
+chinook_1,Employee,EmployeeId,INTEGER,Unique identifier for an employee.,1,0
+chinook_1,MediaType,MediaTypeId,INTEGER,Unique identifier for a media type.,1,0
+chinook_1,Invoice,BillingPostalCode,varchar(10),Billing postal code.,70174,0
+chinook_1,Genre,GenreId,INTEGER,Unique identifier for a genre.,1,0
+chinook_1,Employee,Phone,varchar(24),Phone number of the employee.,+1 (780) 428-9482,0
+chinook_1,Genre,Name,varchar(120),Name of the genre.,Rock,0
+chinook_1,Customer,Address,varchar(70),Street address of the customer.,"Av. Brigadeiro Faria Lima, 2170",0
+chinook_1,PlaylistTrack,PlaylistId,INTEGER,"Foreign key referencing the Playlist table, indicating the playlist this track belongs to.",,0
+chinook_1,Artist,ArtistId,INTEGER,Unique identifier for an artist.,1,0
+chinook_1,MediaType,Name,varchar(120),Name of the media type.,MPEG audio file,0
+chinook_1,Customer,Email,varchar(60),Email address of the customer.,luisg@embraer.com.br,0
+chinook_1,Invoice,BillingCity,varchar(40),Billing city.,Stuttgart,0
+chinook_1,Invoice,CustomerId,INTEGER,"Foreign key referencing the Customer table, indicating the customer associated with the invoice.",2,0
+chinook_1,InvoiceLine,InvoiceLineId,INTEGER,Unique identifier for an invoice line item.,,0
+chinook_1,Customer,City,varchar(40),City of the customer's address.,SÃ£o JosÃ© dos Campos,0
+chinook_1,Track,GenreId,INTEGER,"Foreign key referencing the Genre table, indicating the genre of the track.",1,0
+chinook_1,Album,ArtistId,INTEGER,"Foreign key referencing the Artist table, indicating the artist who created the album.",1,0
+chinook_1,Customer,Country,varchar(40),Country of the customer's address.,Brazil,0
+chinook_1,Playlist,Name,varchar(120),Name of the playlist.,,0
+chinook_1,Track,Name,varchar(200),Name of the track.,For Those About To Rock (We Salute You),0
+chinook_1,Employee,LastName,varchar(20),Last name of the employee.,Adams,0
+chinook_1,InvoiceLine,UnitPrice,"decimal(10,2)",Price per unit of the track.,,0
+chinook_1,InvoiceLine,Quantity,INTEGER,Quantity of the track purchased.,,0
+chinook_1,Customer,SupportRepId,INTEGER,"Foreign key referencing the Employee table, indicating the employee who supports the customer.",3,0
+chinook_1,PlaylistTrack,TrackId,INTEGER,"Foreign key referencing the Track table, indicating the track included in the playlist.",,0
+chinook_1,Invoice,Total,"decimal(10,2)",Total amount of the invoice.,1.98,0
+chinook_1,Employee,City,varchar(40),City of the employee's address.,Edmonton,0
+chinook_1,Employee,Country,varchar(40),Country of the employee's address.,Canada,0
+chinook_1,Employee,Title,varchar(30),Job title of the employee.,General Manager,0
+chinook_1,Customer,Phone,varchar(24),Phone number of the customer.,+55 (12) 3923-5555,0
+chinook_1,Customer,Company,varchar(80),Company the customer is associated with.,Embraer - Empresa Brasileira de AeronÃ¡utica S.A.,0
+chinook_1,Track,Bytes,INTEGER,Size of the track in bytes.,11170334,0
+chinook_1,Employee,Address,varchar(70),Street address of the employee.,11120 Jasper Ave NW,0
+chinook_1,Invoice,BillingAddress,varchar(70),Billing street address.,Theodor-Heuss-StraÃe 34,0
+chinook_1,Invoice,BillingCountry,varchar(40),Billing country.,Germany,0
+chinook_1,InvoiceLine,InvoiceId,INTEGER,"Foreign key referencing the Invoice table, indicating the invoice this line item belongs to.",,0
+chinook_1,Employee,BirthDate,datetime,Date of birth of the employee.,1962-02-18 00:00:00,0
+chinook_1,Employee,PostalCode,varchar(10),Postal code of the employee's address.,T5K 2N1,0
+chinook_1,Employee,ReportsTo,INTEGER,"Foreign key referencing the Employee table, indicating the employee's manager.",,0
+chinook_1,Track,UnitPrice,"decimal(10,2)",Price of the track.,0.99,0
+chinook_1,Customer,State,varchar(40),State or province of the customer's address.,SP,0
+chinook_1,Employee,FirstName,varchar(20),First name of the employee.,Andrew,0
+chinook_1,Album,Title,varchar(160),Title of the album.,For Those About To Rock We Salute You,0
+chinook_1,Playlist,PlaylistId,INTEGER,Unique identifier for a playlist.,,0
+chinook_1,Employee,State,varchar(40),State or province of the employee's address.,AB,0
+chinook_1,Track,Milliseconds,INTEGER,Duration of the track in milliseconds.,343719,0
+chinook_1,Track,Composer,varchar(220),Composer of the track.,"Angus Young, Malcolm Young, Brian Johnson",0
+chinook_1,Track,TrackId,INTEGER,Unique identifier for a track.,1,0
+chinook_1,Track,AlbumId,INTEGER,"Foreign key referencing the Album table, indicating the album the track belongs to.",1,0
+chinook_1,Employee,HireDate,datetime,Date the employee was hired.,2002-08-14 00:00:00,0
+chinook_1,Employee,Fax,varchar(24),Fax number of the employee.,+1 (780) 428-3457,0
+chinook_1,Invoice,InvoiceId,INTEGER,Unique identifier for an invoice.,1,0
+chinook_1,Customer,LastName,varchar(20),Last name of the customer.,GonÃ§alves,0
+chinook_1,Album,AlbumId,INTEGER,Unique identifier for an album.,1,0

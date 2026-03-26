@@ -1,0 +1,1 @@
+['Country.id', 'Country.name', 'Player.player_name', 'Player.player_api_id', 'Player_Attributes.player_api_id', 'Player_Attributes.position']

@@ -1,0 +1,1 @@
+['artists.Artist_ID', 'artists.Name', 'albums.Album_ID', 'albums.Title', 'albums.Artist_ID', 'productions.Production_ID', 'productions.Album_ID', 'productions.Producer_ID']

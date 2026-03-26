@@ -1,0 +1,1 @@
+['Customer.CustomerId', 'Customer.Country', 'Customer.SupportRepId', 'Employee.EmployeeId', 'Employee.Title']

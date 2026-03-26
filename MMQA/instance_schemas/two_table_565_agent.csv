@@ -1,0 +1,11 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+movie_1,Movie,year,INT,The year the movie was released.,1939,0
+movie_1,Reviewer,name,TEXT,The name of the reviewer.,Sarah Martinez,0
+movie_1,Rating,stars,INT,The number of stars given in the rating.,2,0
+movie_1,Reviewer,rID,INT,Unique identifier for a reviewer; primary key.,201,0
+movie_1,Movie,director,TEXT,The director of the movie.,Victor Fleming,0
+movie_1,Rating,ratingDate,date,The date the rating was submitted.,2011-01-22,0
+movie_1,Movie,title,TEXT,The title of the movie.,Gone with the Wind,0
+movie_1,Rating,rID,INT,Unique identifier for a rating.,201,0
+movie_1,Movie,mID,INT,Unique identifier for a movie; primary key.,101,0
+movie_1,Rating,mID,INT,Foreign key referencing the Movie table; identifies the movie being rated.,101,0

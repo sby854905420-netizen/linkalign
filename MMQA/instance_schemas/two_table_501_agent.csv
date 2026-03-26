@@ -1,0 +1,7 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+small_bank_1,ACCOUNTS,custid,BIGINT,Unique identifier for a customer account.,1,0
+small_bank_1,ACCOUNTS,name,VARCHAR(64),The name of the customer.,Brown,0
+small_bank_1,SAVINGS,custid,BIGINT,"Foreign key referencing the ACCOUNTS table, identifying the customer associated with the savings account.",1,0
+small_bank_1,CHECKING,custid,BIGINT,"Foreign key referencing the ACCOUNTS table, identifying the customer associated with the checking account.",1,0
+small_bank_1,SAVINGS,balance,FLOAT,The current balance of the savings account.,200000.0,0
+small_bank_1,CHECKING,balance,FLOAT,The current balance of the checking account.,10000.0,0

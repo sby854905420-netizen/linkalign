@@ -1,0 +1,1 @@
+['Catalog_Contents.price_in_dollars', 'Catalog_Contents.parent_entry_id', 'ParentCatalog.price_in_dollars']

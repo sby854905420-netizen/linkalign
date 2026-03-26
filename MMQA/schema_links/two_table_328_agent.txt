@@ -1,0 +1,1 @@
+['phone.Company_name', 'phone.Accreditation_type', 'phone.screen_mode', 'screen_mode.Hardware_colours']

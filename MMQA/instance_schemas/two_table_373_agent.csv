@@ -1,0 +1,12 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+body_builder,body_builder,Clean_Jerk,REAL,"The weight lifted in the clean and jerk exercise, measured in kilograms.",175.0,0
+body_builder,people,Height,REAL,"The height of the person, measured in centimeters.",182.0,0
+body_builder,body_builder,Total,REAL,"The total weight lifted in both snatch and clean and jerk exercises, measured in kilograms.",317.5,0
+body_builder,body_builder,People_ID,INT,"Foreign key referencing the people table, identifying the person who is a body builder.",1,0
+body_builder,body_builder,Snatch,REAL,"The weight lifted in the snatch exercise, measured in kilograms.",142.5,0
+body_builder,people,Weight,REAL,"The weight of the person, measured in kilograms.",80.0,0
+body_builder,people,Birth_Date,TEXT,The date of birth of the person.,"January 1, 1992",0
+body_builder,people,Name,TEXT,The name of the person.,Jack Campbell,0
+body_builder,body_builder,Body_Builder_ID,INT,Unique identifier for a body builder.,1,0
+body_builder,people,People_ID,INT,Unique identifier for a person.,1,0
+body_builder,people,Birth_Place,TEXT,The place of birth of the person.,"Port Huron, Michigan",0

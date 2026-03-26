@@ -1,0 +1,14 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+musical,actor,Duration,TEXT,The years the actor played the character.,1988â,0
+musical,musical,Category,TEXT,The category the musical was nominated in.,Best Book of a Musical,0
+musical,musical,Year,INT,The year the musical was released or first performed.,1986,0
+musical,actor,Musical_ID,INT,Foreign key referencing the musical the actor appeared in.,1,0
+musical,musical,Nominee,TEXT,The nominee for the award.,Bob Fosse,0
+musical,musical,Award,TEXT,The name of the award the musical was nominated for.,Tony Award,0
+musical,actor,Character,TEXT,The name of the character the actor played.,Alf Stewart,0
+musical,musical,Result,TEXT,The result of the award nomination (Won or Nominated).,Nominated,0
+musical,actor,age,INT,The age of the actor.,26,0
+musical,musical,Name,TEXT,The name of the musical.,The Phantom of the Opera,0
+musical,actor,Actor_ID,INT,Unique identifier for an actor; primary key.,1,0
+musical,actor,Name,TEXT,The name of the actor.,Ray Meagher,0
+musical,musical,Musical_ID,INT,Unique identifier for a musical; primary key.,1,0

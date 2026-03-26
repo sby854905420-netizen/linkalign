@@ -1,0 +1,1 @@
+['Customers.customer_id', 'Payments.amount_paid', 'Bookings.amount_of_refund']

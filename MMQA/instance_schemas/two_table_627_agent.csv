@@ -1,0 +1,13 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+wrestler,Elimination,Elimination_Move,TEXT,The finishing move used to eliminate the wrestler.,Go To Sleep,0
+wrestler,wrestler,Event,TEXT,The type of event where the wrestler performs.,Live event,0
+wrestler,Elimination,Wrestler_ID,TEXT,Foreign key referencing the wrestler who was eliminated.,1,0
+wrestler,Elimination,Elimination_ID,TEXT,Unique identifier for an elimination event; primary key.,1,0
+wrestler,wrestler,Location,TEXT,The location where the wrestler primarily performs.,"Tijuana , Mexico",0
+wrestler,Elimination,Eliminated_By,TEXT,The wrestler who eliminated the current wrestler.,Punk,0
+wrestler,wrestler,Name,TEXT,The name of the wrestler.,Rey Misterio Sr.,0
+wrestler,Elimination,Team,TEXT,The team the eliminated wrestler belonged to.,Team Orton,0
+wrestler,wrestler,Wrestler_ID,INT,Unique identifier for a wrestler; primary key.,1,0
+wrestler,wrestler,Days_held,TEXT,The number of days the wrestler has held a championship.,344,0
+wrestler,wrestler,Reign,TEXT,The number of times the wrestler has held a championship.,1,0
+wrestler,Elimination,Time,TEXT,"The time at which the elimination occurred, formatted as HH:MM.",00:11,0

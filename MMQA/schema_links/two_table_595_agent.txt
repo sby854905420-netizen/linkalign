@@ -1,0 +1,1 @@
+['gymnast.Gymnast_ID', 'gymnast.Rings_Points', 'people.Hometown', 'people.People_ID']

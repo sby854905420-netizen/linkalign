@@ -1,0 +1,1 @@
+['Customers.customer_email', 'Customers_Cards.date_valid_from']

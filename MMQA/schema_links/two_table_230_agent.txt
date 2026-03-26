@@ -1,0 +1,1 @@
+['shop.Address', 'shop.Open_Year', 'shop.Shop_ID', 'happy_hour.Num_of_shaff_in_charge', 'happy_hour.Month', 'happy_hour.Shop_ID']

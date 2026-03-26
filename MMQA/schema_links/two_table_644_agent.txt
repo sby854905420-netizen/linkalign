@@ -1,0 +1,1 @@
+['schedule.Show_times_per_day', 'schedule.Price', 'schedule.Film_ID', 'film.Title']

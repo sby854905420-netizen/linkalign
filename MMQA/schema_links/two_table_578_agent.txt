@@ -1,0 +1,1 @@
+['gymnast.Total_Points', 'gymnast.Gymnast_ID', 'people.Name', 'people.People_ID']

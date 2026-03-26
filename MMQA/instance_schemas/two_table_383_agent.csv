@@ -1,0 +1,20 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+election,party,Comptroller,TEXT,Name of the Comptroller associated with the party.,Carl McCall,0
+election,party,Party,TEXT,Name of the political party.,Democratic,0
+election,election,Committee,TEXT,Committee the delegate is a member of.,Appropriations,0
+election,county,Zip_code,TEXT,Zip code associated with the county.,D21,0
+election,election,Party,INT,Party affiliation for the election. Foreign key referencing party.Party_ID.,1,0
+election,party,US_Senate,TEXT,Name of the US Senator associated with the party.,Charles Schumer,0
+election,county,County_Id,INT,Unique identifier for each county.,1,0
+election,county,County_name,TEXT,Name of the county.,Howard,0
+election,election,Election_ID,INT,Unique identifier for each election.,1,0
+election,party,Governor,TEXT,Name of the Governor associated with the party.,Peter Vallone,0
+election,election,First_Elected,REAL,Year the delegate was first elected.,2002.0,0
+election,election,Counties_Represented,TEXT,String representing the counties represented in the election.,09.1 9A,0
+election,party,Attorney_General,TEXT,Name of the Attorney General associated with the party.,Eliot Spitzer,0
+election,party,Year,REAL,Year associated with the party information.,1998.0,0
+election,election,Delegate,TEXT,Name of the delegate in the election.,"Bates, Gail H. Gail H. Bates",0
+election,party,Lieutenant_Governor,TEXT,Name of the Lieutenant Governor associated with the party.,Sandra Frankel,0
+election,party,Party_ID,INT,Unique identifier for each party.,1,0
+election,county,Population,REAL,Population of the county.,21000.0,0
+election,election,District,INT,District number within the county represented in the election. Foreign key referencing county.County_Id.,1,0

@@ -1,30 +1,52 @@
 import json
 import os
 import argparse
+import logging
+from typing import Optional, Tuple
 import pandas as pd
 from llama_index.core.indices.vector_store import VectorIndexRetriever
 
 from tools.SchemaLinkingTool import SchemaLinkingTool
 from utils import get_sql_files, parse_schema_from_df, parse_schemas_from_nodes
-from pipes.RagPipeline import RagPipeLines
-from llms.qwen.QwenModel import QwenModel
+from rag_pipes.RagPipeline import RagPipeLines
 from tqdm import tqdm
 import concurrent.futures
+from llms.ollama.ollamaModel import OllamaModel
 
-llm = QwenModel(model_name="qwen-turbo", temperature=0.85)
-filter_llm = QwenModel(model_name="qwen-turbo", temperature=0.42)
 
+DEFAULT_LLM_MODEL = "ministral-3:14b"
+llm = OllamaModel(model_name=DEFAULT_LLM_MODEL, temperature=0.85)
+filter_llm = OllamaModel(model_name=DEFAULT_LLM_MODEL, temperature=0.42)
+EMBED_MODEL_NAME = "BAAI/bge-large-en-v1.5"
+
+def build_logger(name: str = "GenerateSchemas"):
+    logger_ = logging.getLogger(name)
+    if not logger_.handlers:
+        handler = logging.StreamHandler()
+        handler.setFormatter(logging.Formatter("[%(asctime)s] [%(levelname)s] %(message)s"))
+        logger_.addHandler(handler)
+    logger_.setLevel(logging.INFO)
+    logger_.propagate = False
+    return logger_
+
+logger = build_logger()
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Run the script with external parameters.")
-    parser.add_argument("--save_path", type=str, required=False, default=r".\spider2_dev\instance_schemas",
+    parser.add_argument("--save_path", type=str, required=False, default="./spider2_dev/instance_schemas",
                         help="Path for storing the schema obtained through retrieval and filtering.")
-    parser.add_argument("--schema_path", type=str, required=False, default=r".\spider2_dev\schemas",
+    parser.add_argument("--schema_path", type=str, required=False, default="./spider2_dev/schemas",
                         help="path for storing database schema information.")
-    parser.add_argument("--dataset", type=str, required=False, default=r".\spider2_dev\spider2_dev_preprocessed.json")
-    parser.add_argument("--db_info_path", type=str, required=False, default=r'.\spider2_dev\db_info.json')
-    parser.add_argument("--links_save_path", type=str, required=False, default=r".\spider2_dev\schema_links")
-    parser.add_argument("--external_info_path", type=str, required=False, default=r".\spider2_dev\external_knowledge")
+    parser.add_argument("--dataset", type=str, required=False, default="./spider2_dev/spider2_dev_preprocessed.json")
+    parser.add_argument("--db_info_path", type=str, required=False, default="./spider2_dev/db_info.json")
+    parser.add_argument("--links_save_path", type=str, required=False, default="./spider2_dev/schema_links")
+    parser.add_argument("--external_info_path", type=str, required=False, default="./spider2_dev/external_knowledge")
+    parser.add_argument("--open_schema_linking", action="store_true",
+                        help="Generate final schema-linking results from the retrieved schema subset.")
+    parser.add_argument("--llm_model_name", type=str, required=False, default=DEFAULT_LLM_MODEL,
+                        help="Local Ollama model name used for retrieval and final schema linking.")
+    parser.add_argument("--filter_llm_model_name", type=str, required=False, default=DEFAULT_LLM_MODEL,
+                        help="Local Ollama model name used during response filtering.")
 
     return parser.parse_args()
 
@@ -36,12 +58,13 @@ def load_db_size(db_id: str):
 
 def parse_schemas_from_file(db_id: str):
     base_schema_dir = schema_path
-    file_lis = get_sql_files(rf"{base_schema_dir}\{db_id}", ".json")
+    db_schema_dir = os.path.join(base_schema_dir, db_id)
+    file_lis = get_sql_files(db_schema_dir, ".json")
 
     schema_lis = []
     for f in file_lis:
         try:
-            file_path = rf"{base_schema_dir}\{db_id}\{f}.json"
+            file_path = os.path.join(db_schema_dir, f"{f}.json")
             with open(file_path, 'r', encoding="utf-8") as file:
                 col_info = json.load(file)
             meta_data = col_info["meta_data"]
@@ -61,6 +84,17 @@ def parse_schemas_from_file(db_id: str):
     df = pd.DataFrame(schema_lis)
 
     return df
+
+
+def _extract_link_pair(link: str) -> Tuple[Optional[str], Optional[str]]:
+    cleaned_link = " ".join(str(link).split())
+    if "#" in cleaned_link:
+        cleaned_link = cleaned_link.split("#", 1)[0].strip()
+
+    fields = [x.strip() for x in cleaned_link.split(".") if x.strip()]
+    if len(fields) < 2:
+        return None, None
+    return fields[-2], fields[-1]
 
 
 def response_filtering(
@@ -86,19 +120,21 @@ def response_filtering(
             context_str=schema_context,
             turn_n=turn_n
         )
-        schema_links = res.split("[")[1].split("]")[0].strip()
+        if "[" not in res or "]" not in res:
+            sub_data_lis.append(data)
+            continue
+
+        schema_links = res.split("[", 1)[1].split("]", 1)[0].strip()
         schema_links = schema_links.split(",")
         schema_links = [link.strip().replace("`", "").replace('"', "").replace("'", "") for link in schema_links]
         temp_lis = []
         for link in schema_links:
-            links_field = link.split(".")
-            if len(links_field) <= 4:
-                if len(links_field[-2:]) == 2:
-                    temp_lis.append(links_field[-2:])
-            else:
-                temp_lis.append(links_field[2:4])
+            table, field = _extract_link_pair(link)
+            if not table or not field:
+                continue
+            temp_lis.append((table, field))
         for table, field in temp_lis:
-            data = data.query(f"not (`Table Name` == '{table}' and `Field Name` == '{field}')")
+            data = data.query("not (`Table Name` == @table and `Field Name` == @field)")
 
         sub_data_lis.append(data)
     df = pd.concat(sub_data_lis, axis=0, ignore_index=True)
@@ -188,18 +224,18 @@ def load_data(dataset):
 
 def get_files(directory, suffix: str = ".sql"):
     # 获取指定目录下指定后缀名的所有文件名(不带后缀)
-    sql_files = [f.split(".")[0].strip() for f in os.listdir(directory) if f.endswith(suffix)]
+    sql_files = [f for f in os.listdir(directory) if f.endswith(suffix)]
     return sql_files
 
 
-def load_external_knowledge(instance_id):
+def load_external_knowledge(external_knowledge_id):
     path = external_info_path
     if not os.path.exists(path):
         return None
-    all_ids = get_files(path, ".txt")
+    all_ids = get_files(path, ".md")
 
-    if instance_id in all_ids:
-        with open(rf"{path}\{instance_id}.txt", "r", encoding="utf-8") as f:
+    if external_knowledge_id in all_ids:
+        with open(os.path.join(path, f"{external_knowledge_id}"), "r", encoding="utf-8") as f:
             external = f.read()
         if len(external) > 50:
             external = "\n####[External Prior Knowledge]:\n" + external + "\n"
@@ -212,32 +248,67 @@ def get_schema(
         db_id: str,
         question: str,
         instance_id: str,
-        reserve_size: int = 90,  # 规模小于 100 则全部保留,
+        reserve_size: int = 99,  # 规模小于 100 则全部保留,
         min_retrival_size: int = 250,  # 最小检索规模，超过该阈值，则启动检索
         filter_chunk_size: int = 250,  # 单个过滤块的大小
-        post_retrieval_size: int = 90,  # 最好与 reserve_size 设置一致
+        post_retrieval_size: int = 99,  # 最好与 reserve_size 设置一致
         post_retrieval_turn: int = 2,
         reserve_rate: float = 0.6,
         open_schema_linking: bool = False
 ):
     """ 检索问题需要的数据库模式 """
     file_name = instance_id + "_agent"
-    if os.path.isfile(rf"{save_path}\{file_name}.xlsx"):
-        return None
+    output_csv = os.path.join(save_path, f"{file_name}.csv")
+    output_txt = os.path.join(links_save_path, f"{file_name}.txt")
+    if os.path.isfile(output_csv):
+        if not open_schema_linking:
+            return None
+
+        df = pd.read_csv(output_csv)
+        context = parse_schema_from_df(df)
+        schema_links = SchemaLinkingTool.generate_by_multi_agent(
+            llm=llm,
+            query=question,
+            context=context,
+            turn_n=1,
+            linker_num=3,
+            logger=logger
+        )
+        schema_links = schema_links.replace("`", "").replace("\n", "").replace("python", "")
+        os.makedirs(links_save_path, exist_ok=True)
+        with open(output_txt, "w", encoding="utf-8") as f:
+            f.write(schema_links)
+        return df, schema_links
 
     db_size = load_db_size(db_id)
 
     if db_size <= reserve_size:
         # 对于极小规模数据库，直接保留全部模式
         df = parse_schemas_from_file(db_id)
-        df.to_excel(rf"{save_path}\{file_name}.xlsx", index=False)
-        return df
+        df.to_csv(output_csv, index=False, encoding="utf-8")
+        if not open_schema_linking:
+            return df
+
+        context = parse_schema_from_df(df)
+        schema_links = SchemaLinkingTool.generate_by_multi_agent(
+            llm=llm,
+            query=question,
+            context=context,
+            turn_n=1,
+            linker_num=3,
+            logger=logger
+        )
+        schema_links = schema_links.replace("`", "").replace("\n", "").replace("python", "")
+        os.makedirs(links_save_path, exist_ok=True)
+        with open(output_txt, "w", encoding="utf-8") as f:
+            f.write(schema_links)
+        return df, schema_links
 
     # 加载 schema 向量库索引
-    vector_dir = rf"{schema_path}\{db_id}"
+    vector_dir = os.path.join(schema_path, db_id)
     vector_index = RagPipeLines.build_index_from_source(
         data_source=vector_dir,
-        persist_dir=vector_dir + r"\vector_store",
+        persist_dir=os.path.join(vector_dir, f"{EMBED_MODEL_NAME}_vector_store"),
         is_vector_store_exist=True,
         index_method="VectorStoreIndex"
     )
@@ -256,7 +327,7 @@ def get_schema(
                                                                               retriever_lis=[retriever],
                                                                               open_locate=False,
                                                                               output_format="node",
-                                                                              # logger=logger,
+                                                                              logger=logger,
                                                                               retrieve_turn_n=turn_n
                                                                               )
         df = parse_schemas_from_nodes(nodes_lis)
@@ -289,60 +360,68 @@ def get_schema(
                                                                           retriever_lis=[retriever],
                                                                           open_locate=False,
                                                                           output_format="node",
-                                                                          # logger=logger,
+                                                                          logger=logger,
                                                                           retrieve_turn_n=post_turn_n
                                                                           )
     sub_df = parse_schemas_from_nodes(nodes_lis)
     df = pd.concat([df, sub_df], axis=0)
-    df.to_excel(rf"{save_path}\{file_name}.xlsx", index=False)
+    df.to_csv(output_csv, index=False, encoding="utf-8")
 
     if open_schema_linking:
         # 模式链接，提取生成 SQL 语句所需的表和列
         context = parse_schema_from_df(df)
         schema_links = SchemaLinkingTool.generate_by_multi_agent(llm=llm, query=question,
                                                                  context=context,
-                                                                 turn_n=1, linker_num=3
+                                                                 turn_n=1, linker_num=3,
+                                                                 logger=logger
                                                                  )
-        schema_links = schema_links.replace("`", "").replace("\n", "").replace("python", "")
-        with open(rf".\spider2_dev\schema_links\{file_name}.txt", "w", encoding="utf-8") as f:
+        schema_links = schema_links.replace("`", "").replace("python", "")
+        os.makedirs(links_save_path, exist_ok=True)
+        with open(output_txt, "w", encoding="utf-8") as f:
             f.write(schema_links)
 
         return df, schema_links
-
     return df
 
 
-def process_row(index, row, pbar):
-    external = load_external_knowledge(row["instance_id"])
+
+def process_row(index, row):
+    external = load_external_knowledge(row["external_knowledge"])
     question = row["question"] + external if external else row["question"]
     try:
         get_schema(db_id=row["db_id"],
                    question=question,
-                   instance_id=row["instance_id"])
+                   instance_id=row["instance_id"],
+                   open_schema_linking=open_schema_linking)
     except Exception as e:
         print(e)
 
-    pbar.update(1)
-
+def wrapper(args):
+    index, row = args
+    return process_row(index, row)
 
 if __name__ == "__main__":
+    
     args = parse_arguments()
+    llm = OllamaModel(model_name=args.llm_model_name, temperature=0.85)
+    filter_llm = OllamaModel(model_name=args.filter_llm_model_name, temperature=0.42)
+    logger.info("Using llm=%s filter_llm=%s", args.llm_model_name, args.filter_llm_model_name)
     # 加载命令行参数
     save_path = args.save_path
     schema_path = args.schema_path
     dataset_path = args.dataset
     db_info_path = args.db_info_path
+    links_save_path = args.links_save_path
     external_info_path = args.external_info_path
+    open_schema_linking = args.open_schema_linking
     # 加载保存数据库规模的 json 文档
     with open(db_info_path, 'r', encoding='utf-8') as file:
         db_info = json.load(file)
 
+
     val_df = load_data(dataset_path)
+    inputs = list(val_df.iterrows())
 
-    with tqdm(total=val_df.shape[0]) as pbar:
-        inputs = []
-        with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
-            for index, row in val_df.iterrows():
-                inputs.append((index, row, pbar))
+    with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
+        results = list(tqdm(executor.map(wrapper, inputs), total=len(inputs)))
 
-            executor.map(lambda x: process_row(*x), inputs)

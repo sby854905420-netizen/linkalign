@@ -1,0 +1,33 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+customers_and_addresses,Customers,payment_method,VARCHAR(15),The customer's preferred payment method.,Cash,0
+customers_and_addresses,Customers,customer_name,VARCHAR(80),The name of the customer.,Dr. Julia Wuckert MD,0
+customers_and_addresses,Customer_Orders,order_id,INTEGER,Unique identifier for the order.,1,0
+customers_and_addresses,Customer_Orders,customer_id,INTEGER,"Foreign key referencing the Customers table, indicating the customer who placed the order.",15,0
+customers_and_addresses,Customer_Orders,order_date,DATETIME,The date when the order was placed.,2018-03-21 11:20:46,0
+customers_and_addresses,Addresses,city,VARCHAR(50),The city name.,Lucasville,0
+customers_and_addresses,Customer_Contact_Channels,active_from_date,DATETIME,The date when the contact channel became active for the customer.,2017-12-07 18:18:15,0
+customers_and_addresses,Customer_Addresses,date_address_from,DATETIME,The date when the customer started using this address.,1985-03-29 20:31:43,0
+customers_and_addresses,Addresses,address_content,VARCHAR(80),"The street address, including house number, street name, and apartment/suite number.",9443 Boyle Route Suite 857,0
+customers_and_addresses,Products,product_details,VARCHAR(255),Details about the product.,Americano,0
+customers_and_addresses,Customer_Addresses,address_id,INTEGER,"Foreign key referencing the Addresses table, indicating the address associated with the customer.",11,0
+customers_and_addresses,Addresses,country,VARCHAR(50),The country of the address.,USA,0
+customers_and_addresses,Customer_Addresses,date_address_to,DATETIME,The date when the customer stopped using this address.,1993-02-17 17:55:18,0
+customers_and_addresses,Customer_Orders,order_details,VARCHAR(255),Additional details about the order.,,0
+customers_and_addresses,Addresses,state_province_county,VARCHAR(50),"The state, province, or county of the address.",Colorado,0
+customers_and_addresses,Order_Items,product_id,INTEGER,"Foreign key referencing the Products table, indicating the product included in the order.",2,0
+customers_and_addresses,Customer_Orders,order_status,VARCHAR(15),"The status of the order (e.g., Delivered, Cancelled).",Cancelled,0
+customers_and_addresses,Products,product_id,INTEGER,Unique identifier for the product.,1,0
+customers_and_addresses,Order_Items,order_id,INTEGER,"Foreign key referencing the Customer_Orders table, indicating the order to which the item belongs.",14,0
+customers_and_addresses,Addresses,other_address_details,VARCHAR(255),Any additional details about the address.,,0
+customers_and_addresses,Order_Items,order_quantity,VARCHAR(15),The quantity of the product ordered.,5,0
+customers_and_addresses,Customer_Addresses,customer_id,INTEGER,"Foreign key referencing the Customers table, indicating the customer associated with the address.",2,0
+customers_and_addresses,Customer_Contact_Channels,contact_number,VARCHAR(50),The contact number associated with the channel.,940.035.6435x0225,0
+customers_and_addresses,Customers,date_became_customer,DATETIME,The date when the customer first became a customer.,2018-03-01 23:20:10,0
+customers_and_addresses,Addresses,address_id,INTEGER,Unique identifier for the address.,1,0
+customers_and_addresses,Customer_Contact_Channels,active_to_date,DATETIME,The date when the contact channel stopped being active for the customer.,2018-03-23 13:37:14,0
+customers_and_addresses,Customer_Contact_Channels,channel_code,VARCHAR(15),"The code representing the contact channel (e.g., Email, Cell).",Email,0
+customers_and_addresses,Addresses,zip_postcode,VARCHAR(20),The postal code for the address.,416,0
+customers_and_addresses,Customers,other_customer_details,VARCHAR(255),Any additional details about the customer.,,0
+customers_and_addresses,Customers,customer_id,INTEGER,Unique identifier for the customer.,1,0
+customers_and_addresses,Customer_Contact_Channels,customer_id,INTEGER,"Foreign key referencing the Customers table, indicating the customer associated with the contact channel.",9,0
+customers_and_addresses,Customer_Addresses,address_type,VARCHAR(15),"The type of address (e.g., Residential, Billing).",Billing,0

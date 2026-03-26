@@ -1,0 +1,1 @@
+['payment.amount', 'payment.customer_id']

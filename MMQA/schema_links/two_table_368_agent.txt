@@ -1,0 +1,1 @@
+['climber.Name', 'climber.Country', 'climber.Time', 'mountain.Mountain_ID', 'mountain.Prominence']

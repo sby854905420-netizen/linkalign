@@ -1,0 +1,1 @@
+['School.School_id', 'School.Enrollment', 'School.School_name', 'endowment.School_id', 'endowment.donator_name']

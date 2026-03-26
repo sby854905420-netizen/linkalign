@@ -1,0 +1,1 @@
+['Institution.Institution', 'Institution.Location', 'Protein.common_name', 'Protein.sequence_identity_to_human_protein', 'Institution.Institution_id', 'Protein.Institution_id']

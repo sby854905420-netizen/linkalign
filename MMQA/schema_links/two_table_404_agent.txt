@@ -1,0 +1,1 @@
+['Apartment_Bookings.booking_end_date', 'Guests.guest_first_name', 'Guests.guest_last_name', 'Apartment_Bookings.guest_id', 'Guests.guest_id']

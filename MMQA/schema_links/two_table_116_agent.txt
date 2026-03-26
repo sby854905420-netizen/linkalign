@@ -1,0 +1,1 @@
+['aircraft.name', 'aircraft.aid', 'flight.destination', 'flight.price', 'flight.distance']

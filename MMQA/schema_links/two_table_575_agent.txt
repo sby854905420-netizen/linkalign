@@ -1,0 +1,1 @@
+['player.Player_name', 'player.Player_ID', 'player_coach.Starting_year', 'player_coach.Player_ID', 'coach.Coach_ID', 'coach.Coach_name']

@@ -1,0 +1,1 @@
+['journal.Sales', 'journal.Theme', 'journal_committee.Work_Type', 'journal.Journal_ID']

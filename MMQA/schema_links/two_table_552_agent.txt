@@ -1,0 +1,1 @@
+['artist.Name', 'exhibition.Ticket_Price', 'exhibition.Artist_ID']

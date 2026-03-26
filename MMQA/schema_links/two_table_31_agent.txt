@@ -1,0 +1,1 @@
+['Addresses.state_province_county', 'Addresses.address_id', 'Customer_Addresses.customer_id', 'Customer_Addresses.date_address_from', 'Customers.customer_id']

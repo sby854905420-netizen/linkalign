@@ -1,0 +1,1 @@
+['course.course_id', 'course.title', 'takes.course_id', 'takes.ID']

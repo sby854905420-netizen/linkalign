@@ -1,0 +1,1 @@
+['Web_client_accelerator.name', 'Web_client_accelerator.Connection', 'accelerator_compatible_browser.browser_id', 'accelerator_compatible_browser.compatible_since_year']

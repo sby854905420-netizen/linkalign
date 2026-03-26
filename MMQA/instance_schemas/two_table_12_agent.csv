@@ -1,0 +1,40 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+college_3,Course,Hours,VARCHAR(11),The time slot or duration during which the course is held.,3,0
+college_3,Minor_in,DNO,INTEGER,"Foreign key referencing the Department table, identifying the department for the student's minor field of study.",520,0
+college_3,Faculty,Fname,VARCHAR(15),The first name of the faculty member.,Mark,0
+college_3,Member_of,DNO,INTEGER,"Foreign key referencing the Department table, identifying the department the faculty member belongs to.",600,0
+college_3,Faculty,Building,VARCHAR(13),The name of the building where the faculty member's office is located.,NEB,0
+college_3,Student,LName,VARCHAR(12),The last name of the student.,Smith,0
+college_3,Course,Credits,INTEGER,The number of credit hours assigned to the course.,3,0
+college_3,Faculty,Lname,VARCHAR(15),The last name of the faculty member.,Giuliano,0
+college_3,Student,Age,INTEGER,The age of the student in years.,18,0
+college_3,Student,Major,INTEGER,The department number associated with the student's major field of study.,600,0
+college_3,Minor_in,StuID,INTEGER,"Foreign key referencing the Student table, identifying the student.",1004,0
+college_3,Member_of,FacID,INTEGER,"Foreign key referencing the Faculty table, identifying the faculty member.",7792,0
+college_3,Faculty,Sex,VARCHAR(1),The gender or sex of the faculty member.,M,0
+college_3,Student,Fname,VARCHAR(12),The first name of the student.,Linda,0
+college_3,Enrolled_in,StuID,INTEGER,"Foreign key referencing the Student table, identifying the student enrolled in a course.",1001,0
+college_3,Department,Room,VARCHAR(5),The room number for the department office.,268,0
+college_3,Faculty,FacID,INTEGER,Primary key representing a unique faculty member identifier.,1082,0
+college_3,Course,CName,VARCHAR(40),The official name or title of the course.,COMPUTER LITERACY,0
+college_3,Course,CID,VARCHAR(7),Primary key representing a unique course identifier code.,600.101,0
+college_3,Member_of,Appt_Type,VARCHAR(15),The type of appointment the faculty member holds within the department.,Primary,0
+college_3,Gradeconversion,lettergrade,VARCHAR(2),Primary key representing a letter grade symbol.,A+,0
+college_3,Student,city_code,VARCHAR(3),A code representing the city associated with the student.,BAL,0
+college_3,Student,Sex,VARCHAR(1),The gender or sex of the student.,F,0
+college_3,Department,Division,VARCHAR(2),A code indicating the academic division to which the department belongs.,AS,0
+college_3,Department,DPhone,INTEGER,The phone number or extension for the department office.,7117,0
+college_3,Student,Advisor,INTEGER,The faculty identifier associated with the student's academic advisor.,1121,0
+college_3,Department,DName,VARCHAR(25),The full name of the department.,History of Art,0
+college_3,Faculty,Room,VARCHAR(5),The room number of the faculty member's office.,224,0
+college_3,Course,DNO,INTEGER,"Foreign key referencing the Department table, identifying the department offering the course.",600,0
+college_3,Department,DNO,INTEGER,Primary key representing a unique department identifier number.,10,0
+college_3,Course,Days,VARCHAR(5),The days of the week on which the course meets.,MTW,0
+college_3,Course,Instructor,INTEGER,"Foreign key referencing the Faculty table, identifying the faculty member teaching the course.",6112,0
+college_3,Department,Building,VARCHAR(13),The name of the building where the department is located.,Mergenthaler,0
+college_3,Student,StuID,INTEGER,Primary key representing a unique student identifier.,1001,0
+college_3,Enrolled_in,Grade,VARCHAR(2),"Foreign key referencing the Gradeconversion table, representing the letter grade received by the student.",A-,0
+college_3,Faculty,Phone,INTEGER,The phone number or extension for the faculty member's office.,2424,0
+college_3,Enrolled_in,CID,VARCHAR(7),"Foreign key referencing the Course table, identifying the course the student is enrolled in.",550.681,0
+college_3,Faculty,Rank,VARCHAR(15),The academic rank or title of the faculty member.,Instructor,0
+college_3,Gradeconversion,gradepoint,FLOAT,The numeric grade point value corresponding to the letter grade.,4.0,0

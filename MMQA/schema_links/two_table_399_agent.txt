@@ -1,0 +1,1 @@
+['Apartments.apt_id', 'Apartments.apt_number', 'Apartment_Bookings.booking_status_code', 'Apartment_Bookings.booking_end_date']

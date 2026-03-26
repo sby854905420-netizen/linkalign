@@ -1,0 +1,1 @@
+['club.Region', 'club.Start_year', 'club.Club_ID', 'coach.Rank', 'coach.Coach_name']

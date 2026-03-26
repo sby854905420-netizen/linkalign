@@ -1,0 +1,1 @@
+['playlists.id', 'playlists.name', 'playlist_tracks.track_id', 'playlist_tracks.playlist_id']

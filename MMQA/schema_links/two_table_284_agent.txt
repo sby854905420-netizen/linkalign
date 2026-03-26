@@ -1,0 +1,1 @@
+['Claims.Effective_Date', 'Claims.Claim_ID', 'Settlements.Settlement_Amount', 'Settlements.Claim_ID']

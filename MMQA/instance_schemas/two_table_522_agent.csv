@@ -1,0 +1,46 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+products_for_hire,Products_Booked,product_id,INTEGER,Part of the primary key and foreign key identifying the product hired.,1,0
+products_for_hire,Bookings,amount_outstanding,"DECIMAL(19,4)",The remaining balance owed by the customer for this booking.,28.22,0
+products_for_hire,Payments,payment_type_code,VARCHAR(15),"The method used for payment, such as Credit Card, Cash, Check, or Direct Debit.",Check,0
+products_for_hire,Discount_Coupons,date_issued,DATETIME,The date and time when the coupon was issued.,2017-09-06 01:33:27,0
+products_for_hire,Bookings,amount_payable,"DECIMAL(19,4)",The total monetary amount payable for the booking.,214.39,0
+products_for_hire,Bookings,amount_of_refund,"DECIMAL(19,4)",The monetary amount refunded to the customer regarding this booking.,179.14,0
+products_for_hire,Bookings,booking_end_date,DATETIME,The date and time when the booking period ends.,2018-02-01 16:39:13,0
+products_for_hire,Payments,customer_id,INTEGER,Foreign key linking the payment to the customer making the transaction.,15,0
+products_for_hire,Products_Booked,returned_late_yn,VARCHAR(1),Flag indicating whether the specific product was returned after the due date.,1,0
+products_for_hire,View_Product_Availability,booking_id,INTEGER,Foreign key linking the availability status to a specific booking context.,5,0
+products_for_hire,Products_for_Hire,product_name,VARCHAR(80),"The name of the product, such as Book collection B.",Book collection C,0
+products_for_hire,Customers,date_last_hire,DATETIME,The date and time of the customer's most recent booking.,2018-02-27 18:55:26,0
+products_for_hire,Bookings,customer_id,INTEGER,Foreign key linking the booking to the customer who made it.,7,0
+products_for_hire,Products_Booked,booking_id,INTEGER,Part of the primary key and foreign key linking to the specific booking.,4,0
+products_for_hire,Customers,last_name,VARCHAR(80),The last name of the customer.,Homenick,0
+products_for_hire,View_Product_Availability,status_date,DATETIME,Primary key representing the date and time for which the availability status is recorded.,2018-03-18 05:25:55,0
+products_for_hire,Products_Booked,returned_yn,VARCHAR(1),Flag indicating whether the specific product was returned.,1,0
+products_for_hire,Bookings,booking_start_date,DATETIME,The date and time when the booking period begins.,2016-12-07 23:39:17,0
+products_for_hire,Bookings,booking_status_code,VARCHAR(10),"Indicates the current status of the booking, such as Provisional or Confirmed.",Provisional,0
+products_for_hire,Customers,first_name,VARCHAR(80),The first name of the customer.,Geovany,0
+products_for_hire,Customers,gender_mf,VARCHAR(1),Indicator representing the gender of the customer.,0,0
+products_for_hire,Payments,payment_date,DATETIME,The date and time when the payment was processed.,2018-03-09 16:28:00,0
+products_for_hire,Payments,amount_paid_in_full_yn,VARCHAR(1),Flag indicating whether the full amount due was paid in this transaction.,1,0
+products_for_hire,Products_for_Hire,product_id,INTEGER,Primary key uniquely identifying a product available for hire.,1,0
+products_for_hire,Payments,payment_id,INTEGER,Primary key uniquely identifying a payment transaction.,1,0
+products_for_hire,Bookings,count_hired,VARCHAR(40),The total number of items hired in this booking.,298,0
+products_for_hire,Products_for_Hire,daily_hire_cost,"DECIMAL(19,4)",The cost per day to hire this product.,26.15,0
+products_for_hire,Discount_Coupons,coupon_amount,"DECIMAL(19,4)",The monetary value of the discount provided by the coupon.,500.0,0
+products_for_hire,Bookings,amount_of_discount,"DECIMAL(19,4)",The discount amount applied to the booking total.,71.45,0
+products_for_hire,Payments,amount_due,"DECIMAL(19,4)",The total amount that was due at the time of this payment.,369.52,0
+products_for_hire,View_Product_Availability,product_id,INTEGER,Foreign key identifying the product for which availability is tracked.,1,0
+products_for_hire,Bookings,returned_damaged_yn,VARCHAR(40),Flag indicating whether items were returned in a damaged condition.,1,0
+products_for_hire,Payments,booking_id,INTEGER,Foreign key linking the payment to the associated booking.,6,0
+products_for_hire,Payments,amount_paid,"DECIMAL(19,4)",The actual monetary amount paid in this transaction.,206.27,0
+products_for_hire,Products_Booked,booked_count,INTEGER,The quantity of this specific product hired in the booking.,5,0
+products_for_hire,Bookings,booking_id,INTEGER,Primary key uniquely identifying a booking record.,1,0
+products_for_hire,Customers,coupon_id,INTEGER,Foreign key linking the customer to an assigned discount coupon.,12,0
+products_for_hire,Customers,date_became_customer,DATETIME,The date and time when the customer registered or joined.,2017-10-20 12:13:17,0
+products_for_hire,Customers,good_or_bad_customer,VARCHAR(4),"Classification of the customer's reliability or standing, such as good or bad.",good,0
+products_for_hire,Discount_Coupons,coupon_id,INTEGER,Primary key uniquely identifying a discount coupon.,1,0
+products_for_hire,Products_for_Hire,product_type_code,VARCHAR(15),"The category or type of the product, such as Cutlery or Din_Plates.",Cutlery,0
+products_for_hire,Products_Booked,booked_amount,FLOAT,The total cost associated with hiring this specific product in the booking.,309.73,0
+products_for_hire,View_Product_Availability,available_yn,VARCHAR(1),Flag indicating whether the product is available on the specified status date.,1,0
+products_for_hire,Products_for_Hire,product_description,VARCHAR(255),A description of the product content or details.,Anna Karenina,0
+products_for_hire,Customers,customer_id,INTEGER,Primary key uniquely identifying a customer.,1,0

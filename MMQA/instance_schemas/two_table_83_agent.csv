@@ -1,0 +1,10 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+book_2,publication,Publication_Date,TEXT,Date of publication.,August 2008,0
+book_2,book,Title,TEXT,Title of the book.,The Black Lamb,0
+book_2,publication,Publication_ID,INT,Unique identifier for a publication; primary key.,1,0
+book_2,book,Writer,TEXT,Author or writer of the book.,Timothy Truman,0
+book_2,publication,Publisher,TEXT,Name of the publisher.,Pearson,0
+book_2,book,Book_ID,INT,Unique identifier for a book; primary key.,1,0
+book_2,publication,Book_ID,INT,Foreign key referencing the book table; identifies the book being published.,1,0
+book_2,book,Issues,REAL,Number of issues or copies of the book.,6.0,0
+book_2,publication,Price,REAL,Price of the publication.,15000000.0,0

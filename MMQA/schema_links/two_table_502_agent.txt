@@ -1,0 +1,1 @@
+['Customers.customer_id', 'Customers.customer_name', 'Customer_Addresses.customer_id', 'Customer_Addresses.address_id', 'Addresses.state_province_county', 'Addresses.city']

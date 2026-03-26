@@ -1,0 +1,25 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+farm,farm,Total_Horses,REAL,The total number of horses on the farm.,,0
+farm,farm,Oxen,REAL,The number of oxen on the farm.,,0
+farm,city,City_ID,INT,Unique identifier for a city; primary key.,1,0
+farm,farm_competition,Host_city_ID,INT,Identifier of the host city; foreign key referencing city.City_ID.,1,0
+farm,farm,Year,INT,The year the farm data was recorded.,,0
+farm,competition_record,Farm_ID,INT,Identifier of the farm participating in the competition; primary key; foreign key referencing farm.Farm_ID.,,0
+farm,farm,Cows,REAL,The number of cows on the farm.,,0
+farm,farm_competition,Year,INT,The year the competition was held.,2013,0
+farm,city,Area_km_2,REAL,The area of the city in square kilometers.,18.06,0
+farm,city,Census_Ranking,TEXT,The ranking of the city based on census data.,636 of 5008,0
+farm,competition_record,Competition_ID,INT,Unique identifier for a competition record; primary key; foreign key referencing farm_competition.Competition_ID.,,0
+farm,farm,Bulls,REAL,The number of bulls on the farm.,,0
+farm,competition_record,Rank,INT,The rank of the farm in the competition.,,0
+farm,farm_competition,Hosts,TEXT,The hosts or performers of the competition.,Miley Cyrus Jared Leto and Karen Mok,0
+farm,farm_competition,Theme,TEXT,The theme of the competition.,Carnival M is back!,0
+farm,farm,Pigs,REAL,The number of pigs on the farm.,,0
+farm,city,Status,TEXT,"The administrative status of the city (e.g., Village, Town).",Town,0
+farm,farm,Working_Horses,REAL,The number of horses used for work on the farm.,,0
+farm,city,Population,REAL,The population of the city.,5706.0,0
+farm,farm,Farm_ID,INT,Unique identifier for a farm; primary key.,,0
+farm,farm,Total_Cattle,REAL,The total number of cattle on the farm.,,0
+farm,farm_competition,Competition_ID,INT,Unique identifier for a competition; primary key.,1,0
+farm,farm,Sheep_and_Goats,REAL,The number of sheep and goats on the farm.,,0
+farm,city,Official_Name,TEXT,The official name of the city.,Grand Falls/Grand-Sault,0

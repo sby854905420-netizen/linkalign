@@ -1,0 +1,28 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+riding_club,match_result,Gold,INT,Number of gold medals won.,20,0
+riding_club,player,Votes,INT,Number of votes received by the player.,6055,0
+riding_club,coach,Club_ID,INT,Foreign key referencing the club the coach belongs to.,1,0
+riding_club,player,Rank,TEXT,Rank of the player.,2nd,0
+riding_club,coach,Rank,INT,Rank of the coach within the club.,1,0
+riding_club,match_result,Points,INT,Total points earned in the match.,168,0
+riding_club,player,Sponsor_name,TEXT,Name of the player's sponsor.,BrandonâSouris,0
+riding_club,coach,Coach_ID,INT,Unique identifier for each coach.,1,0
+riding_club,match_result,Rank,INT,Unique identifier for the match result.,1,0
+riding_club,match_result,Bronze,INT,Number of bronze medals won.,8,0
+riding_club,club,Region,TEXT,Geographical region where the club is located.,USA,0
+riding_club,player,Gender,TEXT,Gender of the player.,M,0
+riding_club,player_coach,Coach_ID,INT,Foreign key referencing the coach.,1,0
+riding_club,player,Player_ID,INT,Unique identifier for each player.,1,0
+riding_club,coach,Coach_name,TEXT,Name of the coach.,Jameson Tomas,0
+riding_club,player,Player_name,TEXT,Name of the player.,Jean Luc BouchÃ©,0
+riding_club,match_result,Small_Silver,INT,Number of small silver medals won.,9,0
+riding_club,player,Residence,TEXT,City or region where the player resides.,Brandon,0
+riding_club,club,Club_name,TEXT,Name of the club.,AIK,0
+riding_club,player,Occupation,TEXT,Occupation of the player.,Locomotive Engineer,0
+riding_club,match_result,Big_Silver,INT,Number of big silver medals won.,14,0
+riding_club,club,Club_ID,INT,Unique identifier for each club.,1,0
+riding_club,player_coach,Starting_year,INT,Year the player started working with the coach.,2010,0
+riding_club,coach,Gender,TEXT,Gender of the coach.,M,0
+riding_club,player_coach,Player_ID,INT,Foreign key referencing the player.,1,0
+riding_club,club,Start_year,INT,Year the club was established.,2009,0
+riding_club,match_result,Club_ID,INT,Foreign key referencing the club associated with the match result.,1,0

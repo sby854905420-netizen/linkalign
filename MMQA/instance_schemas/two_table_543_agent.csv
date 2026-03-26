@@ -1,0 +1,14 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+theme_gallery,exhibition_record,Date,TEXT,Part of the primary key representing the specific date on which attendance was recorded.,December 2,0
+theme_gallery,exhibition,Ticket_Price,REAL,The monetary cost of admission for the exhibition.,19.95,0
+theme_gallery,artist,Artist_ID,INT,Primary key that uniquely identifies each artist in the database.,1,0
+theme_gallery,exhibition,Artist_ID,INT,Foreign key referencing the artist table that identifies the artist associated with this exhibition.,1,0
+theme_gallery,artist,Name,TEXT,The full name of the artist.,Vijay Singh,0
+theme_gallery,exhibition_record,Attendance,INT,The count of visitors or attendees for the exhibition on the specified date.,965,0
+theme_gallery,artist,Year_Join,INT,The year in which the artist joined the organization or platform.,1998,0
+theme_gallery,artist,Age,INT,The age of the artist at the time of the record.,45,0
+theme_gallery,exhibition_record,Exhibition_ID,INT,"Part of the primary key and foreign key referencing the exhibition table, identifying the specific exhibition event.",1,0
+theme_gallery,exhibition,Exhibition_ID,INT,Primary key that uniquely identifies each exhibition event.,1,0
+theme_gallery,exhibition,Year,INT,The calendar year in which the exhibition took place.,2004,0
+theme_gallery,artist,Country,TEXT,"The country associated with the artist, such as United States or Fiji.",Fiji,0
+theme_gallery,exhibition,Theme,TEXT,"The subject or title theme of the exhibition, such as Christmas or Spring.",Santa Claus,0

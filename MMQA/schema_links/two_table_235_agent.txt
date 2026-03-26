@@ -1,0 +1,1 @@
+['Artist.Name', 'Album.ArtistId', 'Album.AlbumId']

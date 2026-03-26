@@ -94,8 +94,7 @@ Other referees are working on similar tasks. You must discuss with them.
 {role_description}
 
 Now it’s your time to talk, please make your talk short and clear, {agent_name} !
-"""
-"""# Please consider whether all database schemas irrelevant to the question have been identified, and (2) whether discarding these schemas might affect the correct generation of SQL.
+# Please consider whether all database schemas irrelevant to the question have been identified, and (2) whether discarding these schemas might affect the correct generation of SQL.
 # Be cautious—removing incorrect columns may lead to errors in the SQL output."""
 
 DATABASE_SCIENTIST_ROLE_DESCRIPTION = """### [Role]

@@ -1,0 +1,36 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+customers_and_products_contacts,Customer_Address_History,date_from,DATETIME,The start date for which the customer lived at the address.,2015-07-23 14:37:18,0
+customers_and_products_contacts,Customers,payment_method_code,VARCHAR(15),The code representing the customer's preferred payment method.,Credit Card,0
+customers_and_products_contacts,Customers,customer_email,VARCHAR(80),The email address of the customer.,antonette73@example.com,0
+customers_and_products_contacts,Contacts,gender,VARCHAR(1),The gender of the contact.,,0
+customers_and_products_contacts,Customers,customer_name,VARCHAR(80),The name of the customer.,Kayley,0
+customers_and_products_contacts,Customer_Orders,order_id,INTEGER,Unique identifier for the order.,1,0
+customers_and_products_contacts,Customer_Orders,customer_id,INTEGER,"Foreign key referencing the Customers table, indicating which customer placed the order.",2,0
+customers_and_products_contacts,Customer_Orders,order_date,DATETIME,The date the order was placed.,2009-07-19 13:40:49,0
+customers_and_products_contacts,Products,product_name,VARCHAR(80),The name of the product.,Apple,0
+customers_and_products_contacts,Addresses,city,VARCHAR(50),The city name of the address.,Hertafurt,0
+customers_and_products_contacts,Order_Items,order_item_id,INTEGER,Unique identifier for the order item.,1,0
+customers_and_products_contacts,Products,product_type_code,VARCHAR(15),The code representing the type of product.,Hardware,0
+customers_and_products_contacts,Customer_Orders,order_status_code,VARCHAR(15),The status code of the order.,Completed,0
+customers_and_products_contacts,Contacts,customer_id,INTEGER,"Foreign key referencing the Customers table, indicating which customer this contact belongs to.",,0
+customers_and_products_contacts,Addresses,line_1_number_building,VARCHAR(80),The street number and building name of the address.,4315 Kerluke Canyon Apt. 800,0
+customers_and_products_contacts,Customers,customer_address,VARCHAR(255),The full address of the customer.,636 Chanelle Isle Apt. 846,0
+customers_and_products_contacts,Addresses,country,VARCHAR(50),The country of the address.,USA,0
+customers_and_products_contacts,Contacts,contact_id,INTEGER,Unique identifier for the contact.,,0
+customers_and_products_contacts,Customer_Address_History,address_id,INTEGER,"Foreign key referencing the Addresses table, indicating the address associated with this history entry.",7,0
+customers_and_products_contacts,Contacts,last_name,VARCHAR(50),The last name of the contact.,,0
+customers_and_products_contacts,Addresses,state_province_county,VARCHAR(50),"The state, province, or county of the address.",Nevada,0
+customers_and_products_contacts,Order_Items,product_id,INTEGER,"Foreign key referencing the Products table, indicating which product was ordered.",15,0
+customers_and_products_contacts,Contacts,first_name,VARCHAR(80),The first name of the contact.,,0
+customers_and_products_contacts,Customers,customer_phone,VARCHAR(80),The phone number of the customer.,+87(9)5279161988,0
+customers_and_products_contacts,Contacts,contact_phone,VARCHAR(80),The phone number of the contact.,,0
+customers_and_products_contacts,Products,product_id,INTEGER,Unique identifier for the product.,1,0
+customers_and_products_contacts,Order_Items,order_id,INTEGER,"Foreign key referencing the Customer_Orders table, indicating which order this item belongs to.",9,0
+customers_and_products_contacts,Customers,customer_number,VARCHAR(20),A unique number assigned to the customer.,456,0
+customers_and_products_contacts,Order_Items,order_quantity,VARCHAR(80),The quantity of the product ordered.,3,0
+customers_and_products_contacts,Addresses,address_id,INTEGER,Unique identifier for the address.,1,0
+customers_and_products_contacts,Products,product_price,DOUBLE,The price of the product.,54753982.574522,0
+customers_and_products_contacts,Customer_Address_History,date_to,DATETIME,The end date for which the customer lived at the address.,2018-03-07 12:04:20,0
+customers_and_products_contacts,Addresses,zip_postcode,VARCHAR(20),The postal code of the address.,740,0
+customers_and_products_contacts,Customers,customer_id,INTEGER,Unique identifier for the customer.,1,0
+customers_and_products_contacts,Customer_Address_History,customer_id,INTEGER,"Foreign key referencing the Customers table, indicating which customer this address history entry belongs to.",12,0

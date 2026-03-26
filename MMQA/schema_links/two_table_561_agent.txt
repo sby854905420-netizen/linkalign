@@ -1,0 +1,1 @@
+['item.title', 'review.a_id', 'review.i_id', 'COUNT(review.a_id) AS review_count']

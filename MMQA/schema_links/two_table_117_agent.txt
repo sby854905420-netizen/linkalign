@@ -1,0 +1,1 @@
+['flight.flno', 'flight.distance', 'aircraft.name', 'aircraft.distance', 'flight.aid', 'aircraft.aid']

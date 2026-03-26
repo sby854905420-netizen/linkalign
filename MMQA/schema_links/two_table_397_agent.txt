@@ -1,0 +1,1 @@
+['Apartments.bathroom_count', 'Apartments.bedroom_count', 'Apartments.apt_number', 'Apartment_Bookings.booking_end_date']

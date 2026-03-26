@@ -1,0 +1,1 @@
+['artist.Artist_ID', 'artist.Age', 'artist.Country', 'exhibition.Ticket_Price', 'exhibition.Theme']

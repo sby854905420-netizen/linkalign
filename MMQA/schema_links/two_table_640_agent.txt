@@ -1,0 +1,1 @@
+['protein.common_name', 'protein.divergence_from_human_lineage', 'protein.sequence_identity_to_human_protein', 'protein.Institution_id', 'institution.Institution']

@@ -1,0 +1,1 @@
+['chip_model.Model_name', 'chip_model.WiFi', 'chip_model.ROM_MiB', 'phone.Company_name', 'phone.chip_model']

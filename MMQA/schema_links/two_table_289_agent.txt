@@ -1,0 +1,1 @@
+['Customers.Customer_ID', 'Customers.Customer_name', 'First_Notification_of_Loss.Customer_ID', 'First_Notification_of_Loss.FNOL_ID']

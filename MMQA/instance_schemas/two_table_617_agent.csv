@@ -1,0 +1,12 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+browser_web,accelerator_compatible_browser,browser_id,INT,Foreign key referencing the id of the browser.,1,0
+browser_web,Web_client_accelerator,Connection,TEXT,Types of internet connections supported by the accelerator.,"Broadband, Satellite, Wireless, Fiber, DSL",0
+browser_web,Web_client_accelerator,name,TEXT,Name of the web client accelerator.,CACHEbox,0
+browser_web,Web_client_accelerator,Operating_system,TEXT,Operating systems supported by the web client accelerator.,Appliance (Linux),0
+browser_web,Web_client_accelerator,Client,TEXT,Type of client for whom the accelerator is intended.,"End user, ISP",0
+browser_web,browser,market_share,REAL,Market share of the browser.,28.96,0
+browser_web,Web_client_accelerator,id,INT,Unique identifier for the web client accelerator.,1,0
+browser_web,browser,name,TEXT,Name of the browser.,Internet Explorer,0
+browser_web,accelerator_compatible_browser,accelerator_id,INT,Foreign key referencing the id of the web client accelerator.,1,0
+browser_web,browser,id,INT,Unique identifier for the browser.,1,0
+browser_web,accelerator_compatible_browser,compatible_since_year,INT,Year since when the accelerator is compatible with the browser.,1995,0

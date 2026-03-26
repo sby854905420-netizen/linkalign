@@ -1,0 +1,65 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+store_1,invoices,billing_postal_code,VARCHAR(10),Billing postal code.,70174,0
+store_1,media_types,id,INTEGER,Unique identifier for the media type.,1,0
+store_1,invoice_lines,track_id,INTEGER,Foreign key referencing the track purchased in this line.,2,0
+store_1,tracks,unit_price,"NUMERIC(10,2)",Price per unit of the track.,0.99,0
+store_1,invoices,total,"NUMERIC(10,2)",Total amount of the invoice.,1.98,0
+store_1,employees,first_name,VARCHAR(20),First name of the employee.,Andrew,0
+store_1,genres,name,VARCHAR(120),Name of the music genre.,Rock,0
+store_1,tracks,genre_id,INTEGER,Foreign key referencing the genre of the track.,1,0
+store_1,invoices,id,INTEGER,Unique identifier for the invoice.,1,0
+store_1,tracks,id,INTEGER,Unique identifier for the track.,1,0
+store_1,tracks,album_id,INTEGER,Foreign key referencing the album the track belongs to.,1,0
+store_1,albums,artist_id,INTEGER,Foreign key referencing the artist who created the album.,1,0
+store_1,customers,fax,VARCHAR(24),Fax number of the customer.,+55 (12) 3923-5566,0
+store_1,employees,phone,VARCHAR(24),Phone number of the employee.,+1 (780) 428-9482,0
+store_1,artists,name,VARCHAR(120),Name of the artist.,AC/DC,0
+store_1,invoices,billing_country,VARCHAR(40),Billing country.,Germany,0
+store_1,invoices,billing_address,VARCHAR(70),Billing street address.,Theodor-Heuss-StraÃe 34,0
+store_1,employees,country,VARCHAR(40),Country of the employee's address.,Canada,0
+store_1,employees,email,VARCHAR(60),Email address of the employee.,andrew@chinookcorp.com,0
+store_1,customers,id,INTEGER,Unique identifier for the customer.,1,0
+store_1,employees,city,VARCHAR(40),City of the employee's address.,Edmonton,0
+store_1,albums,title,VARCHAR(160),Title of the album.,For Those About To Rock We Salute You,0
+store_1,customers,phone,VARCHAR(24),Phone number of the customer.,+55 (12) 3923-5555,0
+store_1,customers,support_rep_id,INTEGER,Foreign key referencing the employee who supports the customer.,3,0
+store_1,customers,country,VARCHAR(40),Country of the customer's address.,Brazil,0
+store_1,tracks,bytes,INTEGER,Size of the track in bytes.,11170334,0
+store_1,invoices,invoice_date,TIMESTAMP,Date the invoice was created.,2007-01-01 00:00:00,0
+store_1,invoice_lines,unit_price,"NUMERIC(10,2)",Price per unit of the track.,0.99,0
+store_1,invoice_lines,quantity,INTEGER,Quantity of the track purchased.,1,0
+store_1,media_types,name,VARCHAR(120),Name of the media type.,MPEG audio file,0
+store_1,albums,id,INTEGER,Unique identifier for the album.,1,0
+store_1,employees,id,INTEGER,Unique identifier for the employee.,1,0
+store_1,playlist_tracks,track_id,INTEGER,Foreign key referencing the track.,3402,0
+store_1,customers,first_name,VARCHAR(40),First name of the customer.,LuÃ­s,0
+store_1,employees,address,VARCHAR(70),Street address of the employee.,11120 Jasper Ave NW,0
+store_1,employees,title,VARCHAR(30),Job title of the employee.,General Manager,0
+store_1,playlists,id,INTEGER,Unique identifier for the playlist.,1,0
+store_1,employees,postal_code,VARCHAR(10),Postal code of the employee's address.,T5K 2N1,0
+store_1,customers,email,VARCHAR(60),Email address of the customer.,luisg@embraer.com.br,0
+store_1,customers,state,VARCHAR(40),State or province of the customer's address.,SP,0
+store_1,tracks,media_type_id,INTEGER,Foreign key referencing the media type of the track.,1,0
+store_1,playlists,name,VARCHAR(120),Name of the playlist.,Music,0
+store_1,customers,city,VARCHAR(40),City of the customer's address.,SÃ£o JosÃ© dos Campos,0
+store_1,customers,last_name,VARCHAR(20),Last name of the customer.,GonÃ§alves,0
+store_1,invoice_lines,invoice_id,INTEGER,Foreign key referencing the invoice this line belongs to.,1,0
+store_1,employees,state,VARCHAR(40),State or province of the employee's address.,AB,0
+store_1,tracks,milliseconds,INTEGER,Duration of the track in milliseconds.,343719,0
+store_1,employees,hire_date,TIMESTAMP,Date the employee was hired.,2002-08-14 00:00:00,0
+store_1,employees,fax,VARCHAR(24),Fax number of the employee.,+1 (780) 428-3457,0
+store_1,customers,company,VARCHAR(80),Company associated with the customer.,Embraer - Empresa Brasileira de AeronÃ¡utica S.A.,0
+store_1,playlist_tracks,playlist_id,INTEGER,Foreign key referencing the playlist.,1,0
+store_1,customers,postal_code,VARCHAR(10),Postal code of the customer's address.,12227-000,0
+store_1,invoices,customer_id,INTEGER,Foreign key referencing the customer who made the purchase.,2,0
+store_1,invoices,billing_state,VARCHAR(40),Billing state or province.,,0
+store_1,tracks,composer,VARCHAR(220),Composer of the track.,"Angus Young, Malcolm Young, Brian Johnson",0
+store_1,employees,birth_date,TIMESTAMP,Date of birth of the employee.,1962-02-18 00:00:00,0
+store_1,genres,id,INTEGER,Unique identifier for the genre.,1,0
+store_1,invoices,billing_city,VARCHAR(40),Billing city.,Stuttgart,0
+store_1,artists,id,INTEGER,Unique identifier for the artist.,1,0
+store_1,tracks,name,VARCHAR(200),Name of the track.,For Those About To Rock (We Salute You),0
+store_1,employees,last_name,VARCHAR(20),Last name of the employee.,Adams,0
+store_1,employees,reports_to,INTEGER,Foreign key referencing the employee's manager.,,0
+store_1,invoice_lines,id,INTEGER,Unique identifier for the invoice line.,1,0
+store_1,customers,address,VARCHAR(70),Street address of the customer.,"Av. Brigadeiro Faria Lima, 2170",0

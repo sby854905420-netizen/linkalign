@@ -1,0 +1,47 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+bike_1,trip,bike_id,INTEGER,Identifier of the bike used for the trip.,454,0
+bike_1,weather,cloud_cover,INTEGER,Cloud cover percentage.,4,0
+bike_1,status,time,TEXT,Timestamp indicating when the status was recorded.,2015-06-02 12:46:02,0
+bike_1,weather,max_wind_Speed_mph,INTEGER,Maximum wind speed in miles per hour.,23,0
+bike_1,station,long,NUMERIC,Longitude coordinate of the station.,-121.901782,0
+bike_1,weather,zip_code,INTEGER,Zip code for which the weather data is recorded.,94107,0
+bike_1,weather,min_dew_point_f,INTEGER,Minimum dew point in Fahrenheit.,56,0
+bike_1,trip,start_station_id,INTEGER,Identifier of the station where the trip started.,63,0
+bike_1,station,lat,NUMERIC,Latitude coordinate of the station.,37.329732,0
+bike_1,weather,precipitation_inches,INTEGER,Amount of precipitation in inches.,0,0
+bike_1,weather,date,TEXT,Date for which the weather data is recorded.,8/29/2013,0
+bike_1,weather,max_visibility_miles,INTEGER,Maximum visibility in miles.,10,0
+bike_1,weather,mean_visibility_miles,INTEGER,Mean visibility in miles.,10,0
+bike_1,weather,events,TEXT,Description of weather events.,,0
+bike_1,weather,max_humidity,INTEGER,Maximum humidity percentage.,93,0
+bike_1,station,city,TEXT,City where the station is located.,San Jose,0
+bike_1,weather,mean_temperature_f,INTEGER,Mean temperature in Fahrenheit.,68,0
+bike_1,trip,subscription_type,TEXT,Type of subscription used for the trip.,Subscriber,0
+bike_1,trip,duration,INTEGER,Duration of the trip in seconds.,384,0
+bike_1,station,id,INTEGER,Unique identifier for the station.,2,0
+bike_1,weather,max_sea_level_pressure_inches,NUMERIC,Maximum sea level pressure in inches.,30.07,0
+bike_1,trip,start_station_name,TEXT,Name of the station where the trip started.,Howard at 2nd,0
+bike_1,weather,wind_dir_degrees,INTEGER,Wind direction in degrees.,286,0
+bike_1,station,installation_date,TEXT,Date when the station was installed.,8/6/2013,0
+bike_1,weather,min_humidity,INTEGER,Minimum humidity percentage.,57,0
+bike_1,status,docks_available,INTEGER,Number of docks currently available at the station.,3,0
+bike_1,weather,mean_humidity,INTEGER,Mean humidity percentage.,75,0
+bike_1,trip,zip_code,INTEGER,Zip code of the trip's origin or destination.,94041,0
+bike_1,weather,min_temperature_f,INTEGER,Minimum temperature in Fahrenheit.,61,0
+bike_1,trip,end_station_name,TEXT,Name of the station where the trip ended.,San Francisco Caltrain 2 (330 Townsend),0
+bike_1,trip,start_date,TEXT,Date and time when the trip started.,8/21/2015 17:03,0
+bike_1,trip,id,INTEGER,Unique identifier for the trip.,900504,0
+bike_1,status,station_id,INTEGER,"Foreign key referencing the station table, identifying the station.",3,0
+bike_1,weather,min_visibility_miles,INTEGER,Minimum visibility in miles.,10,0
+bike_1,station,name,TEXT,Name of the station.,San Jose Diridon Caltrain Station,0
+bike_1,status,bikes_available,INTEGER,Number of bikes currently available at the station.,12,0
+bike_1,weather,mean_wind_speed_mph,INTEGER,Mean wind speed in miles per hour.,11,0
+bike_1,trip,end_station_id,INTEGER,Identifier of the station where the trip ended.,69,0
+bike_1,station,dock_count,INTEGER,Number of docks available at the station.,27,0
+bike_1,weather,min_sea_level_pressure_inches,NUMERIC,Minimum sea level pressure in inches.,29.97,0
+bike_1,weather,mean_dew_point_f,INTEGER,Mean dew point in Fahrenheit.,58,0
+bike_1,weather,mean_sea_level_pressure_inches,NUMERIC,Mean sea level pressure in inches.,30.02,0
+bike_1,weather,max_gust_speed_mph,INTEGER,Maximum gust speed in miles per hour.,28,0
+bike_1,weather,max_dew_point_f,INTEGER,Maximum dew point in Fahrenheit.,61,0
+bike_1,weather,max_temperature_f,INTEGER,Maximum temperature in Fahrenheit.,74,0
+bike_1,trip,end_date,TEXT,Date and time when the trip ended.,8/21/2015 17:10,0

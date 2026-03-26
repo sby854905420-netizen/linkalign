@@ -1,0 +1,13 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+allergy_1,Student,LName,VARCHAR(12),Student's last name.,Smith,0
+allergy_1,Student,Age,INTEGER,Student's age.,18,0
+allergy_1,Student,Major,INTEGER,Student's major.,600,0
+allergy_1,Allergy_Type,AllergyType,VARCHAR(20),"Category of the allergy, such as 'food' or 'animal'.",food,0
+allergy_1,Allergy_Type,Allergy,VARCHAR(20),Unique identifier for an allergy type.,Eggs,0
+allergy_1,Student,Fname,VARCHAR(12),Student's first name.,Linda,0
+allergy_1,Student,city_code,VARCHAR(3),Code representing the student's city.,BAL,0
+allergy_1,Student,Sex,VARCHAR(1),Student's sex.,F,0
+allergy_1,Student,Advisor,INTEGER,Student's advisor.,1121,0
+allergy_1,Has_Allergy,Allergy,VARCHAR(20),"Foreign key referencing the Allergy_Type table, indicating the type of allergy the student has.",Cat,0
+allergy_1,Has_Allergy,StuID,INTEGER,"Foreign key referencing the Student table, indicating the student with the allergy.",1001,0
+allergy_1,Student,StuID,INTEGER,Unique identifier for a student.,1001,0

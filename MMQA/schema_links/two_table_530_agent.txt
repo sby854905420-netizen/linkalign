@@ -1,0 +1,1 @@
+['Orders.customer_id', 'Orders.date_order_placed', 'Invoices.order_id', 'Customers.customer_id']

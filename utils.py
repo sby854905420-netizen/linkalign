@@ -30,6 +30,11 @@ def parse_json_from_str(string: str = None) -> dict:
     except Exception as e:
         raise ValueError("Failed to parse JSON from string") from e
 
+def get_file_names_from_folder(directory: str, suffix: str):
+    # 返回文件夹下所有带指定文件后缀的名字。
+    if not directory.exists():
+        raise FileNotFoundError(f"Directory not found: {directory}")
+    return [f.stem for f in Path(directory).iterdir() if f.is_file() and f.suffix == suffix]
 
 def get_sql_files(directory: str, suffix: str = ".sql"):
     return [f.stem for f in Path(directory).iterdir() if f.is_file() and f.suffix == suffix]

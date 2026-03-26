@@ -1,0 +1,1 @@
+['Customers.customer_email', 'Customers_Cards.card_type_code', 'Customers_Cards.customer_id']

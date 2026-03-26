@@ -1,0 +1,13 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+election_representative,representative,State,TEXT,The state represented by the individual.,Indiana,0
+election_representative,election,Votes,REAL,The total number of votes received by the representative in this election.,9423.0,0
+election_representative,representative,Lifespan,TEXT,"The birth and death years of the representative, indicating their lifespan.",1947â,0
+election_representative,election,Place,REAL,The ranking or position achieved by the representative in the election.,3.0,0
+election_representative,election,Election_ID,INT,Primary key uniquely identifying each election record.,1,0
+election_representative,election,Date,TEXT,"The date or year when the election occurred, stored as text.",July 1942,0
+election_representative,representative,Representative_ID,INT,Primary key uniquely identifying each representative.,1,0
+election_representative,election,Representative_ID,INT,"Foreign key referencing the Representative_ID in the representative table, linking the election result to a specific representative.",1,0
+election_representative,election,Seats,REAL,The number of seats won or associated with this election result.,6.0,0
+election_representative,election,Vote_Percent,REAL,The percentage of votes obtained by the representative in this election.,16.2,0
+election_representative,representative,Party,TEXT,The political party affiliation of the representative.,Republican,0
+election_representative,representative,Name,TEXT,The full name of the political representative.,Dan Quayle,0

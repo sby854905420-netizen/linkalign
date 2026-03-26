@@ -1,0 +1,1 @@
+['Order_Items.order_id', 'Order_Items.order_quantity', 'Order_Items.product_id', 'Products.product_type_code', 'Products.product_name', 'Products.product_id', 'Customer_Orders.order_id']

@@ -1,0 +1,1 @@
+['basketball_match.Team_Name', 'basketball_match.ACC_Road', 'basketball_match.All_Games_Percent', 'basketball_match.School_ID', 'university.School_ID', 'university.School']

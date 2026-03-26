@@ -1,0 +1,1 @@
+['customer.cust_ID', 'customer.state', 'customer.acc_type']

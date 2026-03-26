@@ -1,0 +1,1 @@
+['head.age', 'head.born_state', 'management.temporary_acting']

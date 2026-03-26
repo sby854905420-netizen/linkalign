@@ -1,0 +1,22 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+phone_1,chip_model,RAM_MiB,REAL,"Amount of RAM in the chip model, measured in MiB.",32.0,0
+phone_1,chip_model,Model_name,TEXT,Unique identifier for a chip model; primary key.,X5,0
+phone_1,phone,chip_model,TEXT,The chip model used in the phone; foreign key referencing chip_model.Model_name.,X5,0
+phone_1,chip_model,Launch_year,REAL,Year the chip model was launched.,2002.0,0
+phone_1,screen_mode,Char_cells,TEXT,Character cell dimensions of the screen mode.,80 Ã 32,0
+phone_1,chip_model,ROM_MiB,REAL,"Amount of ROM in the chip model, measured in MiB.",32.0,0
+phone_1,screen_mode,Type,TEXT,Type of screen mode.,Graphics,0
+phone_1,screen_mode,Hardware_colours,REAL,Number of hardware colors supported by the screen mode.,2.0,0
+phone_1,phone,Company_name,TEXT,Name of the phone manufacturer.,Sony Mobile Communications,0
+phone_1,screen_mode,used_kb,REAL,"Amount of memory used by the screen mode, measured in KB.",20.0,0
+phone_1,screen_mode,map,TEXT,Memory map range associated with the screen mode.,3000â7FFF,0
+phone_1,phone,Accreditation_level,TEXT,Level of accreditation the phone has.,joyn Hot Fixes,0
+phone_1,phone,Hardware_Model_name,TEXT,Unique identifier for a phone hardware model; primary key.,"XPERIA T, XPERIA J",0
+phone_1,screen_mode,Graphics_mode,REAL,Unique identifier for a screen mode; primary key.,0.0,0
+phone_1,chip_model,Bluetooth,TEXT,Bluetooth version supported by the chip model.,No,0
+phone_1,chip_model,WiFi,TEXT,WiFi standard supported by the chip model.,No,0
+phone_1,phone,screen_mode,TEXT,The screen mode used in the phone; foreign key referencing screen_mode.Graphics_mode.,1,0
+phone_1,screen_mode,Pixels,TEXT,Pixel dimensions of the screen mode.,640 Ã 256,0
+phone_1,chip_model,Slots,TEXT,Types of slots available in the chip model.,"1CFII,1SD",0
+phone_1,phone,Date,TEXT,Date related to the phone's accreditation.,Approved (awarded 15.11.12),0
+phone_1,phone,Accreditation_type,TEXT,Type of accreditation the phone has.,Full,0

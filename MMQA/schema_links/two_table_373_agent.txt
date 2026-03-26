@@ -1,0 +1,1 @@
+['people.Name', 'people.Weight', 'body_builder.Snatch', 'body_builder.Clean_Jerk']

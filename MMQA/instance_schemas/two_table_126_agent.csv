@@ -1,0 +1,17 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+flight_1,flight,aid,"number(9,0)",Unique identifier for the aircraft used on the flight.,1,0
+flight_1,employee,salary,"number(10,2)",Annual salary of the employee.,120433,0
+flight_1,certificate,aid,"number(9,0)",Unique identifier for the aircraft the certificate is associated with.,2,0
+flight_1,certificate,eid,"number(9,0)",Unique identifier for an employee holding a certificate.,11564812,0
+flight_1,employee,eid,"number(9,0)",Unique identifier for each employee.,242518965,0
+flight_1,flight,flno,"number(4,0)",Unique identifier for each flight.,99,0
+flight_1,flight,destination,varchar2(20),Arrival city for the flight.,Washington D.C.,0
+flight_1,flight,origin,varchar2(20),Departure city for the flight.,Los Angeles,0
+flight_1,aircraft,distance,"number(6,0)",Maximum flight distance the aircraft can travel.,8430,0
+flight_1,flight,price,"number(7,2)",Price of the flight.,235.98,0
+flight_1,flight,arrival_date,date,Date and time of flight arrival.,04/12/2005 09:40,0
+flight_1,aircraft,name,varchar2(30),Name of the aircraft model.,Boeing 747-400,0
+flight_1,employee,name,varchar2(30),Name of the employee.,James Smith,0
+flight_1,flight,distance,"number(6,0)",Distance of the flight in miles.,2308,0
+flight_1,aircraft,aid,"number(9,0)",Unique identifier for each aircraft.,1,0
+flight_1,flight,departure_date,date,Date and time of flight departure.,04/12/2005 09:30,0

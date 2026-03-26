@@ -1,0 +1,1 @@
+['city.City_ID', 'city.Population', 'farm_competition.Host_city_ID', 'farm_competition.Year']

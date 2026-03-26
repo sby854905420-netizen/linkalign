@@ -1,0 +1,12 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+twitter_1,user_profiles,followers,int(11),Integer representing the count of users following this specific profile.,6662425,0
+twitter_1,user_profiles,uid,int(11),Integer serving as the unique primary key identifier for each user profile.,1,0
+twitter_1,user_profiles,name,varchar(255),Variable character string storing the display name of the user.,Iron Man,0
+twitter_1,follows,f1,int(11),"Integer representing the user ID of the follower, serving as part of the composite primary key and a foreign key referencing user_profiles.uid.",1,0
+twitter_1,user_profiles,email,varchar(255),Variable character string storing the email address associated with the user account.,ts@richest.com,0
+twitter_1,follows,f2,int(11),"Integer representing the user ID of the followee, serving as part of the composite primary key and a foreign key referencing user_profiles.uid.",2,0
+twitter_1,tweets,id,bigint(20),Big integer serving as the unique primary key identifier for each tweet record.,1,0
+twitter_1,user_profiles,partitionid,int(11),Integer likely used for data partitioning or sharding purposes within the database.,1,0
+twitter_1,tweets,uid,int(11),"Integer representing the user ID of the author who posted the tweet, acting as a foreign key referencing user_profiles.uid.",1,0
+twitter_1,tweets,createdate,datetime,Datetime value indicating the date and time when the tweet was published.,2018-03-09 20:00:14,0
+twitter_1,tweets,text,char(140),"Character string storing the content of the tweet, limited to 140 characters.",Hello I'm Tony Stark.,0

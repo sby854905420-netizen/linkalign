@@ -1,0 +1,1 @@
+['people.Name', 'people.Country', 'people.Is_Male', 'people.People_ID', 'wedding.Year', 'wedding.Male_ID']

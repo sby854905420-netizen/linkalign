@@ -1,0 +1,23 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+insurance_fnol,Claims,Effective_Date,DATE,Date when the claim became effective.,1973-08-18,0
+insurance_fnol,Claims,Claim_ID,INTEGER,Unique identifier for a claim.,134,0
+insurance_fnol,Available_Policies,policy_type_code,CHAR(15),Code representing the type of policy.,Life Insurance,0
+insurance_fnol,Customers_Policies,Customer_ID,INTEGER,"Foreign key referencing the Customers table, identifying the customer.",214,0
+insurance_fnol,First_Notification_of_Loss,Customer_ID,INTEGER,"Foreign key referencing the Customers_Policies table, identifying the customer associated with the loss.",214,0
+insurance_fnol,Settlements,Settlement_Amount,REAL,Amount of the settlement.,6451.65,0
+insurance_fnol,Settlements,Effective_Date,DATE,Date when the settlement became effective.,2009-11-20,0
+insurance_fnol,Customers_Policies,Policy_ID,INTEGER,"Foreign key referencing the Available_Policies table, identifying the policy.",257,0
+insurance_fnol,Claims,FNOL_ID,INTEGER,"Foreign key referencing the First_Notification_of_Loss table, identifying the initial loss notification.",1722,0
+insurance_fnol,Customers_Policies,Date_Closed,DATE,Date when the policy was closed for the customer.,2018-03-04,0
+insurance_fnol,Settlements,Claim_ID,INTEGER,"Foreign key referencing the Claims table, identifying the claim being settled.",717,0
+insurance_fnol,Available_Policies,Policy_ID,INTEGER,Unique identifier for an available policy.,246,0
+insurance_fnol,Settlements,Settlement_ID,INTEGER,Unique identifier for a settlement.,161,0
+insurance_fnol,First_Notification_of_Loss,Policy_ID,INTEGER,"Foreign key referencing the Customers_Policies table, identifying the policy associated with the loss.",257,0
+insurance_fnol,Services,Service_name,VARCHAR(40),Name of the service.,New policy application,0
+insurance_fnol,First_Notification_of_Loss,FNOL_ID,INTEGER,Unique identifier for a first notification of loss.,532,0
+insurance_fnol,Customers,Customer_ID,INTEGER,Unique identifier for a customer.,194,0
+insurance_fnol,First_Notification_of_Loss,Service_ID,INTEGER,"Foreign key referencing the Services table, identifying the type of service requested.",6,0
+insurance_fnol,Available_Policies,Customer_Phone,VARCHAR(255),Phone number associated with the policy.,+16(2)5838999222,0
+insurance_fnol,Customers,Customer_name,VARCHAR(40),Name of the customer.,America Jaskolski,0
+insurance_fnol,Customers_Policies,Date_Opened,DATE,Date when the policy was opened for the customer.,2016-11-19,0
+insurance_fnol,Services,Service_ID,INTEGER,Unique identifier for a service.,1,0

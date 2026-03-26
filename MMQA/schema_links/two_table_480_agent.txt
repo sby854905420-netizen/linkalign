@@ -1,0 +1,1 @@
+['people.Name', 'debate_people.Negative', 'debate_people.Debate_ID']

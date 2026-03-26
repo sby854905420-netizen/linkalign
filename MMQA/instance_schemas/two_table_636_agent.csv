@@ -1,0 +1,23 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+protein_institute,Institution,building_id,TEXT,Foreign key linking the institution to a specific building record.,1,0
+protein_institute,Institution,Primary_Conference,TEXT,The primary athletic conference to which the institution belongs.,The Sun,0
+protein_institute,protein,common_name,TEXT,Primary key representing the common name of the organism associated with the protein.,Tropical Clawed Frog,0
+protein_institute,protein,divergence_from_human_lineage,REAL,A numerical value indicating the evolutionary divergence from the human lineage.,371.2,0
+protein_institute,building,building_id,TEXT,Primary key uniquely identifying each building record.,0,0
+protein_institute,Institution,Founded,REAL,The year in which the institution was established.,1998.0,0
+protein_institute,building,Street_address,TEXT,The physical street address where the building is located.,701 North Franklin Street,0
+protein_institute,protein,accession_number,TEXT,A unique identifier code for the protein sequence within a database.,XP_002942331.1,0
+protein_institute,protein,Institution_id,TEXT,Foreign key linking the protein record to an associated institution.,1,0
+protein_institute,building,Height_feet,INT,The vertical height of the building measured in feet.,145,0
+protein_institute,Institution,Type,TEXT,"The classification of the institution, such as Public or Private.",Private,0
+protein_institute,building,Name,TEXT,The proper name of the building structure.,Citizens Bank Building,0
+protein_institute,Institution,Institution,TEXT,The official name of the educational institution.,Ave Maria University,0
+protein_institute,Institution,Location,TEXT,The city and state where the institution is physically located.,"Ave Maria, Florida",0
+protein_institute,protein,sequence_length,REAL,"The length of the protein sequence, typically measured in amino acids.",1584.0,0
+protein_institute,Institution,Enrollment,INT,The total number of students enrolled at the institution.,1200,0
+protein_institute,Institution,Institution_id,TEXT,Primary key uniquely identifying each educational institution record.,0,0
+protein_institute,protein,protein_name,TEXT,The specific scientific or descriptive name of the protein sequence.,uncharacterized protein C20orf117-like,0
+protein_institute,building,Years_as_tallest,TEXT,The date range during which the building held the status of tallest in its area.,1913â1915,0
+protein_institute,Institution,Team,TEXT,The name of the institution's athletic team or mascot.,Gyrenes,0
+protein_institute,building,Floors,INT,The total number of floors or stories in the building.,12,0
+protein_institute,protein,sequence_identity_to_human_protein,TEXT,The percentage identity of the protein sequence compared to a human protein.,39%,0

@@ -1,0 +1,53 @@
+Database name,Table Name,Field Name,Type,Description,Example,turn_n
+customer_deliveries,Regular_Orders,regular_order_id,INTEGER,Primary key. Unique identifier for the regular order.,,0
+customer_deliveries,Employees,employee_phone,VARCHAR(80),Employee's phone number.,716-650-2081,0
+customer_deliveries,Delivery_Route_Locations,route_id,INTEGER,Foreign key referencing Delivery_Routes. Represents the ID of the delivery route.,11,0
+customer_deliveries,Customers,customer_email,VARCHAR(80),Customer's email address.,shaniya45@example.net,0
+customer_deliveries,Order_Deliveries,driver_employee_id,INTEGER,Foreign key referencing Employees. Represents the ID of the employee driving the delivery.,,0
+customer_deliveries,Customers,payment_method,VARCHAR(10),Customer's preferred payment method.,Visa,0
+customer_deliveries,Customer_Addresses,date_to,DATETIME,Timestamp indicating when the customer stopped using this address.,2018-02-25 15:34:58,0
+customer_deliveries,Customers,customer_name,VARCHAR(80),Name of the customer.,Ron Emard,0
+customer_deliveries,Trucks,truck_details,VARCHAR(255),Additional details about the truck.,,0
+customer_deliveries,Customer_Addresses,date_from,DATETIME,Timestamp indicating when the customer started using this address.,2016-09-06 19:23:46,0
+customer_deliveries,Employees,employee_id,INTEGER,Primary key. Unique identifier for the employee.,1,0
+customer_deliveries,Products,product_name,VARCHAR(20),Name of the product.,dvds,0
+customer_deliveries,Addresses,city,VARCHAR(50),City name.,Mohrville,0
+customer_deliveries,Actual_Order_Products,product_id,INTEGER,Foreign key referencing Products. Represents the ID of the product in the order.,,0
+customer_deliveries,Delivery_Routes,route_id,INTEGER,Primary key. Unique identifier for the delivery route.,1,0
+customer_deliveries,Products,product_description,VARCHAR(255),Description of the product.,good condition,0
+customer_deliveries,Employees,employee_name,VARCHAR(80),Name of the employee.,Kacie,0
+customer_deliveries,Delivery_Routes,other_route_details,VARCHAR(255),Additional details about the delivery route.,"16893 Wilderman Terrace
+Port Lucasburgh, ND 55978-5550",0
+customer_deliveries,Order_Deliveries,delivery_status_code,VARCHAR(10),"Represents the status of the delivery (e.g., On Road, Delivered).",,0
+customer_deliveries,Actual_Order_Products,actual_order_id,INTEGER,Foreign key referencing Actual_Orders. Represents the ID of the actual order.,,0
+customer_deliveries,Customer_Addresses,address_id,INTEGER,Foreign key referencing Addresses. Represents the ID of the address.,6,0
+customer_deliveries,Actual_Orders,regular_order_id,INTEGER,Foreign key referencing Regular_Orders. Represents the ID of the associated regular order.,,0
+customer_deliveries,Addresses,country,VARCHAR(50),Country of the address.,USA,0
+customer_deliveries,Employees,employee_address_id,INTEGER,Foreign key referencing Addresses. Represents the ID of the employee's address.,4,0
+customer_deliveries,Trucks,truck_id,INTEGER,Primary key. Unique identifier for the truck.,,0
+customer_deliveries,Order_Deliveries,truck_id,INTEGER,Foreign key referencing Trucks. Represents the ID of the truck used for the delivery.,,0
+customer_deliveries,Order_Deliveries,actual_order_id,INTEGER,Foreign key referencing Actual_Orders. Represents the ID of the actual order being delivered.,,0
+customer_deliveries,Delivery_Route_Locations,location_address_id,INTEGER,Foreign key referencing Addresses. Represents the ID of the address for the location.,5,0
+customer_deliveries,Delivery_Route_Locations,location_code,VARCHAR(10),Primary key. Unique code identifying the delivery location.,27 City Rd,0
+customer_deliveries,Addresses,state_province_county,VARCHAR(50),"State, province, or county of the address.",Nebraska,0
+customer_deliveries,Addresses,address_details,VARCHAR(80),Detailed street address information.,92283 Lora Forges Suite 322,0
+customer_deliveries,Customers,customer_phone,VARCHAR(80),Customer's phone number.,1-382-503-5179x53639,0
+customer_deliveries,Products,product_id,INTEGER,Primary key. Unique identifier for the product.,1,0
+customer_deliveries,Order_Deliveries,delivery_date,DATETIME,Timestamp indicating when the delivery occurred or is scheduled to occur.,,0
+customer_deliveries,Regular_Orders,distributer_id,INTEGER,Foreign key referencing Customers. Represents the ID of the distributor (which is a customer).,,0
+customer_deliveries,Customer_Addresses,customer_id,INTEGER,Foreign key referencing Customers. Represents the ID of the customer.,5,0
+customer_deliveries,Actual_Orders,actual_order_date,DATETIME,Timestamp indicating when the actual order was placed.,,0
+customer_deliveries,Customers,date_became_customer,DATETIME,Timestamp indicating when the customer first became a customer.,2011-04-25 22:20:35,0
+customer_deliveries,Delivery_Route_Locations,location_name,VARCHAR(50),Name of the delivery location.,Labadie-Crooks,0
+customer_deliveries,Trucks,truck_licence_number,VARCHAR(20),License number of the truck.,,0
+customer_deliveries,Delivery_Routes,route_name,VARCHAR(50),Name of the delivery route.,Torphy Ltd,0
+customer_deliveries,Addresses,address_id,INTEGER,Primary key. Unique identifier for the address.,1,0
+customer_deliveries,Actual_Orders,order_status_code,VARCHAR(10),"Represents the status of the order (e.g., Cancel, Success).",,0
+customer_deliveries,Order_Deliveries,location_code,VARCHAR(10),Foreign key referencing Delivery_Route_Locations. Represents the location code for the delivery.,,0
+customer_deliveries,Products,product_price,"DECIMAL(19,4)",Price of the product.,1322.78,0
+customer_deliveries,Regular_Order_Products,product_id,INTEGER,Foreign key referencing Products. Represents the ID of the product in the regular order.,3,0
+customer_deliveries,Addresses,zip_postcode,VARCHAR(20),Postal code for the address.,271,0
+customer_deliveries,Regular_Order_Products,regular_order_id,INTEGER,Foreign key referencing Regular_Orders. Represents the ID of the regular order.,5,0
+customer_deliveries,Actual_Orders,actual_order_id,INTEGER,Primary key. Unique identifier for the actual order.,,0
+customer_deliveries,Customers,customer_id,INTEGER,Primary key. Unique identifier for the customer.,1,0
+customer_deliveries,Customer_Addresses,address_type,VARCHAR(10),"Type of address (e.g., House, Apartment).",House,0

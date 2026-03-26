@@ -1,0 +1,1 @@
+['phone.Hardware_Model_name', 'screen_mode.Pixels', 'phone.Company_name', 'screen_mode.Type']
