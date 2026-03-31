@@ -5,4 +5,7 @@ spider2_dev/external_knowledge/
 requirements-py311-rtx5090.txt
 .env
 __pycache__/
+.vscode/
+LICENSE*
+README*
 spider2_dev/tables_new_preprocessed.json

@@ -603,9 +603,9 @@ def get_schema_multi(
         open_schema_linking: bool = False,
 ):
     file_name = instance_id + "_agent"
-    output_csv = os.path.join(save_path, f"{file_name}.csv")
-    output_txt = os.path.join(links_save_path, f"{file_name}.txt")
-    output_meta = os.path.join(links_save_path, f"{file_name}.meta.json")
+    output_csv = os.path.join(save_path, DEFAULT_LLM_MODEL,f"{file_name}.csv")
+    output_txt = os.path.join(links_save_path, DEFAULT_LLM_MODEL, f"{file_name}.txt")
+    output_meta = os.path.join(links_save_path, DEFAULT_LLM_MODEL, f"{file_name}.meta.json")
 
     if not db_ids:
         raise ValueError(f"instance_id={instance_id} has no candidate databases.")
