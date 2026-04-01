@@ -14,7 +14,7 @@ import concurrent.futures
 from llms.ollama.ollamaModel import OllamaModel
 
 
-DEFAULT_LLM_MODEL = "ministral-3:14b"
+DEFAULT_LLM_MODEL = "ministral-3:8b"
 llm = OllamaModel(model_name=DEFAULT_LLM_MODEL, temperature=0.85)
 filter_llm = OllamaModel(model_name=DEFAULT_LLM_MODEL, temperature=0.42)
 active_llm_model_name = DEFAULT_LLM_MODEL

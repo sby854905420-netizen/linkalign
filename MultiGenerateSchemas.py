@@ -17,7 +17,7 @@ from tools.SchemaLinkingTool import SchemaLinkingTool
 from utils import get_sql_files, parse_list_from_str, parse_schemas_from_nodes
 
 
-DEFAULT_LLM_MODEL = "ministral-3:14b"
+DEFAULT_LLM_MODEL = "ministral-3:8b"
 EMBED_MODEL_NAME = "BAAI/bge-large-en-v1.5"
 active_llm_model_name = DEFAULT_LLM_MODEL
 

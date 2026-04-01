@@ -20,13 +20,13 @@ from llama_index.core.query_engine import RetrieverQueryEngine
 
 from prompts.PipelinePromptStore import *
 
-from llms.gpt.GPTModel import GPTModel
+from llms.ollama.ollamaModel import OllamaModel
 from config import GPT_API
 from typing import Union, List, Optional
 import torch
 
 class RagPipeLines:
-    DEFAULT_MODEL = GPTModel()
+    DEFAULT_MODEL = OllamaModel(model_name="ministral-3:8b")
     EMBED_MODEL_NAME = "BAAI/bge-large-en-v1.5"
     _EMBED_MODEL_CACHE = {}
 
