@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import asyncio
 import json
+import logging
 import os
 from pathlib import Path
 from llama_index.core.indices.vector_store import VectorIndexRetriever
@@ -22,6 +23,9 @@ from prompts.AgentPromptStore import *
 from utils import *
 from dotenv import load_dotenv
 load_dotenv('.env')
+
+
+module_logger = logging.getLogger(__name__)
 
 
 def _trace_dir() -> Path | None:
@@ -61,6 +65,30 @@ def _write_trace_json(relative_name: str, payload):
     file_path.parent.mkdir(parents=True, exist_ok=True)
     with open(file_path, "w", encoding="utf-8") as f:
         json.dump(payload, f, ensure_ascii=False, indent=2)
+
+
+def _log_info(logger, message: str, *args):
+    active_logger = logger or module_logger
+    active_logger.info(message, *args)
+
+
+def _preview_text(text: str, limit: int = 240) -> str:
+    cleaned = " ".join(str(text).split())
+    if len(cleaned) <= limit:
+        return cleaned
+    return cleaned[:limit] + "..."
+
+
+def _summarize_nodes(nodes: List[NodeWithScore]) -> str:
+    if not nodes:
+        return "count=0 dbs=0"
+
+    db_ids = []
+    for node in nodes:
+        file_path = node.node.metadata.get("file_path")
+        if file_path:
+            db_ids.append(Path(file_path).parent.name)
+    return f"count={len(nodes)} dbs={len(set(db_ids))}"
 
 
 def _node_payload(nodes: List[NodeWithScore]):
@@ -297,13 +325,26 @@ class SchemaLinkingTool:
         if not llm:
             raise Exception("The llm cannot be empty!")
 
+        _log_info(
+            logger,
+            "[tool.retrieve] start retriever_count=%s retrieve_turn_n=%s locate_turn_n=%s "
+            "global_top_k=%s open_locate=%s open_agent_debate=%s output_format=%s is_all=%s is_single_mode=%s",
+            len(retriever_lis),
+            retrieve_turn_n,
+            locate_turn_n,
+            global_top_k,
+            open_locate,
+            open_agent_debate,
+            output_format,
+            is_all,
+            is_single_mode,
+        )
         enhanced_question = question
         question_nodes = cls.parallel_retrieve(retriever_lis, [question])
         if global_top_k is not None and global_top_k > 0:
             question_nodes = question_nodes[:global_top_k]
         question_nodes = [set_node_turn_n(node, 0) for node in question_nodes]
         _write_trace_json("retrieval/00_question_nodes.json", _node_payload(question_nodes))
-
         nodes = question_nodes
         # 获取所有的 index 和 id 列表
         index_lis = [ret.index for ret in retriever_lis]
@@ -311,7 +352,6 @@ class SchemaLinkingTool:
         sub_ids = get_ids_from_source(nodes)
 
         for ind in range(retrieve_turn_n):
-            logger.info(f"[Query Rewriting Turn {ind + 1}]")
             if not remove_duplicate:
                 # 这里没有将检索范围设置为 sub_ids
                 nodes += cls.parallel_retrieve(retriever_lis, [enhanced_question])
@@ -342,7 +382,6 @@ class SchemaLinkingTool:
             # judge 进行分析
             analysis = llm.complete(JUDGE_TEMPLATE.format(question=question, context=schemas)).text
 
-            logger.info("[analysis]" + analysis)
             _write_trace_json(
                 f"retrieval/query_rewrite_turn_{ind + 1:02d}.json",
                 {
@@ -354,7 +393,6 @@ class SchemaLinkingTool:
             )
             # annotator 添加注释
             annotation = llm.complete(ANNOTATOR_TEMPLATE.format(question=question, analysis=analysis)).text
-            logger.info("[annotation]" + annotation)
             _write_trace_json(
                 f"retrieval/query_annotation_turn_{ind + 1:02d}.json",
                 {
@@ -386,6 +424,7 @@ class SchemaLinkingTool:
         # 根据 turn_n 和 score 重新排序, 重写次数[1] 和 分数[2]
         nodes.sort(key=lambda x: (x.metadata["turn_n"], x.score))
         _write_trace_json("retrieval/final_nodes.json", _node_payload(nodes))
+        _log_info(logger, "[tool.retrieve] final_nodes %s", _summarize_nodes(nodes))
 
         if open_locate:
             """ 若进行数据库定位 """
@@ -396,6 +435,7 @@ class SchemaLinkingTool:
                     nodes=nodes,
                     turn_n=locate_turn_n,
                     is_single_mode=is_single_mode,
+                    logger=logger,
                 )
             else:
                 schemas = get_all_schemas_from_schema_text(nodes=nodes, output_format='schema', is_all=is_all)
@@ -405,11 +445,22 @@ class SchemaLinkingTool:
                     context=schemas,
                     is_single_mode=is_single_mode,
                 )
+            _log_info(
+                logger,
+                "[tool.retrieve] locate_done result=%s",
+                _preview_text(predict_database),
+            )
 
             return predict_database
 
         else:
             output = get_all_schemas_from_schema_text(nodes=nodes, output_format=output_format, is_all=is_all)
+            _log_info(
+                logger,
+                "[tool.retrieve] output_ready output_format=%s node_summary=%s",
+                output_format,
+                _summarize_nodes(nodes),
+            )
 
             return output
 
@@ -482,7 +533,8 @@ class SchemaLinkingTool:
             nodes: List[NodeWithScore] = None,
             context_lis: List[str] = None,
             context_str: str = None,
-            is_single_mode: bool = True
+            is_single_mode: bool = True,
+            logger=None,
     ) -> str:
         """
             Step two: isolate irrelevant schema information.
@@ -532,7 +584,6 @@ class SchemaLinkingTool:
                     """
         source_text = prompt_loader['SOURCE_TEXT_TEMPLATE'].format(query=query, context_str=context_str)
         _write_trace_text("locate/source_text.txt", source_text)
-
         chat_history = []
 
         # one-by-one
@@ -555,7 +606,6 @@ class SchemaLinkingTool:
             )
             chat_history.append(
                 f'[Debate Turn: {i + 1}, Agent Name:"data analyst", Debate Content:{data_analyst_debate}]')
-
             data_scientist_prompt = prompt_loader['FAIR_EVAL_DEBATE_TEMPLATE'].format(
                 source_text=source_text,
                 chat_history="\n".join(chat_history),
@@ -574,7 +624,6 @@ class SchemaLinkingTool:
             )
             chat_history.append(
                 f'[Debate Turn: {i + 1}, Agent Name:"database scientist", Debate Content:{data_scientist_debate}]')
-
         _write_trace_json("locate/chat_history.json", chat_history)
         summary_prompt = prompt_loader['FAIR_EVAL_DEBATE_TEMPLATE'].format(
             source_text=source_text,
@@ -592,6 +641,7 @@ class SchemaLinkingTool:
                 "chat_history": chat_history,
             },
         )
+        _log_info(logger, "[tool.locate] done result=%s", _preview_text(database))
 
         return database
 
@@ -618,7 +668,7 @@ class SchemaLinkingTool:
                                                       context_str=context_str,
                                                       question=query)
         predict_schema = llm.complete(query).text
-        logger.info("[schema linking result]" + "\n" + predict_schema)
+        _log_info(logger, "[tool.generate] done mode=pipeline result=%s", _preview_text(predict_schema))
 
         return predict_schema
 
@@ -645,6 +695,13 @@ class SchemaLinkingTool:
         context_str = f"[The Start of Database Schemas]\n{context}\n[The End of Database Schemas]"
         source_text = GENERATE_SOURCE_TEXT_TEMPLATE.format(query=query, context_str=context_str)
         _write_trace_text("schema_linking/source_text.txt", source_text)
+        _log_info(
+            logger,
+            "[tool.generate] start mode=agent turn_n=%s linker_num=%s source_chars=%s",
+            turn_n,
+            linker_num,
+            len(source_text),
+        )
 
         chat_history = []
 
@@ -688,7 +745,6 @@ class SchemaLinkingTool:
             )
             chat_history.append(
                 f"""[Debate Turn: {i + 1}, Agent Name:"data scientist", Debate Content:{data_scientist_debate}]""")
-        logger.info("[multi-agent debate chat history]" + "\n".join(chat_history))
         _write_trace_json("schema_linking/chat_history.json", chat_history)
         summary_prompt = GENERATE_FAIR_EVAL_DEBATE_TEMPLATE.format(
             source_text=source_text,
@@ -706,7 +762,7 @@ class SchemaLinkingTool:
             },
         )
 
-        logger.info("[debate summary as schema linking result]\n%s", schema)
+        _log_info(logger, "[tool.generate] done mode=agent result=%s", _preview_text(schema))
 
         return schema
 

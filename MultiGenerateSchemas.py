@@ -36,6 +36,16 @@ def get_output_model_name() -> str:
     return active_llm_model_name or DEFAULT_LLM_MODEL
 
 
+def ensure_parent_dir(path: str) -> None:
+    Path(path).parent.mkdir(parents=True, exist_ok=True)
+
+
+def write_text_file(path: str, content: str) -> None:
+    ensure_parent_dir(path)
+    with open(path, "w", encoding="utf-8") as f:
+        f.write(content)
+
+
 def build_logger(name: str = "MultiGenerateSchemas"):
     logger_ = logging.getLogger(name)
     if not logger_.handlers:
@@ -50,6 +60,17 @@ def build_logger(name: str = "MultiGenerateSchemas"):
 logger = build_logger()
 vector_index_cache = {}
 trace_root_dir = None
+
+
+def summarize_df(df: Optional[pd.DataFrame]) -> str:
+    if df is None:
+        return "rows=0 dbs=0 tables=0"
+    if df.empty:
+        return "rows=0 dbs=0 tables=0"
+
+    db_count = df["Database name"].dropna().astype(str).nunique() if "Database name" in df.columns else 0
+    table_count = df[["Database name", "Table Name"]].drop_duplicates().shape[0] if {"Database name", "Table Name"}.issubset(df.columns) else 0
+    return f"rows={len(df)} dbs={db_count} tables={table_count}"
 
 
 def trace_path(*parts: str) -> Optional[Path]:
@@ -81,6 +102,44 @@ def trace_csv(relative_path: str, df: pd.DataFrame):
     if path is None:
         return
     df.to_csv(path, index=False, encoding="utf-8")
+
+
+def build_output_paths(instance_id: str) -> Tuple[str, str, str]:
+    file_name = instance_id + "_agent"
+    output_model_name = get_output_model_name()
+    output_csv = os.path.join(save_path, output_model_name, f"{file_name}.csv")
+    output_txt = os.path.join(links_save_path, output_model_name, f"{file_name}.txt")
+    output_meta = os.path.join(links_save_path, output_model_name, f"{file_name}.meta.json")
+    return output_csv, output_txt, output_meta
+
+
+def clean_schema_links(schema_links: str) -> str:
+    return schema_links.replace("`", "").replace("\n", "").replace("python", "")
+
+
+def get_effective_candidate_db_ids(df: pd.DataFrame) -> List[str]:
+    return sorted(df["Database name"].dropna().astype(str).unique().tolist())
+
+
+def generate_schema_links(question: str, df: pd.DataFrame) -> str:
+    context = parse_schema_context(df)
+    trace_text("pipeline/05_final_schema_subset.txt", context)
+    schema_links = SchemaLinkingTool.generate_by_multi_agent(
+        llm=llm,
+        query=question,
+        context=context,
+        turn_n=1,
+        linker_num=3,
+        logger=logger,
+    )
+    schema_links = clean_schema_links(schema_links)
+    trace_text("pipeline/06_schema_links.txt", schema_links)
+    return schema_links
+
+
+def persist_run_meta(output_meta: str, meta: dict):
+    write_meta(output_meta, meta)
+    trace_json("pipeline/run_output_meta.json", meta)
 
 
 def parse_arguments():
@@ -120,6 +179,7 @@ def parse_schemas_from_file(db_id: str):
     file_lis = get_sql_files(db_schema_dir, ".json")
 
     schema_lis = []
+    skipped_files = 0
     for f in file_lis:
         try:
             file_path = os.path.join(db_schema_dir, f"{f}.json")
@@ -137,7 +197,7 @@ def parse_schemas_from_file(db_id: str):
             }
             schema_lis.append(schema)
         except Exception:
-            pass
+            skipped_files += 1
 
     return pd.DataFrame(schema_lis)
 
@@ -163,18 +223,21 @@ def response_filtering(
     df_list = []
     num_rows = data.shape[0]
 
+    filtered_chunks = 0
     for i in range(0, num_rows, chunk_size):
         df_slice = data.iloc[i:i + chunk_size]
         df_list.append(df_slice)
 
     sub_data_lis = [reserve_df] if reserve_df is not None else []
     for sub_df in df_list:
+        before_rows = len(sub_df)
         schema_context = parse_schema_context(sub_df)
         res = SchemaLinkingTool.locate_with_multi_agent(
             llm=filter_llm,
             query=question,
             context_str=schema_context,
             turn_n=turn_n,
+            logger=logger,
         )
         if "[" not in res or "]" not in res:
             sub_data_lis.append(sub_df)
@@ -192,10 +255,20 @@ def response_filtering(
         for table, field in temp_lis:
             sub_df = sub_df.query("not (`Table Name` == @table and `Field Name` == @field)")
 
+        if len(sub_df) != before_rows:
+            filtered_chunks += 1
         sub_data_lis.append(sub_df)
 
     df = pd.concat(sub_data_lis, axis=0, ignore_index=True)
     df = df.drop_duplicates(subset=["Database name", "Table Name", "Field Name"], ignore_index=True)
+    if filtered_chunks > 0 or len(df) != len(data):
+        logger.info(
+            "[response_filtering] input_rows=%s output_rows=%s changed_rows=%s filtered_chunks=%s",
+            len(data),
+            len(df),
+            len(data) - len(df),
+            filtered_chunks,
+        )
     return df
 
 
@@ -308,6 +381,7 @@ def load_external_knowledge(external_knowledge_id):
 
 
 def normalize_candidate_db_ids(candidate_db_ids) -> List[str]:
+    original_type = type(candidate_db_ids).__name__
     if candidate_db_ids is None:
         candidate_db_ids = []
     elif isinstance(candidate_db_ids, str):
@@ -328,6 +402,7 @@ def normalize_candidate_db_ids(candidate_db_ids) -> List[str]:
 
     if not normalized:
         normalized = load_all_available_db_ids()
+        logger.info("[candidate_db_ids] fallback=all_available resolved_count=%s", len(normalized))
 
     return normalized
 
@@ -417,7 +492,8 @@ def build_reserve_df(df: pd.DataFrame, reserve_rate: float) -> pd.DataFrame:
         temp_df = temp_df.sample(sample_size, random_state=42)
         df_lis.append(temp_df)
 
-    return concat_dataframes(df_lis)
+    reserve_df = concat_dataframes(df_lis)
+    return reserve_df
 
 
 def write_meta(output_meta_path: str, meta: dict):
@@ -462,6 +538,7 @@ def select_database(
         db_ids: List[str],
         question: str,
 ):
+    logger.info("[select_database] start candidate_count=%s", len(db_ids))
     retriever_lis = []
     total_db_size = 0
     for db_id in db_ids:
@@ -497,6 +574,11 @@ def select_database(
             "selected_database": selected_database,
         },
     )
+    logger.info(
+        "[select_database] done selected_database=%s raw_output=%r",
+        selected_database,
+        locate_raw_output,
+    )
     return selected_database, locate_raw_output
 
 
@@ -513,6 +595,12 @@ def get_schema_for_single_db(
         open_schema_linking: bool = False,
 ):
     db_size = load_db_size(db_id)
+    logger.info(
+        "[single_db] start instance_id=%s db_id=%s db_size=%s",
+        instance_id,
+        db_id,
+        db_size,
+    )
     if db_size <= reserve_size:
         df = parse_schemas_from_file(db_id)
         if df.empty:
@@ -522,18 +610,7 @@ def get_schema_for_single_db(
         if not open_schema_linking:
             return df
 
-        context = parse_schema_context(df)
-        trace_text("pipeline/05_final_schema_subset.txt", context)
-        schema_links = SchemaLinkingTool.generate_by_multi_agent(
-            llm=llm,
-            query=question,
-            context=context,
-            turn_n=1,
-            linker_num=3,
-            logger=logger,
-        )
-        schema_links = schema_links.replace("`", "").replace("\n", "").replace("python", "")
-        trace_text("pipeline/06_schema_links.txt", schema_links)
+        schema_links = generate_schema_links(question=question, df=df)
         return df, schema_links
 
     retriever = get_or_build_retriever(db_id)
@@ -573,6 +650,7 @@ def get_schema_for_single_db(
             turn_index = _ + 1
             trace_csv(f"pipeline/03_filter_turn_{turn_index:02d}_before.csv", before_df)
             trace_csv(f"pipeline/03_filter_turn_{turn_index:02d}_after.csv", df)
+            
 
     post_top_k, post_turn_n = load_post_retrival_param(db_size)
     set_retriever(retriever, df)
@@ -592,6 +670,12 @@ def get_schema_for_single_db(
     df = df.drop_duplicates(subset=["Database name", "Table Name", "Field Name"], ignore_index=True)
     trace_csv("pipeline/05_final_schema_subset.csv", df)
     trace_text("pipeline/05_final_schema_subset.txt", parse_schema_context(df))
+    logger.info(
+        "[single_db] done db_id=%s post_retrieval_rows=%s final_subset %s",
+        db_id,
+        len(sub_df),
+        summarize_df(df),
+    )
     return df
 
 
@@ -607,14 +691,19 @@ def get_schema_multi(
         reserve_rate: float = 0.6,
         open_schema_linking: bool = False,
 ):
-    file_name = instance_id + "_agent"
     output_model_name = get_output_model_name()
-    output_csv = os.path.join(save_path, output_model_name, f"{file_name}.csv")
-    output_txt = os.path.join(links_save_path, output_model_name, f"{file_name}.txt")
-    output_meta = os.path.join(links_save_path, output_model_name, f"{file_name}.meta.json")
+    output_csv, output_txt, output_meta = build_output_paths(instance_id)
 
     if not db_ids:
         raise ValueError(f"instance_id={instance_id} has no candidate databases.")
+
+    logger.info(
+        "[multi_db] start instance_id=%s candidate_count=%s output_model=%s open_schema_linking=%s",
+        instance_id,
+        len(db_ids),
+        output_model_name,
+        open_schema_linking,
+    )
 
     trace_json(
         "pipeline/run_input.json",
@@ -627,6 +716,7 @@ def get_schema_multi(
     )
 
     if os.path.isfile(output_csv):
+        logger.info("[multi_db] cache_hit instance_id=%s output_csv=%s", instance_id, output_csv)
         df = pd.read_csv(output_csv)
         selected_database = None
         if os.path.isfile(output_meta):
@@ -634,38 +724,32 @@ def get_schema_multi(
                 meta = json.load(f)
             selected_database = meta.get("selected_database")
         if open_schema_linking:
-            context = parse_schema_context(df)
-            trace_text("pipeline/05_final_schema_subset.txt", context)
-            schema_links = SchemaLinkingTool.generate_by_multi_agent(
-                llm=llm,
-                query=question,
-                context=context,
-                turn_n=1,
-                linker_num=3,
-                logger=logger,
-            )
-            schema_links = schema_links.replace("`", "").replace("\n", "").replace("python", "")
-            os.makedirs(links_save_path, exist_ok=True)
-            with open(output_txt, "w", encoding="utf-8") as f:
-                f.write(schema_links)
+            schema_links = generate_schema_links(question=question, df=df)
+            write_text_file(output_txt, schema_links)
             meta = {
                 "candidate_db_ids": db_ids,
                 "selected_database": selected_database,
-                "effective_candidate_db_ids": sorted(df["Database name"].dropna().astype(str).unique().tolist()),
+                "effective_candidate_db_ids": get_effective_candidate_db_ids(df),
                 "schema_linking_generated": True,
             }
-            write_meta(output_meta, meta)
-            trace_text("pipeline/06_schema_links.txt", schema_links)
-            trace_json("pipeline/run_output_meta.json", meta)
+            persist_run_meta(output_meta, meta)
+            logger.info("[multi_db] done instance_id=%s source=cache schema_linking_generated=True", instance_id)
             return df, schema_links
+        logger.info("[multi_db] done instance_id=%s source=cache schema_linking_generated=False", instance_id)
         return df
 
-    os.makedirs(save_path, exist_ok=True)
+    ensure_parent_dir(output_csv)
     selected_database, locate_raw_output = select_database(db_ids=db_ids, question=question)
     if not selected_database:
         raise ValueError(
             f"Failed to select a database from candidates={db_ids}. locate_raw_output={locate_raw_output!r}"
         )
+    logger.info(
+        "[multi_db] selected_database instance_id=%s selected=%s raw_output=%r",
+        instance_id,
+        selected_database,
+        locate_raw_output,
+    )
 
     df = get_schema_for_single_db(
         db_id=selected_database,
@@ -680,24 +764,13 @@ def get_schema_multi(
         open_schema_linking=False,
     )
     df.to_csv(output_csv, index=False, encoding="utf-8")
+    logger.info("[multi_db] wrote_schema_subset instance_id=%s %s", instance_id, summarize_df(df))
 
-    effective_candidate_db_ids = sorted(df["Database name"].dropna().astype(str).unique().tolist())
+    effective_candidate_db_ids = get_effective_candidate_db_ids(df)
 
     if open_schema_linking:
-        context = parse_schema_context(df)
-        trace_text("pipeline/05_final_schema_subset.txt", context)
-        schema_links = SchemaLinkingTool.generate_by_multi_agent(
-            llm=llm,
-            query=question,
-            context=context,
-            turn_n=1,
-            linker_num=3,
-            logger=logger,
-        )
-        schema_links = schema_links.replace("`", "").replace("\n", "").replace("python", "")
-        os.makedirs(links_save_path, exist_ok=True)
-        with open(output_txt, "w", encoding="utf-8") as f:
-            f.write(schema_links)
+        schema_links = generate_schema_links(question=question, df=df)
+        write_text_file(output_txt, schema_links)
 
         meta = {
             "candidate_db_ids": db_ids,
@@ -707,9 +780,8 @@ def get_schema_multi(
             "schema_linking_generated": True,
             "locate_only": False,
         }
-        write_meta(output_meta, meta)
-        trace_text("pipeline/06_schema_links.txt", schema_links)
-        trace_json("pipeline/run_output_meta.json", meta)
+        persist_run_meta(output_meta, meta)
+        logger.info("[multi_db] done instance_id=%s schema_linking_generated=True", instance_id)
         return df, schema_links
 
     meta = {
@@ -720,8 +792,8 @@ def get_schema_multi(
         "schema_linking_generated": False,
         "locate_only": False,
     }
-    write_meta(output_meta, meta)
-    trace_json("pipeline/run_output_meta.json", meta)
+    persist_run_meta(output_meta, meta)
+    logger.info("[multi_db] done instance_id=%s schema_linking_generated=False", instance_id)
     return df
 
 
@@ -729,6 +801,13 @@ def process_row(index, row):
     candidate_db_ids = normalize_candidate_db_ids(row.get(candidate_db_key))
     external = load_external_knowledge(row["external_knowledge"])
     question = row["question"] + external if external else row["question"]
+    logger.info(
+        "[process_row] start index=%s instance_id=%s candidate_count=%s external_loaded=%s",
+        index,
+        row.get("instance_id"),
+        len(candidate_db_ids),
+        bool(external),
+    )
     try:
         get_schema_multi(
             db_ids=candidate_db_ids,
@@ -736,6 +815,7 @@ def process_row(index, row):
             instance_id=row["instance_id"],
             open_schema_linking=open_schema_linking,
         )
+        logger.info("[process_row] done index=%s instance_id=%s", index, row.get("instance_id"))
     except Exception as e:
         logger.exception("Failed on row index=%s instance_id=%s error=%s", index, row.get("instance_id"), e)
 
@@ -763,9 +843,11 @@ if __name__ == "__main__":
     external_info_path = args.external_info_path
     open_schema_linking = args.open_schema_linking
     candidate_db_key = args.candidate_db_key
+    logger.info("[main] config dataset=%s max_workers=%s open_schema_linking=%s", dataset_path, args.max_workers, open_schema_linking)
 
     with open(db_info_path, "r", encoding="utf-8") as file:
         db_info = json.load(file)
+    logger.info("[main] loaded_db_info count=%s", len(db_info))
 
     RagPipeLines.ensure_embed_model(EMBED_MODEL_NAME)
     logger.info("Embedding model %s loaded once and will be reused for vector retrieval.", EMBED_MODEL_NAME)
@@ -773,9 +855,12 @@ if __name__ == "__main__":
     try:
         val_df = load_data(dataset_path)
         inputs = list(val_df.iterrows())
+        logger.info("[main] loaded_dataset rows=%s", len(val_df))
+        logger.info("[main] submitting_rows total=%s max_workers=%s", len(inputs), args.max_workers)
 
         with concurrent.futures.ThreadPoolExecutor(max_workers=args.max_workers) as executor:
             list(tqdm(executor.map(wrapper, inputs), total=len(inputs)))
+        logger.info("[main] all_rows_completed total=%s", len(inputs))
     finally:
         RagPipeLines.release_embed_model()
         logger.info("Embedding model %s released.", EMBED_MODEL_NAME)

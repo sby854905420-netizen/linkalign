@@ -1,4 +1,5 @@
 import gc
+import logging
 import os
 import threading
 from pathlib import Path
@@ -26,6 +27,9 @@ from llms.ollama.ollamaModel import OllamaModel
 from config import GPT_API
 from typing import Union, List, Optional
 import torch
+
+
+module_logger = logging.getLogger(__name__)
 
 class RagPipeLines:
     DEFAULT_MODEL = OllamaModel(model_name="ministral-3:8b")
@@ -84,8 +88,8 @@ class RagPipeLines:
                     or "to_empty()" in error_msg
                 )
                 if preferred_device == "cuda" and is_meta_tensor_move_error:
-                    print(
-                        "⚠️ Encountered a meta-tensor device move error on CUDA. "
+                    module_logger.warning(
+                        "Encountered a meta-tensor device move error on CUDA. "
                         "Falling back to CPU for embedding model loading."
                     )
                     fallback_key = (embed_model_name, "cpu")
