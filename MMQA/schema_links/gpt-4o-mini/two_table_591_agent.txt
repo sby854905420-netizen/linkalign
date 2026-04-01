@@ -1,1 +1,0 @@
-['people.Name', 'gymnast.Horizontal_Bar_Points', 'people.Age', 'people.Hometown']

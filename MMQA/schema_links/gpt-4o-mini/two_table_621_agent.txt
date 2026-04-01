@@ -1,1 +1,0 @@
-['wrestler.Wrestler_ID', 'wrestler.Days_held', 'wrestler.Team', 'wrestler.Name', 'Elimination.Wrestler_ID', 'Elimination.Time']

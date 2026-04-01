@@ -1,1 +1,0 @@
-['happy_hour.Num_of_shaff_in_charge', 'happy_hour.Shop_ID', 'happy_hour.Month', 'shop.Score', 'shop.Address', 'shop.Shop_ID']

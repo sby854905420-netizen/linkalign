@@ -1,1 +1,0 @@
-['user_profiles.uid', 'user_profiles.followers', 'tweets.createdate']

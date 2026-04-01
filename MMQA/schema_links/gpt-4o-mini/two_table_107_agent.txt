@@ -1,1 +1,0 @@
-['Catalogs.catalog_name', 'Catalogs.catalog_publisher', 'Catalog_Contents.catalog_entry_id', 'Catalog_Contents_Additional_Attributes.attribute_value', 'Catalog_Structure.catalog_level_name']

@@ -1,1 +1,0 @@
-['item.i_id', 'item.title', 'review.i_id', 'review.rating']

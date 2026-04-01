@@ -1,1 +1,0 @@
-['Customer.FirstName', 'Customer.LastName', 'Customer.SupportRepId', 'Employee.FirstName', 'Employee.LastName', 'Employee.Title']

@@ -1,1 +1,0 @@
-['people.Name', 'people.Party', 'debate_people.If_Affirmative_Win', 'debate_people.Affirmative']

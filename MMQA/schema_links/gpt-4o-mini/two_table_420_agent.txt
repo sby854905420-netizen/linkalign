@@ -1,1 +1,0 @@
-['Apartments.apt_number', 'Apartments.bathroom_count', 'Apartment_Bookings.booking_status_code', 'Apartment_Bookings.apt_id']

@@ -1,1 +1,0 @@
-['user_profiles.uid', 'user_profiles.name', 'follows.f1', 'follows.f2']

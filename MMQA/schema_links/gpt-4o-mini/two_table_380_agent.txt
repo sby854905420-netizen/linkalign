@@ -1,1 +1,0 @@
-['body_builder.Total', 'people.Birth_Place', 'body_builder.People_ID', 'people.People_ID']

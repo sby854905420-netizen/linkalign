@@ -1,1 +1,0 @@
-['employee.eid', 'employee.name', 'certificate.eid', 'COUNT(certificate.eid) AS certificate_count']

@@ -1,1 +1,0 @@
-['gymnast.Horizontal_Bar_Points', 'gymnast.Gymnast_ID', 'people.Name', 'people.Hometown', 'people.People_ID']

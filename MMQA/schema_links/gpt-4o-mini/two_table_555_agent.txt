@@ -1,1 +1,0 @@
-['exhibition.Theme', 'exhibition.Year', 'exhibition_record.Attendance']

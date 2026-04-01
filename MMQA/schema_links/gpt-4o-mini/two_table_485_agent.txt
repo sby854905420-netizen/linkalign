@@ -1,1 +1,0 @@
-['Claim_Headers.Amount_Claimed', 'Claim_Headers.Claim_Type_Code', 'Claim_Headers.Claim_Status_Code', 'Claims_Documents.Claim_ID', 'Claims_Documents.Document_Type_Code']

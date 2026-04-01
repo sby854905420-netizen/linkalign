@@ -1,1 +1,0 @@
-['city.City_ID', 'farm_competition.Host_city_ID', 'farm_competition.Competition_ID']

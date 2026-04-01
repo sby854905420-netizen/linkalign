@@ -1,1 +1,0 @@
-['Accounts.account_id', 'Accounts.customer_id', 'Accounts.account_name', 'Accounts.other_account_details', 'Customers.customer_id', 'Customers.customer_first_name', 'Customers.customer_last_name']

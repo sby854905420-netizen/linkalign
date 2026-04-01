@@ -1,1 +1,0 @@
-['Products.product_id', 'Products.product_color', 'Products.production_type_code', 'Invoice_Line_Items.product_id', 'Invoice_Line_Items.product_quantity', 'Invoice_Line_Items.product_price', 'Product_Categories.production_type_code']

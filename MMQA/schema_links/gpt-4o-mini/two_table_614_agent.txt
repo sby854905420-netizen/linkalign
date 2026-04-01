@@ -1,1 +1,0 @@
-['SAVINGS.custid', 'SAVINGS.balance', 'ACCOUNTS.custid', 'ACCOUNTS.name']

@@ -1,1 +1,0 @@
-['Apartments.apt_type_code', 'Apartments.bathroom_count', 'View_Unit_Status.available_yn', 'Apartments.apt_id', 'View_Unit_Status.apt_id']

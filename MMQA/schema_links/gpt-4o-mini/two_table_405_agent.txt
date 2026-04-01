@@ -1,1 +1,0 @@
-['Apartment_Bookings.booking_end_date', 'Apartment_Bookings.guest_id', 'Apartment_Bookings.booking_status_code', 'Guests.guest_first_name', 'Guests.guest_last_name']

@@ -1,1 +1,0 @@
-['accelerator_compatible_browser.browser_id', 'accelerator_compatible_browser.compatible_since_year', 'browser.market_share', 'browser.name']

@@ -1,1 +1,0 @@
-['artist.Age', 'artist.Country', 'exhibition.Ticket_Price', 'exhibition.Artist_ID']

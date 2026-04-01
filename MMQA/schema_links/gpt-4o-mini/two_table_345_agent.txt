@@ -1,1 +1,0 @@
-[    "match_season.Season",     "match_season.Player",     "match_season.Team",     "player.Player",     "player.Team",     "team.Name"]

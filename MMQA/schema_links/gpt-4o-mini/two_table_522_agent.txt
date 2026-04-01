@@ -1,1 +1,0 @@
-['Bookings.amount_of_refund', 'Bookings.customer_id', 'Customers.customer_id']

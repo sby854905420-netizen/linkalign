@@ -1,1 +1,0 @@
-['Actual_Orders.actual_order_date', 'Customers.customer_id', 'Customer_Addresses.customer_id', 'Customer_Addresses.address_id', 'Addresses.state_province_county']

@@ -1,1 +1,0 @@
-['customers.first_name', 'customers.last_name', 'invoices.total', 'invoices.customer_id', 'invoices.billing_country']

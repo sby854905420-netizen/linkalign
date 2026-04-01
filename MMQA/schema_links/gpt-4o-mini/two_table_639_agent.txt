@@ -1,1 +1,0 @@
-['protein.protein_name', 'protein.sequence_identity_to_human_protein', 'Institution.Institution', 'protein.Institution_id', 'Institution.Institution_id']

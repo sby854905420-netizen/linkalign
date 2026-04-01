@@ -1,1 +1,0 @@
-['actor.Name', 'musical.Award', 'musical.Result', 'actor.Musical_ID', 'musical.Musical_ID']

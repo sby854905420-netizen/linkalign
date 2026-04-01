@@ -1,1 +1,0 @@
-['Customers.customer_first_name', 'Customers.customer_last_name', 'Customers.customer_email', 'Customers_Cards.date_valid_from']

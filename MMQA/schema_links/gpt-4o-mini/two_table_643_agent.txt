@@ -1,1 +1,0 @@
-['cinema.Openning_year', 'cinema.Name', 'schedule.Price', 'cinema.Cinema_ID', 'schedule.Cinema_ID']

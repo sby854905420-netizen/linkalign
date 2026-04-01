@@ -1,1 +1,0 @@
-['player.Player', 'player.Team', 'player.Player_ID', 'team.Name', 'team.Team_id']

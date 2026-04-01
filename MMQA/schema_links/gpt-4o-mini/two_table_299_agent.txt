@@ -1,1 +1,0 @@
-['enzyme.name', 'enzyme.Location', 'enzyme.id', 'medicine.id', 'medicine_enzyme_interaction.medicine_id', 'medicine_enzyme_interaction.enzyme_id']

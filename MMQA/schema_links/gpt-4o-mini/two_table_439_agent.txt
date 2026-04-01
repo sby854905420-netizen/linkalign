@@ -1,1 +1,0 @@
-['member.Member_ID', 'member.Role', 'member_attendance.Num_of_Pieces']

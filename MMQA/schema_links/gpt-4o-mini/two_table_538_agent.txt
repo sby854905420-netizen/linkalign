@@ -1,1 +1,0 @@
-['Customer_Orders.order_id', 'Order_Items.order_id', 'Order_Items.product_id', 'Products.product_price', 'Products.product_type_code']

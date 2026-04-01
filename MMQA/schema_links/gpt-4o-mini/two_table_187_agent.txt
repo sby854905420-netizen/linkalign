@@ -1,1 +1,0 @@
-['editor.Editor_ID', 'editor.Age', 'editor.Name', 'journal_committee.Work_Type']

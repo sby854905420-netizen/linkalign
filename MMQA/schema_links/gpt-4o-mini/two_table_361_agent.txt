@@ -1,1 +1,0 @@
-['climber.Name', 'climber.Mountain_ID', 'climber.Country', 'mountain.Name', 'mountain.Height', 'mountain.Mountain_ID']

@@ -1,1 +1,0 @@
-['Student.StuID', 'Student.LName', 'Student.Fname', 'Student.city_code', 'Has_Allergy.Allergy', 'Allergy_Type.AllergyType']

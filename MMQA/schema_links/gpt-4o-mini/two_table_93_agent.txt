@@ -1,1 +1,0 @@
-['actor.Age', 'actor.Musical_ID', 'actor.Name', 'musical.Nominee', 'musical.Award', 'musical.Name']

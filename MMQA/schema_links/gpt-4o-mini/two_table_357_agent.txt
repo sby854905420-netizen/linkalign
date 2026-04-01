@@ -1,1 +1,0 @@
-['country.Official_native_language', 'match_season.Player', 'match_season.Position', 'match_season.Draft_Pick_Number']

@@ -1,1 +1,0 @@
-['aircraft.name', 'certificate.eid', 'certificate.aid']

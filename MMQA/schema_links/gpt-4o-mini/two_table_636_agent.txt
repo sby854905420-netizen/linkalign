@@ -1,1 +1,0 @@
-['Institution.building_id', 'Institution.Founded', 'Institution.Institution', 'building.Floors']

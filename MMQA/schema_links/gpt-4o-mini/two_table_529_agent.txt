@@ -1,1 +1,0 @@
-['Invoices.invoice_date', 'Invoices.order_id', 'Orders.order_id']

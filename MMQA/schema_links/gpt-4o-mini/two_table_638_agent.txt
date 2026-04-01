@@ -1,1 +1,0 @@
-['Institution.Type', 'Institution.building_id', 'Building.Height_feet', 'Building.Name']

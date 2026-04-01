@@ -1,1 +1,0 @@
-['Country.name', 'League.name', 'League.country_id', 'Country.id']

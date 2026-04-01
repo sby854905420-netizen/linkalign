@@ -1,1 +1,0 @@
-['Candidates.candidate_id', 'Candidates.candidate_details', 'People.first_name', 'People.last_name']

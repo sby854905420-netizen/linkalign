@@ -1,1 +1,0 @@
-['Customer.CustomerId', 'Customer.Country', 'Invoice.Total']

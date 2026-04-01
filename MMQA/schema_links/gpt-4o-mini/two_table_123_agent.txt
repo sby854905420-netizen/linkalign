@@ -1,1 +1,0 @@
-['flight.aid', 'flight.origin', 'flight.destination', 'aircraft.name']

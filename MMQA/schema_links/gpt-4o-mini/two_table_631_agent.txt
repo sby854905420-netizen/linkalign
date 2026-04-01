@@ -1,1 +1,0 @@
-['School.School_id', 'School.School_name', 'budget.Invested', 'budget.Budgeted', 'budget.Invested - budget.Budgeted AS Investment_Above_Budget']

@@ -1,1 +1,0 @@
-['Invoices.invoice_number', 'Invoices.invoice_date', 'Financial_Transactions.transaction_amount']

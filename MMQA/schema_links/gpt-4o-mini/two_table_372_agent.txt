@@ -1,1 +1,0 @@
-['body_builder.Clean_Jerk', 'body_builder.People_ID', 'people.Name', 'people.People_ID']

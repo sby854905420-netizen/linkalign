@@ -21,8 +21,7 @@ from prompts.PipelinePromptStore import *
 from rag_pipes.RagPipeline import RagPipeLines
 from prompts.AgentPromptStore import *
 from utils import *
-from dotenv import load_dotenv
-load_dotenv('.env')
+
 
 
 module_logger = logging.getLogger(__name__)

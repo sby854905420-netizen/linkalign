@@ -1,1 +1,0 @@
-['country.Country_id', 'country.Official_native_language', 'country.Country_name', 'match_season.Position', 'match_season.Country']

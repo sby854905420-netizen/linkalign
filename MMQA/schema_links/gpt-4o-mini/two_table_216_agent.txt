@@ -1,1 +1,0 @@
-['Financial_Transactions.transaction_amount', 'Financial_Transactions.transaction_type', 'Financial_Transactions.card_id', 'Customers_Cards.card_type_code']

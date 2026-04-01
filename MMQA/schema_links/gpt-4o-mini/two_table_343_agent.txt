@@ -1,1 +1,0 @@
-['match_season.Player', 'match_season.Position', 'match_season.Team', 'match_season.Season', 'team.Name']

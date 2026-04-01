@@ -1,1 +1,0 @@
-['Web_client_accelerator.name', 'accelerator_compatible_browser.accelerator_id', 'Web_client_accelerator.Operating_system', 'accelerator_compatible_browser.browser_id']

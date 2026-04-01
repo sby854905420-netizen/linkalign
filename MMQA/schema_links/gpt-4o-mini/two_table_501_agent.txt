@@ -1,1 +1,0 @@
-['ACCOUNTS.custid', 'ACCOUNTS.name', 'CUSTOMERS.custid', 'CUSTOMERS.state', 'CUSTOMERS.opening_date']

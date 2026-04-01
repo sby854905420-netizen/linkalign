@@ -1,1 +1,0 @@
-['Candidates.candidate_details', 'People.email_address']

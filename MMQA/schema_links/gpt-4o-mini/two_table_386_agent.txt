@@ -1,1 +1,0 @@
-['election.Delegate', 'election.Election_ID', 'election.Counties_Represented', 'party.Party']

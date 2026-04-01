@@ -1,1 +1,0 @@
-['Students.student_id', 'Student_Course_Registrations.student_id', 'Student_Course_Registrations.registration_date', 'Student_Course_Attendance.student_id', 'Student_Course_Attendance.date_of_attendance']

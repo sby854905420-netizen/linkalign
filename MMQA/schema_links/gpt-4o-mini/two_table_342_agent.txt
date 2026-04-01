@@ -1,1 +1,0 @@
-['country.Capital', 'match_season.Draft_Pick_Number', 'match_season.Country', 'match_season.Position']

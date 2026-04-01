@@ -1,1 +1,0 @@
-['schedule.Cinema_ID', 'schedule.Show_times_per_day', 'schedule.Film_ID', 'film.Title', 'film.Directed_by']

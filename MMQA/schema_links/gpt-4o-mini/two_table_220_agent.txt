@@ -1,1 +1,0 @@
-['race.Track_ID', 'race.Date', 'track.Name', 'track.Seating']

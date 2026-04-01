@@ -1,1 +1,0 @@
-['School.School_id', 'School.County', 'School.School_name', 'budget.School_id', 'budget.Invested', 'budget.Year']

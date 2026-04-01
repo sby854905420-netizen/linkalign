@@ -1,1 +1,0 @@
-['election.Seats', 'election.Representative_ID', 'representative.Name']

@@ -1,1 +1,0 @@
-['Player.player_name', 'Player_Attributes.player_api_id', 'Country.name', 'Country.capital']

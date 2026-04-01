@@ -1,1 +1,0 @@
-['protein.common_name', 'protein.sequence_length', 'protein.sequence_identity_to_human_protein', 'protein.Institution_id', 'institution.Institution', 'institution.Team']

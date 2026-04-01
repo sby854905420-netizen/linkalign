@@ -1,1 +1,0 @@
-['customers.support_rep_id', 'customers.city', 'customers.country', 'employees.id', 'employees.first_name', 'employees.last_name']

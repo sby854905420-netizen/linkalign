@@ -1,1 +1,0 @@
-['match_season.Player', 'match_season.Draft_Pick_Number', 'match_season.Team', 'team.Name']

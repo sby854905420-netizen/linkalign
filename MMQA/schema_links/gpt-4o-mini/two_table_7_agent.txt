@@ -1,1 +1,0 @@
-['city.City_ID', 'city.Official_Name', 'city.Area_km_2', 'farm_competition.Host_city_ID', 'farm_competition.Year']

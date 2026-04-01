@@ -1,1 +1,0 @@
-['Customers.Customer_ID', 'Customers.Customer_Details', 'Policies.Policy_ID', 'Policies.Customer_ID']

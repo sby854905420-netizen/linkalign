@@ -1,1 +1,0 @@
-['People.person_id', 'People_Addresses.address_id', 'Addresses.state_province_county']

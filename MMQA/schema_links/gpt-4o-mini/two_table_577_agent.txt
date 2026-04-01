@@ -1,1 +1,0 @@
-['match_result.Gold', 'match_result.Club_ID', 'club.Club_ID', 'coach.Rank', 'coach.Coach_name']

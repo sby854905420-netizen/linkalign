@@ -1,1 +1,0 @@
-['city.Official_Name', 'farm_competition.Host_city_ID', 'farm_competition.Theme']

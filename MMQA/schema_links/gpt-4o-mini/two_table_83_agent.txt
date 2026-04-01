@@ -1,1 +1,0 @@
-['book.Title', 'book.Issues', 'publication.Price', 'book.Book_ID', 'publication.Book_ID']

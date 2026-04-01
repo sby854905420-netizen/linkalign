@@ -2,6 +2,10 @@ tmp_run/
 spider2_dev/
 spider2_dev/schemas/
 MMQA/schemas/
+MMQA/instance_schemas/*
+!MMQA/instance_schemas/.gitkeep
+MMQA/schema_links/*
+!MMQA/schema_links/.gitkeep
 spider2_dev/external_knowledge/
 requirements-py311-rtx5090.txt
 .env

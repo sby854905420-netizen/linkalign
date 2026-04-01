@@ -1,1 +1,0 @@
-['journal.Sales', 'journal.Date', 'journal_committee.Work_Type', 'journal_committee.Journal_ID']

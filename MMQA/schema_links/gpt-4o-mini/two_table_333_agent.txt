@@ -1,1 +1,0 @@
-['player.player_id', 'player.birth_country', 'player_award.year', 'college.country']

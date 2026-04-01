@@ -1,1 +1,0 @@
-['wedding.Year', 'wedding.Male_ID', 'wedding.Female_ID', 'people.Name', 'people.People_ID', 'people.Is_Male']

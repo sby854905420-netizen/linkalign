@@ -1,1 +1,0 @@
-['city.Official_Name', 'city.Population', 'farm_competition.Host_city_ID', 'farm_competition.Year']

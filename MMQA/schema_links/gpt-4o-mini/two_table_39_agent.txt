@@ -1,1 +1,0 @@
-['Courses.course_name', 'Student_Enrolment_Courses.course_id', 'Students.date_first_registered', 'Student_Enrolment.student_enrolment_id', 'Student_Enrolment.student_id']

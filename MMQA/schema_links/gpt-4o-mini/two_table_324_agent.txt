@@ -1,1 +1,0 @@
-['phone.Company_name', 'phone.Hardware_Model_name', 'screen_mode.Char_cells', 'screen_mode.Pixels', 'screen_mode.Hardware_colours']

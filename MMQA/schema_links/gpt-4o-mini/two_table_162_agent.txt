@@ -1,1 +1,0 @@
-['Album.Title', 'Album.AlbumId', 'Album.ArtistId', 'Artist.Name', 'Artist.ArtistId']

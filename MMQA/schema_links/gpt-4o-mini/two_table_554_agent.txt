@@ -1,1 +1,0 @@
-['exhibition.Ticket_Price', 'exhibition.Exhibition_ID', 'exhibition.Theme', 'exhibition_record.Attendance', 'exhibition_record.Exhibition_ID']

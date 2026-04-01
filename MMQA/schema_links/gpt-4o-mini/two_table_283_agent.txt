@@ -1,1 +1,0 @@
-['Claims.FNOL_ID', 'Claims.Claim_ID', 'Settlements.Settlement_Amount']

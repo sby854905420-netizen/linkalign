@@ -1,1 +1,0 @@
-['book.Writer', 'book.Book_ID', 'publication.Price', 'publication.Book_ID']

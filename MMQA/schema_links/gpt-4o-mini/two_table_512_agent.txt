@@ -1,1 +1,0 @@
-['Accounts.date_account_opened', 'Accounts.customer_id', 'Customers.state_county_province', 'Customers.customer_first_name', 'Customers.customer_last_name']

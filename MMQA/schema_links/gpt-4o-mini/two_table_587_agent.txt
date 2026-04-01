@@ -1,1 +1,0 @@
-['gymnast.Total_Points', 'people.Height', 'people.Name']

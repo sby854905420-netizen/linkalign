@@ -1,1 +1,0 @@
-['CHECKING.custid', 'CHECKING.balance', 'SAVINGS.custid', 'SAVINGS.balance']

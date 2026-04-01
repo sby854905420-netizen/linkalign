@@ -1,1 +1,0 @@
-['enzyme.name', 'medicine.name', 'medicine.FDA_approved', 'medicine_enzyme_interaction.interaction_type', 'medicine_enzyme_interaction.medicine_id', 'medicine_enzyme_interaction.enzyme_id']

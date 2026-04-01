@@ -1,1 +1,0 @@
-['chip_model.Model_name', 'chip_model.Launch_year', 'chip_model.ROM_MiB', 'phone.Company_name', 'phone.Accreditation_level']
