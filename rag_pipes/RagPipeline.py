@@ -1,4 +1,6 @@
+import gc
 import os
+import threading
 from pathlib import Path
 
 from llama_index.core import (
@@ -29,17 +31,92 @@ class RagPipeLines:
     DEFAULT_MODEL = OllamaModel(model_name="ministral-3:8b")
     EMBED_MODEL_NAME = "BAAI/bge-large-en-v1.5"
     _EMBED_MODEL_CACHE = {}
+    _EMBED_MODEL_LOCK = threading.Lock()
+    _ACTIVE_EMBED_CACHE_KEY = None
 
     @classmethod
-    def _get_embed_model(cls, embed_model_name: str, device: str):
-        cache_key = (embed_model_name, device)
-        if cache_key not in cls._EMBED_MODEL_CACHE:
-            cls._EMBED_MODEL_CACHE[cache_key] = HuggingFaceEmbedding(
-                model_name=embed_model_name,
-                embed_batch_size=8,
-                device=device,
+    def _get_preferred_device(cls, device: Optional[str] = None) -> str:
+        if device:
+            return device
+        return "cuda" if torch.cuda.is_available() else "cpu"
+
+    @classmethod
+    def _set_active_embed_model(cls, embed_model, cache_key):
+        Settings.embed_model = embed_model
+        cls._ACTIVE_EMBED_CACHE_KEY = cache_key
+        return embed_model
+
+    @classmethod
+    def ensure_embed_model(cls, embed_model_name: str = None, device: str = None):
+        if embed_model_name is None:
+            embed_model_name = cls.EMBED_MODEL_NAME
+
+        if isinstance(embed_model_name, str) and embed_model_name.startswith("text-embedding-"):
+            embed_model = OpenAIEmbedding(
+                model=embed_model_name,
+                api_key=GPT_API,
             )
-        return cls._EMBED_MODEL_CACHE[cache_key]
+            return cls._set_active_embed_model(embed_model, (embed_model_name, "openai"))
+
+        preferred_device = cls._get_preferred_device(device)
+
+        with cls._EMBED_MODEL_LOCK:
+            cache_key = (embed_model_name, preferred_device)
+            active_key = cls._ACTIVE_EMBED_CACHE_KEY
+            if active_key == cache_key and active_key in cls._EMBED_MODEL_CACHE:
+                return cls._set_active_embed_model(cls._EMBED_MODEL_CACHE[active_key], active_key)
+
+            if cache_key in cls._EMBED_MODEL_CACHE:
+                return cls._set_active_embed_model(cls._EMBED_MODEL_CACHE[cache_key], cache_key)
+
+            try:
+                embed_model = HuggingFaceEmbedding(
+                    model_name=embed_model_name,
+                    embed_batch_size=8,
+                    device=preferred_device,
+                )
+                cls._EMBED_MODEL_CACHE[cache_key] = embed_model
+                return cls._set_active_embed_model(embed_model, cache_key)
+            except Exception as exc:
+                error_msg = str(exc)
+                is_meta_tensor_move_error = (
+                    "Cannot copy out of meta tensor" in error_msg
+                    or "to_empty()" in error_msg
+                )
+                if preferred_device == "cuda" and is_meta_tensor_move_error:
+                    print(
+                        "⚠️ Encountered a meta-tensor device move error on CUDA. "
+                        "Falling back to CPU for embedding model loading."
+                    )
+                    fallback_key = (embed_model_name, "cpu")
+                    if fallback_key not in cls._EMBED_MODEL_CACHE:
+                        cls._EMBED_MODEL_CACHE[fallback_key] = HuggingFaceEmbedding(
+                            model_name=embed_model_name,
+                            embed_batch_size=8,
+                            device="cpu",
+                        )
+                    return cls._set_active_embed_model(cls._EMBED_MODEL_CACHE[fallback_key], fallback_key)
+                raise RuntimeError(
+                    f"Failed to initialize HuggingFace embedding model: {embed_model_name}"
+                ) from exc
+
+    @classmethod
+    def release_embed_model(cls):
+        with cls._EMBED_MODEL_LOCK:
+            cached_models = list(cls._EMBED_MODEL_CACHE.values())
+            cls._EMBED_MODEL_CACHE.clear()
+            cls._ACTIVE_EMBED_CACHE_KEY = None
+            Settings.embed_model = None
+
+        for embed_model in cached_models:
+            for attr_name in ("_model", "_tokenizer"):
+                if hasattr(embed_model, attr_name):
+                    setattr(embed_model, attr_name, None)
+            del embed_model
+
+        gc.collect()
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
     
     @classmethod
     def build_index_from_source(
@@ -61,36 +138,7 @@ class RagPipeLines:
         if embed_model_name is None:
             embed_model_name = cls.EMBED_MODEL_NAME
 
-        if isinstance(embed_model_name, str) and embed_model_name.startswith("text-embedding-"):
-            Settings.embed_model = OpenAIEmbedding(
-                model=embed_model_name,
-                api_key=GPT_API,
-            )
-        else:
-            preferred_device = "cuda" if torch.cuda.is_available() else "cpu"
-
-            try:
-                Settings.embed_model = cls._get_embed_model(embed_model_name, preferred_device)
-            except Exception as exc:
-                error_msg = str(exc)
-                is_meta_tensor_move_error = (
-                    "Cannot copy out of meta tensor" in error_msg
-                    or "to_empty()" in error_msg
-                )
-                if preferred_device == "cuda" and is_meta_tensor_move_error:
-                    print(
-                        "⚠️ Encountered a meta-tensor device move error on CUDA. "
-                        "Falling back to CPU for embedding model loading."
-                    )
-                    Settings.embed_model = cls._get_embed_model(embed_model_name, "cpu")
-                else:
-                    raise
-
-        if Settings.embed_model is None:
-            raise RuntimeError(
-                f"Failed to initialize HuggingFace embedding model: {embed_model_name}"
-            )
-        print(f"Deploy the embedding model {Settings.embed_model.model_name}!")
+        cls.ensure_embed_model(embed_model_name=embed_model_name)
 
         valid_index_methods = {"SummaryIndex", "VectorStoreIndex"}
         if index_method not in valid_index_methods:

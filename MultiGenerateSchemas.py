@@ -767,8 +767,15 @@ if __name__ == "__main__":
     with open(db_info_path, "r", encoding="utf-8") as file:
         db_info = json.load(file)
 
-    val_df = load_data(dataset_path)
-    inputs = list(val_df.iterrows())
+    RagPipeLines.ensure_embed_model(EMBED_MODEL_NAME)
+    logger.info("Embedding model %s loaded once and will be reused for vector retrieval.", EMBED_MODEL_NAME)
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=args.max_workers) as executor:
-        list(tqdm(executor.map(wrapper, inputs), total=len(inputs)))
+    try:
+        val_df = load_data(dataset_path)
+        inputs = list(val_df.iterrows())
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=args.max_workers) as executor:
+            list(tqdm(executor.map(wrapper, inputs), total=len(inputs)))
+    finally:
+        RagPipeLines.release_embed_model()
+        logger.info("Embedding model %s released.", EMBED_MODEL_NAME)
