@@ -19,6 +19,7 @@ from utils import get_sql_files, parse_list_from_str, parse_schemas_from_nodes
 
 DEFAULT_LLM_MODEL = "ministral-3:14b"
 EMBED_MODEL_NAME = "BAAI/bge-large-en-v1.5"
+active_llm_model_name = DEFAULT_LLM_MODEL
 
 llm = OllamaModel(model_name=DEFAULT_LLM_MODEL, temperature=0.85)
 filter_llm = OllamaModel(model_name=DEFAULT_LLM_MODEL, temperature=0.42)
@@ -29,6 +30,10 @@ def build_llm(model_name: str, temperature: float):
     if normalized.startswith("gpt-"):
         return GPTModel(model_name=model_name, temperature=temperature)
     return OllamaModel(model_name=model_name, temperature=temperature)
+
+
+def get_output_model_name() -> str:
+    return active_llm_model_name or DEFAULT_LLM_MODEL
 
 
 def build_logger(name: str = "MultiGenerateSchemas"):
@@ -603,9 +608,10 @@ def get_schema_multi(
         open_schema_linking: bool = False,
 ):
     file_name = instance_id + "_agent"
-    output_csv = os.path.join(save_path, DEFAULT_LLM_MODEL,f"{file_name}.csv")
-    output_txt = os.path.join(links_save_path, DEFAULT_LLM_MODEL, f"{file_name}.txt")
-    output_meta = os.path.join(links_save_path, DEFAULT_LLM_MODEL, f"{file_name}.meta.json")
+    output_model_name = get_output_model_name()
+    output_csv = os.path.join(save_path, output_model_name, f"{file_name}.csv")
+    output_txt = os.path.join(links_save_path, output_model_name, f"{file_name}.txt")
+    output_meta = os.path.join(links_save_path, output_model_name, f"{file_name}.meta.json")
 
     if not db_ids:
         raise ValueError(f"instance_id={instance_id} has no candidate databases.")
@@ -744,6 +750,7 @@ if __name__ == "__main__":
     trace_root_dir = args.trace_dir
     if trace_root_dir:
         os.environ["LINKALIGN_TRACE_DIR"] = trace_root_dir
+    active_llm_model_name = args.llm_model_name
     llm = build_llm(model_name=args.llm_model_name, temperature=0.85)
     filter_llm = build_llm(model_name=args.filter_llm_model_name, temperature=0.42)
     logger.info("Using llm=%s filter_llm=%s", args.llm_model_name, args.filter_llm_model_name)

@@ -17,6 +17,7 @@ from llms.ollama.ollamaModel import OllamaModel
 DEFAULT_LLM_MODEL = "ministral-3:14b"
 llm = OllamaModel(model_name=DEFAULT_LLM_MODEL, temperature=0.85)
 filter_llm = OllamaModel(model_name=DEFAULT_LLM_MODEL, temperature=0.42)
+active_llm_model_name = DEFAULT_LLM_MODEL
 EMBED_MODEL_NAME = "BAAI/bge-large-en-v1.5"
 
 def build_logger(name: str = "GenerateSchemas"):
@@ -30,6 +31,10 @@ def build_logger(name: str = "GenerateSchemas"):
     return logger_
 
 logger = build_logger()
+
+
+def get_output_model_name() -> str:
+    return active_llm_model_name or DEFAULT_LLM_MODEL
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Run the script with external parameters.")
@@ -258,8 +263,9 @@ def get_schema(
 ):
     """ 检索问题需要的数据库模式 """
     file_name = instance_id + "_agent"
-    output_csv = os.path.join(save_path, f"{file_name}.csv")
-    output_txt = os.path.join(links_save_path, f"{file_name}.txt")
+    output_model_name = get_output_model_name()
+    output_csv = os.path.join(save_path, output_model_name, f"{file_name}.csv")
+    output_txt = os.path.join(links_save_path, output_model_name, f"{file_name}.txt")
     if os.path.isfile(output_csv):
         if not open_schema_linking:
             return None
@@ -403,6 +409,7 @@ def wrapper(args):
 if __name__ == "__main__":
     
     args = parse_arguments()
+    active_llm_model_name = args.llm_model_name
     llm = OllamaModel(model_name=args.llm_model_name, temperature=0.85)
     filter_llm = OllamaModel(model_name=args.filter_llm_model_name, temperature=0.42)
     logger.info("Using llm=%s filter_llm=%s", args.llm_model_name, args.filter_llm_model_name)

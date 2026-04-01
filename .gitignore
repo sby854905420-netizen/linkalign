@@ -1,10 +1,12 @@
 tmp_run/
+spider2_dev/
 spider2_dev/schemas/
 MMQA/schemas/
 spider2_dev/external_knowledge/
 requirements-py311-rtx5090.txt
 .env
 __pycache__/
+**/__pycache__/
 .vscode/
 LICENSE*
 README*

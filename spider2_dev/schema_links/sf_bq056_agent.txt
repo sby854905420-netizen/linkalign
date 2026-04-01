@@ -1,1 +1,0 @@
-[    'PLANET_WAYS.visible',    'PLANET_WAYS.geometry',    'PLANET_WAYS.all_tags',    'STATES.state_geom',    'STATES.name',    'PLANET_WAYS.id']
