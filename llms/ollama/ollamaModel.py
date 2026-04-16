@@ -10,6 +10,7 @@ from llama_index.core.llms.callbacks import llm_completion_callback
 from ollama import Client
 
 from config import *
+from tools.sample_metrics import record_llm_usage
 
 
 class OllamaModel(CustomLLM):
@@ -84,8 +85,15 @@ class OllamaModel(CustomLLM):
                 message = response.get("message", {})
                 completion_response = message.get("content", "") or ""
                 prompt_eval_count = response.get("prompt_eval_count")
+                eval_count = response.get("eval_count")
                 if isinstance(prompt_eval_count, int):
                     self.input_token += prompt_eval_count
+                record_llm_usage(
+                    model_name=self.model_name,
+                    prompt_tokens=prompt_eval_count,
+                    completion_tokens=eval_count,
+                    total_tokens=(prompt_eval_count or 0) + (eval_count or 0),
+                )
             else:
                 completion_response = ""
                 for chunk in response:

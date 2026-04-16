@@ -13,12 +13,14 @@ from tqdm import tqdm
 import concurrent.futures
 from llms.ollama.ollamaModel import OllamaModel
 
+from tools.sample_metrics import SampleMetricsRecorder, build_metrics_path
 
 DEFAULT_LLM_MODEL = "ministral-3:8b"
 llm = OllamaModel(model_name=DEFAULT_LLM_MODEL, temperature=0.85)
 filter_llm = OllamaModel(model_name=DEFAULT_LLM_MODEL, temperature=0.42)
 active_llm_model_name = DEFAULT_LLM_MODEL
 EMBED_MODEL_NAME = "BAAI/bge-large-en-v1.5"
+metrics_recorder = None
 
 def build_logger(name: str = "GenerateSchemas"):
     logger_ = logging.getLogger(name)
@@ -52,6 +54,8 @@ def parse_arguments():
                         help="Local Ollama model name used for retrieval and final schema linking.")
     parser.add_argument("--filter_llm_model_name", type=str, required=False, default=DEFAULT_LLM_MODEL,
                         help="Local Ollama model name used during response filtering.")
+    parser.add_argument("--metrics_path", type=str, required=False, default=None,
+                        help="JSON file used to store per-sample elapsed time and LLM token usage.")
 
     return parser.parse_args()
 
@@ -394,13 +398,29 @@ def get_schema(
 def process_row(index, row):
     external = load_external_knowledge(row["external_knowledge"])
     question = row["question"] + external if external else row["question"]
+    sample_id = row.get("instance_id", f"row_{index}")
+    sample_metadata = {
+        "index": int(index),
+        "instance_id": row.get("instance_id"),
+        "db_id": row.get("db_id"),
+        "external_knowledge": row.get("external_knowledge"),
+        "open_schema_linking": open_schema_linking,
+    }
     try:
-        get_schema(db_id=row["db_id"],
-                   question=question,
-                   instance_id=row["instance_id"],
-                   open_schema_linking=open_schema_linking)
+        if metrics_recorder is None:
+            get_schema(db_id=row["db_id"],
+                       question=question,
+                       instance_id=row["instance_id"],
+                       open_schema_linking=open_schema_linking)
+            return
+
+        with metrics_recorder.track_sample(sample_id=sample_id, metadata=sample_metadata):
+            get_schema(db_id=row["db_id"],
+                       question=question,
+                       instance_id=row["instance_id"],
+                       open_schema_linking=open_schema_linking)
     except Exception as e:
-        print(e)
+        logger.exception("Failed on row index=%s instance_id=%s error=%s", index, row.get("instance_id"), e)
 
 def wrapper(args):
     index, row = args
@@ -421,6 +441,21 @@ if __name__ == "__main__":
     links_save_path = args.links_save_path
     external_info_path = args.external_info_path
     open_schema_linking = args.open_schema_linking
+    metrics_path = args.metrics_path or build_metrics_path(save_path, "generate_schemas_sample_metrics.json")
+    metrics_recorder = SampleMetricsRecorder(
+        output_path=metrics_path,
+        run_name="GenerateSchemas",
+        static_metadata={
+            "dataset": dataset_path,
+            "save_path": save_path,
+            "schema_path": schema_path,
+            "links_save_path": links_save_path,
+            "llm_model_name": args.llm_model_name,
+            "filter_llm_model_name": args.filter_llm_model_name,
+            "open_schema_linking": open_schema_linking,
+        },
+    )
+    logger.info("Per-sample metrics will be written to %s", metrics_path)
     # 加载保存数据库规模的 json 文档
     with open(db_info_path, 'r', encoding='utf-8') as file:
         db_info = json.load(file)

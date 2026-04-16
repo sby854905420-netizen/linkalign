@@ -11,6 +11,7 @@ from llama_index.core.llms import (
 from llama_index.core.llms.callbacks import llm_completion_callback
 from openai import OpenAI
 from config import *
+from tools.sample_metrics import record_llm_usage
 
 
 class GPTModel(CustomLLM):
@@ -99,7 +100,17 @@ class GPTModel(CustomLLM):
             )
             if not self.is_stream:
                 completion_response = response.choices[0].message.content or ""
-                # self.input_token += response.usage.prompt_tokens
+                usage = getattr(response, "usage", None)
+                prompt_tokens = getattr(usage, "prompt_tokens", 0) if usage is not None else 0
+                completion_tokens = getattr(usage, "completion_tokens", 0) if usage is not None else 0
+                total_tokens = getattr(usage, "total_tokens", 0) if usage is not None else 0
+                self.input_token += prompt_tokens
+                record_llm_usage(
+                    model_name=self.model_name,
+                    prompt_tokens=prompt_tokens,
+                    completion_tokens=completion_tokens,
+                    total_tokens=total_tokens,
+                )
             else:
                 completion_response = ""
                 for chunk in response:

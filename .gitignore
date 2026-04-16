@@ -1,6 +1,7 @@
 tmp_run/
 spider2_dev/
 spider2_dev/schemas/
+Spider2/
 MMQA/schemas/
 MMQA/instance_schemas/*
 !MMQA/instance_schemas/.gitkeep

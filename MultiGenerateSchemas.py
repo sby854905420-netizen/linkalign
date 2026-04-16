@@ -14,6 +14,7 @@ from llms.gpt.GPTModel import GPTModel
 from llms.ollama.ollamaModel import OllamaModel
 from rag_pipes.RagPipeline import RagPipeLines
 from tools.SchemaLinkingTool import SchemaLinkingTool
+from tools.sample_metrics import SampleMetricsRecorder, build_metrics_path
 from utils import get_sql_files, parse_list_from_str, parse_schemas_from_nodes
 
 
@@ -60,6 +61,7 @@ def build_logger(name: str = "MultiGenerateSchemas"):
 logger = build_logger()
 vector_index_cache = {}
 trace_root_dir = None
+metrics_recorder = None
 
 
 def summarize_df(df: Optional[pd.DataFrame]) -> str:
@@ -164,6 +166,8 @@ def parse_arguments():
                         help="Number of worker threads used to process rows.")
     parser.add_argument("--trace_dir", type=str, required=False, default=None,
                         help="Directory used to store intermediate artifacts, prompts, and responses.")
+    parser.add_argument("--metrics_path", type=str, required=False, default=None,
+                        help="JSON file used to store per-sample elapsed time and LLM token usage.")
     return parser.parse_args()
 
 
@@ -801,6 +805,15 @@ def process_row(index, row):
     candidate_db_ids = normalize_candidate_db_ids(row.get(candidate_db_key))
     external = load_external_knowledge(row["external_knowledge"])
     question = row["question"] + external if external else row["question"]
+    sample_id = row.get("instance_id", f"row_{index}")
+    sample_metadata = {
+        "index": int(index),
+        "instance_id": row.get("instance_id"),
+        "candidate_db_ids": candidate_db_ids,
+        "candidate_count": len(candidate_db_ids),
+        "external_knowledge": row.get("external_knowledge"),
+        "open_schema_linking": open_schema_linking,
+    }
     logger.info(
         "[process_row] start index=%s instance_id=%s candidate_count=%s external_loaded=%s",
         index,
@@ -809,12 +822,21 @@ def process_row(index, row):
         bool(external),
     )
     try:
-        get_schema_multi(
-            db_ids=candidate_db_ids,
-            question=question,
-            instance_id=row["instance_id"],
-            open_schema_linking=open_schema_linking,
-        )
+        if metrics_recorder is None:
+            get_schema_multi(
+                db_ids=candidate_db_ids,
+                question=question,
+                instance_id=row["instance_id"],
+                open_schema_linking=open_schema_linking,
+            )
+        else:
+            with metrics_recorder.track_sample(sample_id=sample_id, metadata=sample_metadata):
+                get_schema_multi(
+                    db_ids=candidate_db_ids,
+                    question=question,
+                    instance_id=row["instance_id"],
+                    open_schema_linking=open_schema_linking,
+                )
         logger.info("[process_row] done index=%s instance_id=%s", index, row.get("instance_id"))
     except Exception as e:
         logger.exception("Failed on row index=%s instance_id=%s error=%s", index, row.get("instance_id"), e)
@@ -843,6 +865,23 @@ if __name__ == "__main__":
     external_info_path = args.external_info_path
     open_schema_linking = args.open_schema_linking
     candidate_db_key = args.candidate_db_key
+    metrics_path = args.metrics_path or build_metrics_path(save_path, "multi_generate_schemas_sample_metrics.json")
+    metrics_recorder = SampleMetricsRecorder(
+        output_path=metrics_path,
+        run_name="MultiGenerateSchemas",
+        static_metadata={
+            "dataset": dataset_path,
+            "save_path": save_path,
+            "schema_path": schema_path,
+            "links_save_path": links_save_path,
+            "llm_model_name": args.llm_model_name,
+            "filter_llm_model_name": args.filter_llm_model_name,
+            "open_schema_linking": open_schema_linking,
+            "candidate_db_key": candidate_db_key,
+            "max_workers": args.max_workers,
+        },
+    )
+    logger.info("Per-sample metrics will be written to %s", metrics_path)
     logger.info("[main] config dataset=%s max_workers=%s open_schema_linking=%s", dataset_path, args.max_workers, open_schema_linking)
 
     with open(db_info_path, "r", encoding="utf-8") as file:
