@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import os
+
 # 本地文件存储目录
 ALL_DATABASE_DATA_SOURCE = r"..."
 
@@ -36,7 +38,11 @@ GPT_API = ""
 GPT_MODEL = "gpt-4o-mini"
 
 OLLAMA_MODEL = "llama3.2:3b"
-OLLAMA_BASE_URL = "http://localhost:11434"
+OLLAMA_BASE_URL = (
+    os.environ.get("OLLAMA_BASE_URL")
+    or os.environ.get("OLLAMA_HOST")
+    or "http://localhost:11434"
+)
 
 # 两个模型的公共参数
 TEMPERATURE = 0.45
