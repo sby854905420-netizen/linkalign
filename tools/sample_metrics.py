@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import threading
 import time
 from contextlib import contextmanager
@@ -25,6 +26,10 @@ def _now_iso() -> str:
     return datetime.now(timezone.utc).astimezone().isoformat()
 
 
+def _now_file_timestamp() -> str:
+    return datetime.now(timezone.utc).astimezone().strftime("%Y%m%d_%H%M%S_%f")
+
+
 def _safe_int(value: Any) -> int:
     if value is None:
         return 0
@@ -40,22 +45,31 @@ def build_metrics_path(save_path: str, file_name: str) -> str:
     return str(base_dir / file_name)
 
 
+def _sanitize_file_stem(value: str) -> str:
+    sanitized = re.sub(r"[^A-Za-z0-9._-]+", "_", str(value or "").strip())
+    sanitized = sanitized.strip("._-")
+    return sanitized or "dataset"
+
+
+def build_metrics_file_name(
+        dataset_path: str,
+        prefix: str = "multi_generate_schemas_sample_metrics",
+        run_timestamp: Optional[str] = None,
+) -> str:
+    dataset_name = _sanitize_file_stem(Path(dataset_path).stem)
+    timestamp = run_timestamp or _now_file_timestamp()
+    return f"{prefix}_{dataset_name}_{timestamp}.json"
+
+
 class SampleMetricsSession:
     def __init__(self, sample_id: str, metadata: Optional[Dict[str, Any]] = None):
         self.sample_id = str(sample_id)
-        self.metadata = dict(metadata or {})
-        self.started_at = _now_iso()
+        _ = metadata
         self._started_monotonic = time.perf_counter()
-        self._usage = {
-            "calls": 0,
-            "prompt_tokens": 0,
-            "completion_tokens": 0,
-            "total_tokens": 0,
-            "by_model": {},
-        }
+        self._total_tokens = 0
 
     def update_metadata(self, **kwargs):
-        self.metadata.update(kwargs)
+        return None
 
     def record_llm_usage(
             self,
@@ -70,36 +84,15 @@ class SampleMetricsSession:
         if total_tokens == 0:
             total_tokens = prompt_tokens + completion_tokens
 
-        self._usage["calls"] += 1
-        self._usage["prompt_tokens"] += prompt_tokens
-        self._usage["completion_tokens"] += completion_tokens
-        self._usage["total_tokens"] += total_tokens
-
-        key = str(model_name or "unknown")
-        if key not in self._usage["by_model"]:
-            self._usage["by_model"][key] = {
-                "calls": 0,
-                "prompt_tokens": 0,
-                "completion_tokens": 0,
-                "total_tokens": 0,
-            }
-        model_usage = self._usage["by_model"][key]
-        model_usage["calls"] += 1
-        model_usage["prompt_tokens"] += prompt_tokens
-        model_usage["completion_tokens"] += completion_tokens
-        model_usage["total_tokens"] += total_tokens
+        self._total_tokens += total_tokens
 
     def finalize(self, status: str, error: Optional[str] = None) -> Dict[str, Any]:
-        ended_at = _now_iso()
         elapsed_seconds = round(time.perf_counter() - self._started_monotonic, 6)
         return {
             "sample_id": self.sample_id,
             "status": status,
-            "started_at": self.started_at,
-            "ended_at": ended_at,
             "elapsed_seconds": elapsed_seconds,
-            "llm_usage": self._usage,
-            "metadata": self.metadata,
+            "total_tokens": self._total_tokens,
             "error": error,
         }
 
@@ -181,26 +174,7 @@ class SampleMetricsRecorder:
         error_records = [record for record in records if record.get("status") == "error"]
 
         total_elapsed_seconds = round(sum(float(record.get("elapsed_seconds", 0.0)) for record in records), 6)
-        total_prompt_tokens = sum(_safe_int(record.get("llm_usage", {}).get("prompt_tokens")) for record in records)
-        total_completion_tokens = sum(_safe_int(record.get("llm_usage", {}).get("completion_tokens")) for record in records)
-        total_tokens = sum(_safe_int(record.get("llm_usage", {}).get("total_tokens")) for record in records)
-
-        by_model = {}
-        for record in records:
-            record_by_model = record.get("llm_usage", {}).get("by_model", {})
-            for model_name, usage in record_by_model.items():
-                if model_name not in by_model:
-                    by_model[model_name] = {
-                        "calls": 0,
-                        "prompt_tokens": 0,
-                        "completion_tokens": 0,
-                        "total_tokens": 0,
-                    }
-                target = by_model[model_name]
-                target["calls"] += _safe_int(usage.get("calls"))
-                target["prompt_tokens"] += _safe_int(usage.get("prompt_tokens"))
-                target["completion_tokens"] += _safe_int(usage.get("completion_tokens"))
-                target["total_tokens"] += _safe_int(usage.get("total_tokens"))
+        total_tokens = sum(_safe_int(record.get("total_tokens")) for record in records)
 
         success_count = len(success_records)
         return {
@@ -213,17 +187,9 @@ class SampleMetricsRecorder:
                 sum(float(record.get("elapsed_seconds", 0.0)) for record in success_records) / success_count,
                 6,
             ) if success_count else 0.0,
-            "total_prompt_tokens": total_prompt_tokens,
-            "total_completion_tokens": total_completion_tokens,
             "total_tokens": total_tokens,
-            "avg_prompt_tokens_per_sample": round(total_prompt_tokens / sample_count, 6) if sample_count else 0.0,
-            "avg_completion_tokens_per_sample": round(
-                total_completion_tokens / sample_count,
-                6,
-            ) if sample_count else 0.0,
             "avg_total_tokens_per_sample": round(total_tokens / sample_count, 6) if sample_count else 0.0,
             "avg_total_tokens_per_success": round(total_tokens / success_count, 6) if success_count else 0.0,
-            "by_model": by_model,
         }
 
     def _write_record(self, record: Dict[str, Any]):
@@ -231,16 +197,7 @@ class SampleMetricsRecorder:
         with file_lock:
             payload = self._load_payload()
             records = payload.get("records", [])
-
-            updated = False
-            for index, existing in enumerate(records):
-                if str(existing.get("sample_id")) == str(record.get("sample_id")):
-                    records[index] = record
-                    updated = True
-                    break
-
-            if not updated:
-                records.append(record)
+            records.append(record)
 
             payload["records"] = records
             payload["summary"] = self._build_summary(records)

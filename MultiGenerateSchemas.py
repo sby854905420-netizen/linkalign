@@ -14,7 +14,7 @@ from llms.gpt.GPTModel import GPTModel
 from llms.ollama.ollamaModel import OllamaModel
 from rag_pipes.RagPipeline import RagPipeLines
 from tools.SchemaLinkingTool import SchemaLinkingTool
-from tools.sample_metrics import SampleMetricsRecorder, build_metrics_path
+from tools.sample_metrics import SampleMetricsRecorder, build_metrics_file_name, build_metrics_path
 from utils import get_sql_files, parse_list_from_str, parse_schemas_from_nodes
 
 
@@ -167,7 +167,8 @@ def parse_arguments():
     parser.add_argument("--trace_dir", type=str, required=False, default=None,
                         help="Directory used to store intermediate artifacts, prompts, and responses.")
     parser.add_argument("--metrics_path", type=str, required=False, default=None,
-                        help="JSON file used to store per-sample elapsed time and LLM token usage.")
+                        help="JSON file used to store per-sample total tokens and elapsed time. "
+                             "Defaults to a new metrics file named with the dataset and run timestamp.")
     return parser.parse_args()
 
 
@@ -865,7 +866,8 @@ if __name__ == "__main__":
     external_info_path = args.external_info_path
     open_schema_linking = args.open_schema_linking
     candidate_db_key = args.candidate_db_key
-    metrics_path = args.metrics_path or build_metrics_path(save_path, "multi_generate_schemas_sample_metrics.json")
+    metrics_file_name = build_metrics_file_name(dataset_path=dataset_path)
+    metrics_path = args.metrics_path or build_metrics_path(save_path, metrics_file_name)
     metrics_recorder = SampleMetricsRecorder(
         output_path=metrics_path,
         run_name="MultiGenerateSchemas",

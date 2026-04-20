@@ -13,7 +13,7 @@ from tqdm import tqdm
 import concurrent.futures
 from llms.ollama.ollamaModel import OllamaModel
 
-from tools.sample_metrics import SampleMetricsRecorder, build_metrics_path
+from tools.sample_metrics import SampleMetricsRecorder, build_metrics_file_name, build_metrics_path
 
 DEFAULT_LLM_MODEL = "ministral-3:8b"
 llm = OllamaModel(model_name=DEFAULT_LLM_MODEL, temperature=0.85)
@@ -55,7 +55,8 @@ def parse_arguments():
     parser.add_argument("--filter_llm_model_name", type=str, required=False, default=DEFAULT_LLM_MODEL,
                         help="Local Ollama model name used during response filtering.")
     parser.add_argument("--metrics_path", type=str, required=False, default=None,
-                        help="JSON file used to store per-sample elapsed time and LLM token usage.")
+                        help="JSON file used to store per-sample total tokens and elapsed time. "
+                             "Defaults to a new metrics file named with the dataset and run timestamp.")
 
     return parser.parse_args()
 
@@ -399,13 +400,6 @@ def process_row(index, row):
     external = load_external_knowledge(row["external_knowledge"])
     question = row["question"] + external if external else row["question"]
     sample_id = row.get("instance_id", f"row_{index}")
-    sample_metadata = {
-        "index": int(index),
-        "instance_id": row.get("instance_id"),
-        "db_id": row.get("db_id"),
-        "external_knowledge": row.get("external_knowledge"),
-        "open_schema_linking": open_schema_linking,
-    }
     try:
         if metrics_recorder is None:
             get_schema(db_id=row["db_id"],
@@ -414,7 +408,7 @@ def process_row(index, row):
                        open_schema_linking=open_schema_linking)
             return
 
-        with metrics_recorder.track_sample(sample_id=sample_id, metadata=sample_metadata):
+        with metrics_recorder.track_sample(sample_id=sample_id):
             get_schema(db_id=row["db_id"],
                        question=question,
                        instance_id=row["instance_id"],
@@ -441,7 +435,11 @@ if __name__ == "__main__":
     links_save_path = args.links_save_path
     external_info_path = args.external_info_path
     open_schema_linking = args.open_schema_linking
-    metrics_path = args.metrics_path or build_metrics_path(save_path, "generate_schemas_sample_metrics.json")
+    metrics_file_name = build_metrics_file_name(
+        dataset_path=dataset_path,
+        prefix="generate_schemas_sample_metrics",
+    )
+    metrics_path = args.metrics_path or build_metrics_path(save_path, metrics_file_name)
     metrics_recorder = SampleMetricsRecorder(
         output_path=metrics_path,
         run_name="GenerateSchemas",
