@@ -11,6 +11,7 @@ MMQA/schema_links/*
 spider2_dev/external_knowledge/
 requirements-py311-rtx5090.txt
 .env
+snowflake_credential.json
 __pycache__/
 **/__pycache__/
 .vscode/
