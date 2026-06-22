@@ -12,6 +12,7 @@ spider2_dev/external_knowledge/
 requirements-py311-rtx5090.txt
 .env
 snowflake_credential.json
+gpt_credential.json
 Evaluation/*_ex_eval.json
 __pycache__/
 **/__pycache__/

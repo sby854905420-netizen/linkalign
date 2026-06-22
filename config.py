@@ -35,7 +35,7 @@ LLM_NAME = "zhipu"
 VERBOSE = False
 
 GPT_API = ""
-GPT_MODEL = "gpt-4o-mini"
+GPT_MODEL = "gpt-5-mini-2025-08-07"
 
 OLLAMA_MODEL = "llama3.2:3b"
 OLLAMA_BASE_URL = (

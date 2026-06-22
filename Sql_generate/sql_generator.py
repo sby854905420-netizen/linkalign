@@ -25,7 +25,7 @@ except ImportError:
 
 
 DEFAULT_DATASET_NAME = "Spider2"
-DEFAULT_SQL_LLM_NAME = "ministral-3:14b-instruct-2512-fp16"
+DEFAULT_SQL_LLM_NAME = str(globals().get("GPT_MODEL", "gpt-5-mini-2025-08-07"))
 DEFAULT_PROMPT_PATH = PROJECT_ROOT / "prompts" / "sql_generation.txt"
 DEFAULT_MAX_INPUT_LENGTH = int(globals().get("CONTEXT_WINDOW", 120000))
 DEFAULT_MAX_GENERATION_NUM = int(globals().get("MAX_OUTPUT_TOKENS", 4096))
@@ -50,6 +50,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--schemas-dir", type=Path, default=None)
     parser.add_argument("--documents-dir", type=Path, default=None)
     parser.add_argument("--prompt-path", type=Path, default=None)
+    parser.add_argument(
+        "--output-dir",
+        type=Path,
+        default=None,
+        help=(
+            "Directory for SQL generation results. If omitted, results are saved under "
+            "sql_results/<dataset_name>/<model_name>/."
+        ),
+    )
     parser.add_argument("--output-path", type=Path, default=None)
     parser.add_argument("--sql-dialect", type=str, default=None)
     parser.add_argument("--max-input-length", type=int, default=None)
@@ -66,6 +75,28 @@ def parse_args() -> argparse.Namespace:
 
 def load_json(path: Path) -> Any:
     return json.loads(path.read_text(encoding="utf-8"))
+
+
+def load_openai_client_kwargs() -> dict[str, Any]:
+    kwargs: dict[str, Any] = {}
+    api_key = os.environ.get("OPENAI_API_KEY") or os.environ.get("GPT_API") or globals().get("GPT_API")
+    base_url = os.environ.get("OPENAI_BASE_URL") or os.environ.get("GPT_BASE_URL")
+
+    credential_path = PROJECT_ROOT / "gpt_credential.json"
+    if credential_path.is_file():
+        try:
+            credential = load_json(credential_path)
+        except (OSError, json.JSONDecodeError):
+            credential = {}
+        if isinstance(credential, Mapping):
+            api_key = api_key or credential.get("api_key") or credential.get("key")
+            base_url = base_url or credential.get("base_url") or credential.get("url")
+
+    if api_key:
+        kwargs["api_key"] = str(api_key)
+    if base_url:
+        kwargs["base_url"] = str(base_url)
+    return kwargs
 
 
 def get_row_value(row: Mapping[str, Any], *keys: str) -> Any:
@@ -94,17 +125,27 @@ def load_dataset_index(dataset_path: Path) -> dict[str, dict[str, Any]]:
 def default_sql_dialect(dataset_name: str) -> str:
     if dataset_name.lower() == "mmqa":
         return (
-            "Use SQLite SQL. Do not use Snowflake-only features such as QUALIFY, ILIKE, "
-            "TRY_CAST, DATEADD, DATEDIFF, TO_DATE, :: casts, or fully qualified "
-            "DATABASE.SCHEMA.TABLE notation unless the table name is explicitly shown that way. "
-            "Use SQLite-compatible functions such as strftime/date/datetime when date logic is needed."
+            "Use SQLite SQL for MMQA. MMQA uses compact Spider-style SQLite databases. "
+            "Use only SQLite-compatible syntax and functions. Use strftime/date/datetime "
+            "for date logic when needed. Use table and column names exactly as shown in "
+            "the schema excerpt. Do not use Snowflake-only features such as QUALIFY, ILIKE, "
+            "TRY_CAST, DATEADD, DATEDIFF, TO_DATE, TRUE/FALSE boolean literals, :: casts, "
+            "or warehouse-style DATABASE.SCHEMA.TABLE qualification unless that qualification "
+            "is literally part of a provided SQLite table name."
         )
     if dataset_name.lower() == "spider2":
         return (
-            "Use Snowflake SQL. Preserve fully qualified table names exactly as shown, usually "
-            "DATABASE.SCHEMA.TABLE. Snowflake features such as CTEs, QUALIFY, ILIKE, DATEADD, "
-            "DATEDIFF, TRY_CAST, TO_DATE, TRUE/FALSE boolean literals, and :: casts are allowed "
-            "when useful. Do not write SQLite-specific SQL."
+            "Use Snowflake SQL for Spider2. Spider2 uses large Snowflake warehouse databases, "
+            "often with fully qualified table names. Preserve every table and column name exactly "
+            "as shown in the schema excerpt. Any Snowflake identifier containing lowercase letters, "
+            "mixed case, spaces, or special characters must be double-quoted. Quote each part of "
+            "a mixed-case fully qualified table name separately, for example "
+            "\"DATABASE\".\"SCHEMA\".\"MixedCaseTable\". Reference mixed-case columns as "
+            "alias.\"ColumnName\". Do not write DATABASE.SCHEMA.MixedCaseTable or alias.ColumnName "
+            "for mixed-case objects because Snowflake will uppercase unquoted identifiers. "
+            "Snowflake features such as CTEs, QUALIFY, ILIKE, DATEADD, DATEDIFF, TRY_CAST, "
+            "TO_DATE, TRUE/FALSE boolean literals, and :: casts are allowed when useful. "
+            "Do not write SQLite-specific SQL."
         )
     return "Use the dialect implied by the question, schema, and hint."
 
@@ -146,15 +187,30 @@ def find_schema_links_dir(dataset_root: Path, model_name: str | None) -> Path:
     return candidates[0]
 
 
-def resolve_output_path(output_path: Path | None, dataset_root: Path, dataset_name: str) -> Path:
+def safe_path_component(value: str) -> str:
+    component = re.sub(r"[^A-Za-z0-9._-]+", "__", str(value).strip())
+    return component.strip("._-") or "unknown"
+
+
+def resolve_output_path(
+    output_path: Path | None,
+    output_dir: Path | None,
+    dataset_name: str,
+    model_name: str,
+) -> Path:
     if output_path is not None:
         output_path.parent.mkdir(parents=True, exist_ok=True)
         return output_path
 
     run_id = datetime.now().strftime("%Y%m%d_%H%M%S")
-    output_dir = dataset_root / "sql_results"
-    output_dir.mkdir(parents=True, exist_ok=True)
-    return output_dir / f"sql_generation_{dataset_name}_{run_id}.json"
+    save_dir = output_dir or (
+        PROJECT_ROOT
+        / "sql_results"
+        / safe_path_component(dataset_name)
+        / safe_path_component(model_name)
+    )
+    save_dir.mkdir(parents=True, exist_ok=True)
+    return save_dir / f"sql_generation_{dataset_name}_{run_id}.json"
 
 
 def list_schema_link_paths(schema_links_dir: Path, start_index: int, limit: int | None) -> list[Path]:
@@ -483,12 +539,33 @@ class SqlLLM:
             return provider
         return "gpt" if model_name.lower().startswith("gpt-") else "ollama"
 
+    @staticmethod
+    def uses_responses_api(model_name: str) -> bool:
+        return model_name.lower().startswith("gpt-5")
+
+    @staticmethod
+    def extract_responses_text(response: Any) -> str:
+        output_text = getattr(response, "output_text", None)
+        if output_text:
+            return str(output_text)
+
+        parts: list[str] = []
+        output = getattr(response, "output", None)
+        if output is None and isinstance(response, Mapping):
+            output = response.get("output")
+        for item in output or []:
+            content = item.get("content") if isinstance(item, Mapping) else getattr(item, "content", None)
+            for block in content or []:
+                text = block.get("text") if isinstance(block, Mapping) else getattr(block, "text", None)
+                if text:
+                    parts.append(str(text))
+        return "".join(parts)
+
     def build_client(self) -> Any:
         if self.provider == "gpt":
             from openai import OpenAI
 
-            api_key = os.environ.get("OPENAI_API_KEY") or globals().get("GPT_API") or None
-            return OpenAI(api_key=api_key)
+            return OpenAI(**load_openai_client_kwargs())
 
         from ollama import Client
 
@@ -500,6 +577,23 @@ class SqlLLM:
 
     def complete(self, prompt: str) -> tuple[str, int]:
         if self.provider == "gpt":
+            if self.uses_responses_api(self.model_name):
+                if not hasattr(self.client, "responses"):
+                    raise RuntimeError(
+                        "GPT-5 models require an OpenAI Python SDK version with the Responses API. "
+                        "Please upgrade the openai package."
+                    )
+                response = self.client.responses.create(
+                    model=self.model_name,
+                    input=[{"role": "user", "content": prompt}],
+                    max_output_tokens=self.max_generation_num,
+                    timeout=100.0,
+                )
+                text = self.extract_responses_text(response)
+                usage = getattr(response, "usage", None)
+                total_tokens = int(getattr(usage, "total_tokens", 0) or 0) if usage is not None else 0
+                return text, total_tokens
+
             response = self.client.chat.completions.create(
                 model=self.model_name,
                 messages=[{"role": "user", "content": prompt}],
@@ -724,7 +818,12 @@ def main() -> None:
     schemas_dir = args.schemas_dir or (dataset_root / "schemas")
     documents_dir = args.documents_dir or (dataset_root / "external_knowledge")
     prompt_path = args.prompt_path or DEFAULT_PROMPT_PATH
-    output_path = resolve_output_path(args.output_path, dataset_root, dataset_name)
+    output_path = resolve_output_path(
+        output_path=args.output_path,
+        output_dir=args.output_dir,
+        dataset_name=dataset_name,
+        model_name=answer_llm_name,
+    )
     max_input_length = args.max_input_length or DEFAULT_MAX_INPUT_LENGTH
     max_generation_num = args.max_generation_num or DEFAULT_MAX_GENERATION_NUM
     sql_dialect = args.sql_dialect or default_sql_dialect(dataset_name)
